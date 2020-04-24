@@ -1,2 +1,2 @@
 rootProject.name='Coroutines And Flow Tutorials'
-include ':Tutorial1-1Basics'
+include ':Tutorial1-1CoroutinesBasics'
