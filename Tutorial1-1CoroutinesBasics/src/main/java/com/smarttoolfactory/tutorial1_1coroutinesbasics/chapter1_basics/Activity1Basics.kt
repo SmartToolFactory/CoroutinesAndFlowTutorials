@@ -1,4 +1,4 @@
-package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,28 +6,36 @@ import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity1BasicsBinding
 import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 import kotlin.system.measureTimeMillis
 
 
 /**
  * * **Coroutine context**
- * The coroutine context is a set of rules and configurations that define how the coroutine will be executed.
+ * The coroutine context is a set of rules and configurations that define
+ * how the coroutine will be executed.
  * Under the hood, it’s a kind of map, with a set of possible keys and values.
  *
- * For now, it’s just enough for you to know that one of the possible configurations
- * is the dispatcher that is used to identify the thread where the coroutine will be executed.
+ * Coroutine context is immutable, but you can add elements to a context using plus operator,
+ * just like you add elements to a set, producing a new context instance
  *
- * This dispatcher can be provided in two ways:
- * **Explicitly**: we manually set the dispatcher that will be used
- * **By the coroutine scope**: let’s forget about scopes for now, but this would be the second option
+ * The CoroutineContext is a set of elements that define the behavior of a coroutine. It’s made of:
+ * * Job — controls the lifecycle of the coroutine.
+ * * CoroutineDispatcher — dispatches work to the appropriate thread.
+ * * CoroutineName — name of the coroutine, useful for debugging.
+ * * CoroutineExceptionHandler — handles uncaught exceptions, will be covered in Part 3 of the series.
  *
- * * **withContext**
- * This is a function that allows to easily change the context that will be used
- * to run a part of the code inside a coroutine.
- * This is a suspending function, so it means that it’ll suspend the coroutine
- * until the code inside is executed, no matter the dispatcher that it’s used.
+ * What’s the CoroutineContext of a new coroutine?
+ * We already know that a **new instance of Job** will be created,
+ * allowing us to control its lifecycle.
+ *
+ * The rest of the elements will be inherited from the CoroutineContext of
+ * its parent (either another coroutine or the CoroutineScope where it was created).
  *
  * * **Dispatchers**
+ * Dispatchers determine which thread pool should be used. Dispatchers class is also
+ * [CoroutineContext] which can be added to [CoroutineContext]
+ *
  * **Dispatchers.Default**: CPU-intensive work, such as sorting large lists,
  * doing complex calculations and similar. A shared pool of threads on the JVM backs it.
  *
@@ -36,6 +44,30 @@ import kotlin.system.measureTimeMillis
  *
  * **Dispatchers.Main**: recommended dispatcher for performing UI-related events.
  * For example, showing lists in a RecyclerView, updating Views and so on.
+ *
+ * * **Job** A coroutine itself is represented by a Job.
+ * A Job is a handle to a coroutine. For every coroutine that you create (by launch or async),
+ * it returns a Job instance that uniquely identifies the coroutine and manages its lifecycle.
+ * You can also pass a Job to a CoroutineScope to keep a handle on its lifecycle.
+ *
+ * It is responsible for coroutine’s lifecycle, cancellation, and parent-child relations.
+ * A current job can be retrieved from a current coroutine’s context:
+ * A Job can go through a set of states: New, Active, Completing, Completed, Cancelling and Cancelled.
+ * While we don’t have access to the states themselves,
+ * we can access properties of a Job: isActive, isCancelled and isCompleted.
+ *
+ * * **CoroutineScope** It is defined as extension function on CoroutineScope
+ * and takes a CoroutineContext as parameter, so it actually takes two
+ * coroutine contexts (since a scope is just a reference to a context).
+ * What does it do with them? It merges them using plus operator,
+ * producing a set-union of their elements, so that the elements
+ * in context parameter are taking precedence over the elements from the scope.
+ *
+ * The resulting context is used to start a new coroutine,
+ * but it is **not the context of the new coroutine** — is the **parent context** of the new coroutine.
+ * The new coroutine creates **its own child Job instance**
+ * (using a job from this context as its parent) and defines its child
+ * context as a parent context plus its job:
  */
 
 
@@ -72,6 +104,7 @@ import kotlin.system.measureTimeMillis
  */
 
 /*
+    Builder Functions
     🔥 launch: The exception propagates to the parent and will fail your coroutine
     parent-child hierarchy. This will throw an exception in the coroutine thread immediately.
     You can avoid these exceptions with try/catch blocks, or a custom exception handler.
@@ -91,7 +124,7 @@ class Activity1Basics : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding =
-            DataBindingUtil.setContentView<Activity1BasicsBinding>(this, R.layout.activity1_basics)
+            DataBindingUtil.setContentView(this, R.layout.activity1_basics)
 
 
         binding.button1.setOnClickListener {

@@ -11,7 +11,8 @@ import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.ActivityMainBinding
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.adapter.BaseAdapter
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.adapter.MyAdapter
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1.Activity1Basics
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics.Activity1Basics
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ActivityClassModel
 import java.util.*
 
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
 
         // Add Activities to list on RecyclerView
         activityClassModels.add(ActivityClassModel(Activity1Basics::class.java))
+        activityClassModels.add(ActivityClassModel(Activity2CoroutineScope::class.java))
 
         val recyclerView = activityMainBinding.recyclerView
 
@@ -38,8 +40,9 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
         recyclerView.setHasFixedSize(true)
 
         // use a linear layout manager
-        val layoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManager
+        LinearLayoutManager(this).also {
+            recyclerView.layoutManager = it
+        }
 
 
         recyclerView.addItemDecoration(
@@ -60,9 +63,9 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
     @Override
     override fun onItemClicked(view: View, position: Int) {
 
-       Intent(this@MainActivity, activityClassModels[position].clazz).also {
-           startActivity(it)
-       }
+        Intent(this@MainActivity, activityClassModels[position].clazz).also {
+            startActivity(it)
+        }
 
     }
 }

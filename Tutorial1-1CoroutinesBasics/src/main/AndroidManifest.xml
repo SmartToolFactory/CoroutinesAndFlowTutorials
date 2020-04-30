@@ -16,7 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1.Activity1Basics" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics.Activity1Basics" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope" />
     </application>
 
 </manifest>

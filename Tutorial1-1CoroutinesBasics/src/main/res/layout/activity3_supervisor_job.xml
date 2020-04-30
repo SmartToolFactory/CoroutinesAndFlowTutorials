@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <Button
+            android:id="@+id/btnStartJob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Start Job"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.24" />
+
+        <TextView
+            android:id="@+id/tvJobResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Not Started"
+            app:layout_constraintBottom_toBottomOf="@+id/btnStartJob"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnStartJob"
+            app:layout_constraintTop_toTopOf="@+id/btnStartJob" />
+
+
+        <Button
+            android:id="@+id/btnCancelChildJob1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Cancel Child1"
+            android:enabled="false"
+            app:layout_constraintStart_toStartOf="@+id/btnStartJob"
+            app:layout_constraintTop_toBottomOf="@+id/btnStartJob" />
+
+        <TextView
+            android:id="@+id/tvChildJobResult1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/tvJobResult"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelChildJob1"
+            tools:text="Empty" />
+
+
+        <Button
+            android:id="@+id/btnCancelChildJob2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="32dp"
+            android:text="Cancel Child2"
+            android:enabled="false"
+            app:layout_constraintStart_toStartOf="@+id/btnStartJob"
+            app:layout_constraintTop_toBottomOf="@+id/btnCancelChildJob1" />
+
+        <TextView
+            android:id="@+id/tvChildJobResult2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/tvJobResult"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelChildJob2"
+            tools:text="Empty" />
+
+
+        <!-- Supervisor Job-->
+
+        <Button
+            android:id="@+id/btnStartSupervisorJob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:text="Start S Job"
+            app:layout_constraintStart_toStartOf="@+id/btnStartJob"
+            app:layout_constraintTop_toBottomOf="@+id/btnCancelChildJob2" />
+
+        <TextView
+            android:id="@+id/tvSupervisorJobResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Job Not Started"
+            app:layout_constraintBottom_toBottomOf="@+id/btnStartSupervisorJob"
+            app:layout_constraintStart_toStartOf="@+id/tvJobResult"
+            app:layout_constraintTop_toTopOf="@+id/btnStartSupervisorJob" />
+
+
+        <Button
+            android:id="@+id/btnCancelChildSupervisorJob1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Cancel S. Child1"
+            android:enabled="false"
+            app:layout_constraintStart_toStartOf="@+id/btnStartSupervisorJob"
+            app:layout_constraintTop_toBottomOf="@+id/btnStartSupervisorJob" />
+
+        <TextView
+            android:id="@+id/tvChildSupervisorJobResult1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/tvSupervisorJobResult"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelChildSupervisorJob1"
+            tools:text="Empty" />
+
+
+        <Button
+            android:id="@+id/btnCancelChildSupervisorJob2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="32dp"
+            android:text="Cancel S. Child2"
+            android:enabled="false"
+            app:layout_constraintStart_toStartOf="@+id/btnStartSupervisorJob"
+            app:layout_constraintTop_toBottomOf="@+id/btnCancelChildSupervisorJob1" />
+
+        <TextView
+            android:id="@+id/tvChildSupervisorJobResult2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/tvSupervisorJobResult"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelChildSupervisorJob2"
+            tools:text="Empty" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
