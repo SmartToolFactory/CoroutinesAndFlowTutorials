@@ -69,64 +69,7 @@
             tools:text="Empty" />
 
 
-        <!-- Supervisor Job-->
 
-        <Button
-            android:id="@+id/btnStartSupervisorJob"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:text="Start S Job"
-            app:layout_constraintStart_toStartOf="@+id/btnStartJob"
-            app:layout_constraintTop_toBottomOf="@+id/btnCancelChildJob2" />
-
-        <TextView
-            android:id="@+id/tvSupervisorJobResult"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Job Not Started"
-            app:layout_constraintBottom_toBottomOf="@+id/btnStartSupervisorJob"
-            app:layout_constraintStart_toStartOf="@+id/tvJobResult"
-            app:layout_constraintTop_toTopOf="@+id/btnStartSupervisorJob" />
-
-
-        <Button
-            android:id="@+id/btnCancelChildSupervisorJob1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="Cancel S. Child1"
-            android:enabled="false"
-            app:layout_constraintStart_toStartOf="@+id/btnStartSupervisorJob"
-            app:layout_constraintTop_toBottomOf="@+id/btnStartSupervisorJob" />
-
-        <TextView
-            android:id="@+id/tvChildSupervisorJobResult1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/tvSupervisorJobResult"
-            app:layout_constraintTop_toTopOf="@+id/btnCancelChildSupervisorJob1"
-            tools:text="Empty" />
-
-
-        <Button
-            android:id="@+id/btnCancelChildSupervisorJob2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
-            android:text="Cancel S. Child2"
-            android:enabled="false"
-            app:layout_constraintStart_toStartOf="@+id/btnStartSupervisorJob"
-            app:layout_constraintTop_toBottomOf="@+id/btnCancelChildSupervisorJob1" />
-
-        <TextView
-            android:id="@+id/tvChildSupervisorJobResult2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/tvSupervisorJobResult"
-            app:layout_constraintTop_toTopOf="@+id/btnCancelChildSupervisorJob2"
-            tools:text="Empty" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

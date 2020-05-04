@@ -54,26 +54,23 @@ ext {
     constraintLayoutVersion = '1.1.3'
 
     // Architecture MVVM & LiveData
-    archLifecycleVersion = '1.1.1'
+    archLifecycleVersion = '2.2.0'
 
     // Coroutines
     coroutinesVersion = '1.3.5'
 
     // Room
-    roomVersion = '1.1.1'
-    archRoomVersion = '1.1.1'
+    roomVersion = '2.2.5'
 
     // RxAndroid
-    rxjavaVersion = '2.1.3'
-    rxandroidVersion = '2.0.1'
-
-    // Architecture MVVM & LiveData
-    archLifecycleVersion = '1.1.1'
+    rxjavaVersion = '2.2.19'
+    rxandroidVersion = '2.1.1'
 
     // Retrofit
-    retrofitVersion = '2.3.0'
+    retrofitVersion = '2.7.2'
+
     //Gson
-    gsonVersion = '2.8.4'
+    gsonVersion = '2.8.6'
 
     // Google
     locationVersion = '17.0.0'

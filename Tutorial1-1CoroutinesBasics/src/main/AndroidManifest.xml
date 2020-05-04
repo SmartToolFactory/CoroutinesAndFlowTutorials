@@ -18,6 +18,9 @@
         </activity>
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics.Activity1Basics" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_supervisorjob.Activity3SupervisorJob" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_lifecycle.Activity4CoroutineLifecycle" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope" />
     </application>
 
 </manifest>
