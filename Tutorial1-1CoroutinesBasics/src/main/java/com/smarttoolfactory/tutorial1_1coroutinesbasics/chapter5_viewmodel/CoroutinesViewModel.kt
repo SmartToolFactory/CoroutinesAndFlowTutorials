@@ -10,6 +10,10 @@ import kotlin.collections.ArrayList
 class CoroutinesViewModel : ViewModel() {
 
     val result = MutableLiveData<String>()
+    val enableResultButton = MutableLiveData<Boolean>().apply {
+        value = true
+    }
+
     val resultWithRetry = MutableLiveData<String>()
     val enableRetryButton = MutableLiveData<Boolean>().apply {
         value = true
@@ -28,12 +32,15 @@ class CoroutinesViewModel : ViewModel() {
     fun getMockResult() {
 
         result.value = "Loading..."
+        enableResultButton.value = false
 
         viewModelScope.launch {
 
             println("ViewModel scope: $this, thread: ${Thread.currentThread().name}")
 
             result.value = generateMockNetworkResponse()
+            enableResultButton.value = true
+
         }
 
     }
@@ -41,7 +48,7 @@ class CoroutinesViewModel : ViewModel() {
 
     fun getMockResultWithTimeout() {
 
-        val timeout = 4000L
+        val timeout = 1500L
 
         resultWithTimeout.value = "Loading..."
 
@@ -83,11 +90,18 @@ class CoroutinesViewModel : ViewModel() {
             resultWithRetry.value = "Loading..."
 
             try {
-                retry(3, 100, 2000) {
-                    resultWithRetry.value = "Retry count: $it"
-                    resultWithRetry.value = generateMockNetworkResponse(2100)
-                    enableRetryButton.value = true
-                }
+                retry(3,
+                    100,
+                    2000,
+                    block = {
+                        // generateMockNetworkResponse throws exception for delay bigger than 2000
+                        resultWithRetry.value = generateMockNetworkResponse(2100)
+                        enableRetryButton.value = true
+                    },
+                    onError = {
+                        resultWithRetry.value = "Retry count: $it"
+                    }
+                )
             } catch (exception: Exception) {
                 resultWithRetry.value = "Exception ${exception.message}"
                 enableRetryButton.value = true
@@ -105,17 +119,22 @@ class CoroutinesViewModel : ViewModel() {
         initialDelayMillis: Long = 100,
         maxDelayMillis: Long = 1000,
         factor: Double = 2.0,
-        block: suspend (Int) -> T?
+        block: suspend () -> T?,
+        onError: ((Int) -> Unit)? = null
     ): T? {
         var currentDelay = initialDelayMillis
 
-        repeat(times) {
+        var retryCount = 0
 
+        repeat(times) {
             try {
-                return block(it + 1)
+                retryCount++
+                return block()
             } catch (exception: Exception) {
                 exception.printStackTrace()
-//               if (it == times -1) throw RuntimeException("Failed after $times tries")
+                onError?.run {
+                    onError.invoke(retryCount)
+                }
             }
 
             delay(currentDelay)
@@ -123,7 +142,7 @@ class CoroutinesViewModel : ViewModel() {
 
         }
 
-          throw RuntimeException("Failed after $times tries")
+        throw RuntimeException("Failed after $times tries")
     }
 
 
@@ -140,12 +159,12 @@ class CoroutinesViewModel : ViewModel() {
             val startTime = System.currentTimeMillis()
 
             val city = async {
-                getRandomCity()
+                generateRandomCity()
             }
 
 
             val emoji = async {
-                getRandomEmoji()
+                generateRandomEmoji()
             }
 
             val response = async {
@@ -178,15 +197,18 @@ class CoroutinesViewModel : ViewModel() {
         Mock Response Functions
      */
 
-    private suspend fun generateMockNetworkResponse(delay: Long = 2000): String {
-        delay(delay)
+    private suspend fun generateMockNetworkResponse(timeMillis: Long = 2000): String {
 
-        if (delay > 2000) throw RuntimeException()
+        println("🥶 generateMockNetworkResponse() thread: ${Thread.currentThread().name}")
+
+        delay(timeMillis)
+
+        if (timeMillis > 2000) throw RuntimeException("Threw Network Exception")
 
         return "Hello World"
     }
 
-    private suspend fun getRandomCity(): String {
+    private suspend fun generateRandomCity(): String {
         val cityList = listOf("Berlin", "New York", "London", "Paris", "Istanbul")
 
         val random = Random()
@@ -195,7 +217,7 @@ class CoroutinesViewModel : ViewModel() {
         return cityList[random.nextInt(cityList.size)]
     }
 
-    private suspend fun getRandomEmoji(): String {
+    private suspend fun generateRandomEmoji(): String {
 
         val emojiList = listOf("🤪", "🙄", "😛", "😭", "🤬", "🥶", "😱")
         delay(2500)
