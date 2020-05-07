@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.ActivityMainBinding
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.adapter.BaseAdapter
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.adapter.MyAdapter
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.adapter.ChapterSelectionAdapter
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics.Activity1Basics
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_supervisorjob.Activity3SupervisorJob
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_lifecycle.Activity4CoroutineLifecycle
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.Activity6Network
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ActivityClassModel
 import java.util.*
 
@@ -40,6 +41,7 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
         activityClassModels.add(ActivityClassModel(Activity4CoroutineLifecycle::class.java))
         activityClassModels.add(ActivityClassModel(Activity5ViewModelScope::class.java))
         activityClassModels.add(ActivityClassModel(Activity5ViewModelRxJava::class.java))
+        activityClassModels.add(ActivityClassModel(Activity6Network::class.java))
 
         val recyclerView = activityMainBinding.recyclerView
 
@@ -61,7 +63,7 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
         )
 
         // define an adapter
-        val adapter = MyAdapter(activityClassModels)
+        val adapter = ChapterSelectionAdapter(activityClassModels)
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener(this)
 

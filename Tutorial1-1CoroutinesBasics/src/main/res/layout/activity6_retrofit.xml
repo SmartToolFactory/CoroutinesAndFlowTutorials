@@ -6,7 +6,8 @@
 
         <variable
             name="viewModel"
-            type="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.RxJavaViewModel" />
+            type="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.PostsCoroutineViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,12 +15,13 @@
         android:layout_height="match_parent"
         android:padding="8dp">
 
-        <TextView
+        <!-- Call -->
 
+        <TextView
             android:id="@+id/tvNetworkCall"
+            postState="@{viewModel.postStateWithCall}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.result}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -27,82 +29,90 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.15" />
 
-        <Button
-            android:id="@+id/btnCall"
+        <ProgressBar
+            android:id="@+id/pbCall"
+            visibilityBasedOn="@{viewModel.postStateWithCall.loading}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/tvNetworkCall"
+            app:layout_constraintEnd_toEndOf="@id/tvNetworkCall"
+            app:layout_constraintStart_toStartOf="@id/tvNetworkCall"
+            app:layout_constraintTop_toTopOf="@id/tvNetworkCall" />
+
+        <Button
+            android:id="@+id/btnCall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:enabled="@{viewModel.enableResultButton}"
-            android:onClick="@{() -> viewModel.getMockResult()}"
-            android:text="Get Result"
+            android:onClick="@{() -> viewModel.getPostWithCall()}"
+            android:text=" Network Request With Call"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvNetworkCall" />
 
+        <!-- Suspend -->
 
         <TextView
-            android:id="@+id/tvDeferred"
+            android:id="@+id/tvNetworkSuspend"
+            postState="@{viewModel.postStateWithSuspend}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@{viewModel.resultWithTimeout}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnCall" />
 
-        <Button
-            android:id="@+id/buttonDeferred"
+        <ProgressBar
+            android:id="@+id/pbSuspend"
+            visibilityBasedOn="@{viewModel.postStateWithSuspend.loading}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:enabled="@{viewModel.enableWithTimeoutButton}"
-            android:onClick="@{() -> viewModel.getMockResultWithTimeout()}"
-            android:text="Request with Tmeout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDeferred" />
-
-        <TextView
-            android:id="@+id/tvNetworkSuspend"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:text="@{viewModel.resultWithRetry}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonDeferred" />
+            app:layout_constraintBottom_toBottomOf="@id/tvNetworkSuspend"
+            app:layout_constraintEnd_toEndOf="@id/tvNetworkSuspend"
+            app:layout_constraintStart_toStartOf="@id/tvNetworkSuspend"
+            app:layout_constraintTop_toTopOf="@id/tvNetworkSuspend" />
 
         <Button
             android:id="@+id/btnSuspend"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:enabled="@{viewModel.enableRetryButton}"
-            android:onClick="@{() -> viewModel.getMockResultWithRetry()}"
-            android:text="Request with Retry"
+            android:enabled="@{!viewModel.postStateWithSuspend.loading}"
+            android:onClick="@{() -> viewModel.getPostWithSuspend()}"
+            android:text="Network Request with Suspend"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvNetworkSuspend" />
 
+        <!-- LiveData Extension -->
 
         <TextView
             android:id="@+id/tvWithLiveData"
+            postState="@{viewModel.postStateWithLiveDataBuilder}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="@{viewModel.resultMultiple}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnSuspend" />
 
-        <Button
-            android:id="@+id/btnWithLiveDataBuilder"
+        <ProgressBar
+            android:id="@+id/pbLiveData"
+            visibilityBasedOn="@{viewModel.postStateWithLiveDataBuilder.loading}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/tvWithLiveData"
+            app:layout_constraintEnd_toEndOf="@id/tvWithLiveData"
+            app:layout_constraintStart_toStartOf="@id/tvWithLiveData"
+            app:layout_constraintTop_toTopOf="@id/tvWithLiveData" />
+
+        <Button
+            android:id="@+id/btnWithLiveDataBuilder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:enabled="@{viewModel.enableMultipleButton}"
-            android:onClick="@{() -> viewModel.getMultipleResponsesConcurrently()}"
-            android:text="Request Concurrently"
+            android:onClick="@{() -> viewModel.getPostWithLiveDataBuilder()}"
+            android:text="Request with LiveData Builder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvWithLiveData" />

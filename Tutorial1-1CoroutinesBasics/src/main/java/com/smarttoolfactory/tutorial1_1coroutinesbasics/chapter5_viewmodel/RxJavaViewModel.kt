@@ -2,6 +2,7 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -36,6 +37,11 @@ class RxJavaViewModel : ViewModel() {
     }
 
     fun getMockResult() {
+
+        liveData<String> {
+
+
+        }
 
         val disposable = getObservable { generateMockNetworkResponse() }
 

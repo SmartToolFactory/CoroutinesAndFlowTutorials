@@ -90,9 +90,11 @@ class CoroutinesViewModel : ViewModel() {
             resultWithRetry.value = "Loading..."
 
             try {
-                retry(3,
-                    100,
-                    2000,
+
+                retry(
+                    times = 3,
+                    initialDelayMillis = 100,
+                    maxDelayMillis = 2000,
                     block = {
                         // generateMockNetworkResponse throws exception for delay bigger than 2000
                         resultWithRetry.value = generateMockNetworkResponse(2100)
@@ -102,6 +104,7 @@ class CoroutinesViewModel : ViewModel() {
                         resultWithRetry.value = "Retry count: $it"
                     }
                 )
+
             } catch (exception: Exception) {
                 resultWithRetry.value = "Exception ${exception.message}"
                 enableRetryButton.value = true

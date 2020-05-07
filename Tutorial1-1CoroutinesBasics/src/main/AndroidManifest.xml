@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.smarttoolfactory.tutorial1_1basics">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,6 +25,7 @@
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_lifecycle.Activity4CoroutineLifecycle" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.Activity6Network" />
     </application>
 
 </manifest>

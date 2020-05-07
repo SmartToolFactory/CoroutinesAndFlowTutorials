@@ -14,7 +14,7 @@ import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ActivityClassModel
  */
 
 // Provide a suitable constructor (depends on the kind of data set)
-class MyAdapter(private val data: List<ActivityClassModel>) : BaseAdapter() {
+class ChapterSelectionAdapter(private val data: List<ActivityClassModel>) : BaseAdapter() {
 
     override fun getDataAtPosition(position: Int): Any {
         return data[position]

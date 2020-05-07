@@ -16,7 +16,7 @@
 
         <TextView
 
-            android:id="@+id/tvResult1"
+            android:id="@+id/tvNetworkCall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{viewModel.result}"
@@ -28,7 +28,7 @@
             app:layout_constraintVertical_bias="0.15" />
 
         <Button
-            android:id="@+id/btnGetResult"
+            android:id="@+id/btnCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -37,21 +37,21 @@
             android:text="Get Result"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvResult1" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNetworkCall" />
 
 
         <TextView
-            android:id="@+id/tvTimeout"
+            android:id="@+id/tvDeferred"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@{viewModel.resultWithTimeout}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnGetResult" />
+            app:layout_constraintTop_toBottomOf="@+id/btnCall" />
 
         <Button
-            android:id="@+id/buttonTimeout"
+            android:id="@+id/buttonDeferred"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -60,20 +60,20 @@
             android:text="Request with Tmeout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTimeout" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDeferred" />
 
         <TextView
-            android:id="@+id/tvRetry"
+            android:id="@+id/tvNetworkSuspend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@{viewModel.resultWithRetry}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonTimeout" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonDeferred" />
 
         <Button
-            android:id="@+id/btnRetry"
+            android:id="@+id/btnSuspend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -82,21 +82,21 @@
             android:text="Request with Retry"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvRetry" />
+            app:layout_constraintTop_toBottomOf="@+id/tvNetworkSuspend" />
 
 
         <TextView
-            android:id="@+id/tvMultiple"
+            android:id="@+id/tvWithLiveData"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@{viewModel.resultMultiple}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnRetry" />
+            app:layout_constraintTop_toBottomOf="@+id/btnSuspend" />
 
         <Button
-            android:id="@+id/btnMultiple"
+            android:id="@+id/btnWithLiveDataBuilder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
@@ -105,7 +105,7 @@
             android:text="Request Concurrently"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvMultiple" />
+            app:layout_constraintTop_toBottomOf="@+id/tvWithLiveData" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

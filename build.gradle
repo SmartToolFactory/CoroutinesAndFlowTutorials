@@ -67,7 +67,7 @@ ext {
     rxandroidVersion = '2.1.1'
 
     // Retrofit
-    retrofitVersion = '2.7.2'
+    retrofitVersion = '2.8.1'
 
     //Gson
     gsonVersion = '2.8.6'
