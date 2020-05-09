@@ -26,6 +26,7 @@
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.Activity6Network" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter7_database.Activity7Database" />
     </application>
 
 </manifest>

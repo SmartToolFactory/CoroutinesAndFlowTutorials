@@ -40,6 +40,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
     implementation "androidx.core:core-ktx:$rootProject.coreKtxVersion"
 
     implementation "androidx.activity:activity-ktx:1.1.0"
@@ -86,8 +89,11 @@ dependencies {
     // optional - RxJava support for Room
     implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
 
+
+    /*
+        Testing
+     */
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }

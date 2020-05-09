@@ -3,7 +3,7 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network
 import androidx.lifecycle.*
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.RetrofitFactory
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Status.*
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.Post
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Post
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ViewState
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -39,24 +39,7 @@ class PostsCoroutineViewModel : ViewModel() {
      *  request for login action
      */
     val postStateWithLiveDataBuilder = callPostFunction.switchMap {
-
-        liveData {
-
-            println("😎 liveDataBuilder() scope: $this, thread: ${Thread.currentThread().name}")
-
-            // Set current state to LOADING
-            emit(ViewState(LOADING))
-
-            // Get result from network, invoked in Retrofit's enque function thread
-            val result = postsUseCase.getPosts()
-
-            // Check and assign result to UI
-            if (result.status == SUCCESS) {
-                emit(ViewState(SUCCESS, data = result.data?.get(0)?.title))
-            } else if (result.status == ERROR) {
-                emit(ViewState(ERROR, error = result.error))
-            }
-        }
+        setLiveDataBuilder()
     }
 
 
@@ -119,6 +102,10 @@ class PostsCoroutineViewModel : ViewModel() {
         }
     }
 
+    /**
+     * This function uses a custom scope that has [CoroutineScope.coroutineContext]
+     * that contains [Dispatchers.IO] and [SupervisorJob]
+     */
     fun getPostWithSuspendDispatcherIO() {
 
         // Set current state to LOADING
@@ -150,9 +137,31 @@ class PostsCoroutineViewModel : ViewModel() {
 
     }
 
+    private fun setLiveDataBuilder(): LiveData<ViewState<String>> {
+
+        return liveData {
+
+            println("😎 liveDataBuilder() scope: $this, thread: ${Thread.currentThread().name}")
+
+            // Set current state to LOADING
+            emit(ViewState(LOADING))
+
+            // Get result from network, invoked in Retrofit's enque function thread
+            val result = postsUseCase.getPosts()
+
+            // Check and assign result to UI
+            if (result.status == SUCCESS) {
+                emit(ViewState(SUCCESS, data = result.data?.get(0)?.title))
+            } else if (result.status == ERROR) {
+                emit(ViewState(ERROR, error = result.error))
+            }
+        }
+    }
+
     fun getPostWithLiveDataBuilder() {
         callPostFunction.value = true
     }
+
 
     override fun onCleared() {
         super.onCleared()

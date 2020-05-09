@@ -1,6 +1,5 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api
 
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.Post
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit

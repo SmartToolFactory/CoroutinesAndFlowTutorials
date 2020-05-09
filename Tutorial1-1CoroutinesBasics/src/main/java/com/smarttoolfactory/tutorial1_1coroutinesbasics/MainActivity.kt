@@ -18,6 +18,7 @@ import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_lifecycle.Activ
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.Activity6Network
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter7_database.Activity7Database
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ActivityClassModel
 import java.util.*
 
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
         activityClassModels.add(ActivityClassModel(Activity5ViewModelScope::class.java))
         activityClassModels.add(ActivityClassModel(Activity5ViewModelRxJava::class.java))
         activityClassModels.add(ActivityClassModel(Activity6Network::class.java))
+        activityClassModels.add(ActivityClassModel(Activity7Database::class.java))
 
         val recyclerView = activityMainBinding.recyclerView
 
