@@ -15,11 +15,7 @@ class MeasurementRepository(private val measurementDao: MeasurementDao) {
         return measurementDao.getMeasurementsAsync()
     }
 
-    fun insertMeasurement(measurement: Measurement): LiveData<Long> {
-        return measurementDao.insert(measurement)
-    }
-
-    fun getMeasurements(): LiveData<Measurement> {
+    fun getMeasurements(): LiveData<List<Measurement>> {
         return measurementDao.getMeasurements()
     }
 

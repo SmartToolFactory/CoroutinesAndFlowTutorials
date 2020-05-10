@@ -22,94 +22,94 @@
             android:layout_marginTop="48dp"
             android:hint="Enter measurement..."
             android:inputType="numberDecimal"
-            android:text="@={viewModel.measurement}"
+            android:text="@={viewModel.input}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/tvInsertResult"
+            android:layout_width="0dp"
+            android:layout_marginTop="32dp"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.insertResult}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etInsertSuspend" />
 
         <Button
             android:id="@+id/btnInsertSuspend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.insertMeasurementAsync(viewModel.measurement)}"
-            android:text="Add with Suspend"
-            app:layout_constraintBottom_toBottomOf="@+id/btnInsertLiveData"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/btnInsertLiveData"
-            app:layout_constraintTop_toTopOf="@+id/btnInsertLiveData" />
-
-        <Button
-            android:id="@+id/btnInsertLiveData"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:onClick="@{() -> viewModel.insertMeasurement(viewModel.measurement)}"
-            android:text="Add with LiveData"
-            app:layout_constraintEnd_toStartOf="@+id/btnInsertSuspend"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etInsertSuspend" />
+            android:onClick="@{() -> viewModel.insertMeasurementAsync(viewModel.input)}"
+            android:text="Insert value"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tvInsertResult" />
 
         <TextView
             android:id="@+id/tvResult"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
+            android:layout_marginTop="32dp"
+            android:text="@{viewModel.resultWithSuspend}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnInsertLiveData" />
+            app:layout_constraintTop_toBottomOf="@id/btnInsertSuspend" />
 
         <Button
             android:id="@+id/btnGetSuspend"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:onClick="@{() -> viewModel.getMeasurementsWithSuspend()}"
             android:text="Get With Suspend"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvResult" />
 
-        <TextView
-            android:id="@+id/tvResultLiveData"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnGetSuspend" />
 
-
-        <Button
-            android:id="@+id/btnGetLiveData"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Get With LiveData"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvResultLiveData" />
 
         <TextView
             android:id="@+id/tvResultLiveDataBuilder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:text="@{viewModel.resultWithLiveDataBuilder}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnGetLiveData" />
-
+            app:layout_constraintTop_toBottomOf="@id/btnGetSuspend" />
 
         <Button
             android:id="@+id/btnGeLiveDataBuilder"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:onClick="@{() -> viewModel.getMeasurementWitLiveDataBuilder()}"
             android:text="Get With LiveData Builder"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvResultLiveDataBuilder" />
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="32dp"
+            android:background="#999"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnGeLiveDataBuilder" />
+
+        <TextView
+            android:id="@+id/tvResultLiveData"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@{viewModel.resultWithLiveData}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/separator" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,11 +9,11 @@ import androidx.room.*
     version = 1,
     exportSchema = true
 )
-abstract class MeasurementDatabase:RoomDatabase() {
+abstract class MeasurementDatabase : RoomDatabase() {
     abstract fun measurementDao(): MeasurementDao
 }
 
-object DatabaseFactory{
+object DatabaseFactory {
 
     @JvmStatic
     fun getMeasurementDatabase(application: Application): MeasurementDatabase {
@@ -32,8 +32,14 @@ object DatabaseFactory{
 data class Measurement(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    @ColumnInfo
     val measured: Double
-)
+) {
+
+    override fun toString(): String {
+        return "Measurement $id, value: $measured"
+    }
+}
 
 @Dao
 interface MeasurementDao {
@@ -44,11 +50,8 @@ interface MeasurementDao {
     @Query("SELECT * FROM measurements")
     suspend fun getMeasurementsAsync(): List<Measurement>
 
-    @Insert
-    fun insert(measurement: Measurement): LiveData<Long>
-
     @Query("SELECT * FROM measurements")
-    fun getMeasurements(): LiveData<Measurement>
+    fun getMeasurements(): LiveData<List<Measurement>>
 
 
 }

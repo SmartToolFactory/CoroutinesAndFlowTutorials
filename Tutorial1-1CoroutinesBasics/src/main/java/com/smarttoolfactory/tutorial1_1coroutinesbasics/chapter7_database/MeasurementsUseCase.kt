@@ -13,11 +13,7 @@ class MeasurementsUseCase(private val measurementRepository: MeasurementReposito
         return measurementRepository.getMeasurementsAsync()
     }
 
-    fun insertMeasurement(measurement: Measurement): Long {
-        return measurementRepository.insertMeasurement(measurement)
-    }
-
-    fun getMeasurements(): LiveData<Measurement> {
+    fun getMeasurements(): LiveData<List<Measurement>> {
         return measurementRepository.getMeasurements()
     }
 
