@@ -93,7 +93,6 @@ dependencies {
     // optional - RxJava support for Room
     implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
 
-
     // **** TESTING ****
 
     // Dependencies for local unit tests
@@ -112,10 +111,14 @@ dependencies {
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.6'
 
     // MockK
-    testImplementation "io.mockk:mockk:1.9.3"
+    testImplementation "io.mockk:mockk:$mockKVersion"
 
     // Truth
     testImplementation "com.google.truth:truth:1.0.1"
+
+    // Mock Web Server
+    testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebServerVersion")
+    testImplementation("com.squareup.okhttp3:okhttp:$mockWebServerVersion")
 
     /*
         Instrumented Tests

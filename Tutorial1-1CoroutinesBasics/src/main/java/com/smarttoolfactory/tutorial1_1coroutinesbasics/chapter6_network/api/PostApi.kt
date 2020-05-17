@@ -15,7 +15,7 @@ interface PostApi {
     suspend fun getPosts(): Response<List<Post>>
 
     @GET("/posts")
-     fun getPostsWithCall(): Call<List<Post>>
+    fun getPostsWithCall(): Call<List<Post>>
 }
 
 
