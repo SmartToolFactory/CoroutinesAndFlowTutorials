@@ -76,6 +76,21 @@ ext {
     locationVersion = '17.0.0'
     mapsVersion = '17.0.0'
 
+    // Testing
+    androidXVersion = '1.0.0'
+    androidXTestCoreVersion = '1.2.0'
+    androidXTestExtKotlinRunnerVersion = '1.1.1'
+    androidXTestRulesVersion = '1.2.0-beta01'
+
+    archTestingVersion = '2.0.0'
+
+    espressoVersion = '3.2.0-beta01'
+    robolectricVersion = '4.3.1'
+    rulesVersion = '1.0.1'
+    truthVersion = '0.44'
+    mockKVersion = '1.9.3'
+    mockWebServerVersion = '4.3.1'
+
     /*
         For Codelab
      */

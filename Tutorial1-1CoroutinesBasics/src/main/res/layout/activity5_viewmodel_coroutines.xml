@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -33,12 +34,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:enabled="@{viewModel.enableResultButton}"
-            android:onClick="@{() -> viewModel.getMockResult()}"
+            android:onClick="@{() -> viewModel.getMockResult(2000)}"
             android:text="Get Result"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnCallWithDispatcherThread"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvNetworkCall" />
 
+
+        <Button
+            android:id="@+id/btnCallWithDispatcherThread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="@{viewModel.enableResultButton}"
+            android:onClick="@{() -> viewModel.getMockResultFromDispatcherThread(2000)}"
+            android:text="Get From Dispatcher"
+            app:layout_constraintBottom_toBottomOf="@+id/btnCall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btnCall" />
 
         <TextView
             android:id="@+id/tvDeferred"

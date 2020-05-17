@@ -184,11 +184,12 @@ class Activity3SupervisorJob : AppCompatActivity() {
     private suspend fun displayAlphabet(textView: TextView) {
 
         for (i in 'A'..'Z') {
+
             withContext(Dispatchers.Main) {
                 textView.text = "Progress: $i"
             }
-            delay(400)
 
+            delay(400)
 
         }
 
@@ -201,9 +202,11 @@ class Activity3SupervisorJob : AppCompatActivity() {
     private suspend fun displayNumbers(textView: TextView) {
 
         for (i in 0..100) {
+
             withContext(Dispatchers.Main) {
                 textView.text = "Progress: $i"
             }
+
             delay(300)
         }
 

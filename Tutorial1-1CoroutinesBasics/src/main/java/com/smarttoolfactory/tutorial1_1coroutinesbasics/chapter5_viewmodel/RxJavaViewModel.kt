@@ -38,11 +38,6 @@ class RxJavaViewModel : ViewModel() {
 
     fun getMockResult() {
 
-        liveData<String> {
-
-
-        }
-
         val disposable = getObservable { generateMockNetworkResponse() }
 
             /*
@@ -126,6 +121,8 @@ class RxJavaViewModel : ViewModel() {
                 }else {
                     resultWithRetry.postValue("Failed after $retryCount tries")
                 }
+
+                // 🔥 FAIL Condition
                 (retryCount > retryThreshold)
 
             }

@@ -23,6 +23,13 @@ class Activity6Network: AppCompatActivity() {
             dataBinding.viewModel = this@Activity6Network.viewModel
         }
 
+        /*
+            Simple comparison between sequential and parallel networking calls
+         */
+        viewModel.doSomeSequentialNetworkCalls()
+        viewModel.doSomeParallelNetworkCalls()
+        viewModel.doSomeParallelNetworkCallsWithLaunch()
+
 
     }
 

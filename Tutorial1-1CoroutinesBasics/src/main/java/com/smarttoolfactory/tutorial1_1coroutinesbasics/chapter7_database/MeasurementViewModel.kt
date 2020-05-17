@@ -84,7 +84,7 @@ class MeasurementViewModel(private val measurementsUseCase: MeasurementsUseCase)
 
     }
 
-    fun insertMeasurementAsync(text: String) {
+    fun insertMeasurementWithSuspend(text: String) {
 
         viewModelScope.launch {
 
@@ -132,7 +132,7 @@ class MeasurementViewModel(private val measurementsUseCase: MeasurementsUseCase)
 }
 
 
-class MeasurementModelFactory(private val application: Application) : ViewModelProvider.Factory {
+class MeasurementViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 

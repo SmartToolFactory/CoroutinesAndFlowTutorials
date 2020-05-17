@@ -11,7 +11,7 @@ class Activity7Database : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            MeasurementModelFactory(application)
+            MeasurementViewModelFactory(application)
         ).get(MeasurementViewModel::class.java)
     }
 

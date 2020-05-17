@@ -3,9 +3,7 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity5ViewmodelRxjavaBinding
-import kotlinx.android.synthetic.main.activity4_coroutine_lifecycle.*
 
 class Activity5ViewModelRxJava : AppCompatActivity() {
 

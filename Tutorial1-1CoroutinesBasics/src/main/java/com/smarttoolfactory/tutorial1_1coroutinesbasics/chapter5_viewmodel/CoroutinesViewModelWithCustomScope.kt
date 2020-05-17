@@ -3,58 +3,30 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.coroutines.CoroutineContext
 
 /**
- * ViewModel class for using coroutines to execute simple tasks with delay, timeout and retry logic
- *
- * * **viewModelScope** uses SupervisorJob() + Dispatchers.Main.immediate
- *
- * * [generateMockNetworkResponseOrThrowException] function has a timeout which is 2000ms after that timeout
- * it throws a [RuntimeException] to test for retry functionality. Unless timeout is set(it's 200ms)
- * it returns a mock String.
- *
+ * This viewModel class only for testing with [CoroutineScope] using [TestDispatcherScope]
  */
-class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) : ViewModel() {
+class CoroutinesViewModelWithCustomScope(private val coroutineScope: CoroutineScope) : ViewModel() {
 
     val result = MutableLiveData<String>()
-    val enableResultButton = MutableLiveData<Boolean>().apply {
-        value = true
-    }
 
     val resultWithRetry = MutableLiveData<String>()
-    val enableRetryButton = MutableLiveData<Boolean>().apply {
-        value = true
-    }
-
     val resultWithTimeout = MutableLiveData<String>()
-    val enableWithTimeoutButton = MutableLiveData<Boolean>().apply {
-        value = true
-    }
-
     val resultMultiple = MutableLiveData<String>()
-    val enableMultipleButton = MutableLiveData<Boolean>().apply {
-        value = true
-    }
+
 
     fun getMockResult(timeMillis: Long = 2000) {
 
         println("getMockResult() loading...")
         result.value = "Loading..."
-        enableResultButton.value = false
 
-        viewModelScope.launch {
-
+        coroutineScope.launch {
             println("🙄 getMockResult() START ViewModel scope: $this, thread: ${Thread.currentThread().name}")
-
             result.value = generateMockNetworkResponseOrThrowException(timeMillis)
-            enableResultButton.value = true
-
             println("getMockResult() ViewModel scope AFTER generateMockNetworkResponse() ${result.value}")
 
         }
@@ -63,11 +35,7 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
         /*
             Prints:
-            I: getMockResult() loading...
-            I: 🙄 getMockResult() ViewModel scope: StandaloneCoroutine{Active}@ef7c60d, thread: main
-            I: 🥶 generateMockNetworkResponse() thread: main
-            I: getMockResult() END OF FUN
-            I: getMockResult() ViewModel scope AFTER generateMockNetworkResponse
+
          */
 
     }
@@ -77,12 +45,12 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
      * This method is for Unit-Testing exceptions
      */
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun throwExceptionInAScope(coroutineContext: CoroutineContext) {
+    fun throwExceptionInAScope() {
 
         println("getMockResult() loading...")
 
-        // 🔥🔥
-        viewModelScope.launch(coroutineContext) {
+
+        coroutineScope.launch {
 
             println("🙄 getMockResult() START ViewModel scope: $this, thread: ${Thread.currentThread().name}")
 
@@ -101,16 +69,12 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
         println("getMockResult() loading...")
         result.value = "Loading..."
-        enableResultButton.value = false
 
-        viewModelScope.launch(Dispatchers.Default) {
+        coroutineScope.launch {
 
             println("🙄 getMockResult() ViewModel scope: $this, thread: ${Thread.currentThread().name}")
-
             withContext(Dispatchers.Main) {
                 result.value = generateMockNetworkResponseOrThrowException(timeMillis)
-                enableResultButton.value = true
-
             }
 
             println("getMockResult() ViewModel scope AFTER")
@@ -132,7 +96,7 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
         resultWithTimeout.value = "Loading..."
 
-        viewModelScope.launch(viewModelDispatcher) {
+        coroutineScope.launch {
 
             /*
                 Countdown timer to show ticks on screen
@@ -167,9 +131,7 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
     fun getMockResultWithRetry() {
 
-        enableRetryButton.value = false
-
-        viewModelScope.launch(viewModelDispatcher) {
+        coroutineScope.launch {
 
             resultWithRetry.value = "Loading..."
 
@@ -182,7 +144,6 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
                     block = {
                         // generateMockNetworkResponse throws exception for delay bigger than 2000
                         resultWithRetry.value = generateMockNetworkResponseOrThrowException(2100)
-                        enableRetryButton.value = true
                     },
                     onError = {
                         resultWithRetry.value = "Retry count: $it"
@@ -191,7 +152,6 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
             } catch (exception: Exception) {
                 resultWithRetry.value = "Exception ${exception.message}"
-                enableRetryButton.value = true
             }
         }
     }
@@ -239,9 +199,8 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
 
         resultMultiple.value = "Loading..."
-        enableMultipleButton.value = false
 
-        viewModelScope.launch {
+        coroutineScope.launch {
 
             val startTime = System.currentTimeMillis()
 
@@ -273,8 +232,6 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
             resultMultiple.value =
                 "${results[0]} - ${results[1]} - ${results[2]}," +
                         " time: ${System.currentTimeMillis() - startTime}ms"
-
-            enableMultipleButton.value = true
 
         }
 
@@ -312,16 +269,6 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
         val random = Random()
         return emojiList[random.nextInt(emojiList.size)]
 
-    }
-
-}
-
-class CoroutinesViewModelFactory() :
-    ViewModelProvider.Factory {
-
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-
-        return CoroutinesViewModel(Dispatchers.Main) as T
     }
 
 }

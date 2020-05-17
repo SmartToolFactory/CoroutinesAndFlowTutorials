@@ -1,14 +1,15 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network
 
 import androidx.lifecycle.*
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Post
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.RetrofitFactory
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Status.*
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Post
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ViewState
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.system.measureTimeMillis
 
 class PostsCoroutineViewModel : ViewModel() {
 
@@ -47,6 +48,67 @@ class PostsCoroutineViewModel : ViewModel() {
         PostsUseCase(PostsRepository(RetrofitFactory.makeRetrofitService()))
     }
 
+    fun doSomeSequentialNetworkCalls() {
+
+        myCoroutineScope.launch {
+
+            val measuredTime = measureTimeMillis {
+
+                val response1 = async { postsUseCase.getPosts() }.await()
+                val response2 = async { postsUseCase.getPosts() }.await()
+                val response3 = async { postsUseCase.getPosts() }.await()
+                val response4 = async { postsUseCase.getPosts() }.await()
+                val response5 = async { postsUseCase.getPosts() }.await()
+            }
+
+            println("🙄 Total time with sequential call $measuredTime")
+        }
+
+
+    }
+
+    fun doSomeParallelNetworkCalls() {
+
+        myCoroutineScope.launch {
+
+            val measuredTime = measureTimeMillis {
+
+                val response1 = async { postsUseCase.getPosts() }
+                val response2 = async { postsUseCase.getPosts() }
+                val response3 = async { postsUseCase.getPosts() }
+                val response4 = async { postsUseCase.getPosts() }
+                val response5 = async { postsUseCase.getPosts() }
+
+                val responseList = listOf(response1, response2, response3, response4, response5)
+
+                responseList.awaitAll()
+
+            }
+
+
+            println("🎃 Total time with parallel call $measuredTime")
+        }
+
+    }
+
+    fun doSomeParallelNetworkCallsWithLaunch() {
+
+        myCoroutineScope.launch {
+
+            val measuredTime = measureTimeMillis {
+                launch { postsUseCase.getPosts() }
+                launch { postsUseCase.getPosts() }
+                launch { postsUseCase.getPosts() }
+                launch { postsUseCase.getPosts() }
+                launch { postsUseCase.getPosts() }
+            }
+
+
+            println("😎 Total time with parallel call with LAUNCH: $measuredTime")
+        }
+
+    }
+
     fun getPostWithCall() {
 
         viewModelScope.launch {
@@ -77,7 +139,7 @@ class PostsCoroutineViewModel : ViewModel() {
 
     /**
      * Every thing in this function works in thread of [viewModelScope] other than network action
-     * [viewModelScope] uses [MainC.Main.immediate]
+     * [viewModelScope] uses [MainCoroutineDispatcher.Main.immediate]
      */
     fun getPostWithSuspend() {
 
