@@ -12,7 +12,10 @@ interface PostApi {
      * This request is invoked in it's own thread when [suspend] is used
      */
     @GET("/posts")
-    suspend fun getPosts(): Response<List<Post>>
+    suspend fun getPostsResponse(): Response<List<Post>>
+
+    @GET("/posts")
+    suspend fun getPosts(): List<Post>
 
     @GET("/posts")
     fun getPostsWithCall(): Call<List<Post>>

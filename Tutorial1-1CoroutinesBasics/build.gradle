@@ -118,7 +118,7 @@ dependencies {
 
     // Mock Web Server
     testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebServerVersion")
-    testImplementation("com.squareup.okhttp3:okhttp:$mockWebServerVersion")
+    testImplementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
 
     /*
         Instrumented Tests

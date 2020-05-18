@@ -11,6 +11,6 @@ class PostsUseCase(private val postsRepository: PostsRepository) {
     }
 
     suspend fun getPosts(): DataResult<List<Post>> {
-        return postsRepository.getPosts()
+        return postsRepository.getPostResult()
     }
 }

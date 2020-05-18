@@ -59,7 +59,7 @@ class PostApiTest {
         enqueueResponse(200, FOLDER_NAME)
 
         // WHEN
-        postApi.getPosts()
+        postApi.getPostsResponse()
 
         val request = mockWebServer.takeRequest()
 
@@ -76,7 +76,7 @@ class PostApiTest {
         enqueueResponse(200, "repos.json")
 
         // WHEN
-        val repos = postApi.getPosts()
+        val repos = postApi.getPostsResponse()
 
         // THEN
 //        MatcherAssert.assertThat(repos.size, CoreMatchers.`is`(18))

@@ -4,6 +4,7 @@
     <bytecodeTargetLevel>
       <module name="Coroutines_And_Flow_Tutorials.External-Tutorial-Coroutines-CodeLab-Room-Retrofit-WorkManager" target="1.8" />
       <module name="Coroutines_And_Flow_Tutorials.Tutorial1-1CoroutinesBasics" target="1.8" />
+      <module name="CoroutinesAndFlowTutorials.Tutorial1-1CoroutinesBasics" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

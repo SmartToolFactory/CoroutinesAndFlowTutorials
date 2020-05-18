@@ -1,10 +1,10 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network
 
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.DataResult
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.PostApi
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Post
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.PostApi
 import retrofit2.Call
-import retrofit2.HttpException
 
 class PostsRepository(private val postApi: PostApi) {
 
@@ -12,10 +12,22 @@ class PostsRepository(private val postApi: PostApi) {
         return postApi.getPostsWithCall()
     }
 
-    suspend fun getPosts(): DataResult<List<Post>> {
+    suspend fun getPostResult(): DataResult<List<Post>> {
 
+        // Using List<Post>
         return try {
-            val response = postApi.getPosts()
+            DataResult.Success(postApi.getPosts())
+        } catch (error: Exception) {
+            DataResult.Error(error)
+        }
+
+    }
+
+    suspend fun getPostResultFromResponse(): DataResult<List<Post>> {
+
+        // Using retrofit2.Response<List<Post>>
+        return try {
+            val response = postApi.getPostsResponse()
             if (response.isSuccessful) {
                 DataResult.Success(response.body()!!)
             } else {
