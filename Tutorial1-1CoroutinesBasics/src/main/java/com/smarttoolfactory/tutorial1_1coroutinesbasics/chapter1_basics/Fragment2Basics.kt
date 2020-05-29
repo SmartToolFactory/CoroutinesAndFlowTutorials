@@ -20,6 +20,8 @@ import kotlinx.coroutines.withContext
 /** 🔥 CoroutineScope(IO).launch { }
  *  A coroutine is typically launched using launch coroutine builder. It is defined as extension function on CoroutineScope class.
  *
+ * 🔥 delay(5000) : Delays coroutine for 5 second without blocking a thread and resumes it after 5 second.
+ *
  *  🔥 withContext(Main)  -> switches the context of coroutine to Main thread. In other words, it changes the thread which Coroutine works on to Main UI thread.
  * */
 class Fragment2Basics : Fragment() {
