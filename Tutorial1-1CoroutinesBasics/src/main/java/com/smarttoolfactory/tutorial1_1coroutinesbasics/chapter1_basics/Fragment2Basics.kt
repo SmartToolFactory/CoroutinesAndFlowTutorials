@@ -79,6 +79,7 @@ class Fragment2Basics : Fragment() {
     private suspend fun setTextOnMainThread(newString: String){
         withContext(Main){
             println("test123 - setTextOnMainThread : ${Thread.currentThread().name}")
+            delay(2000)
             setNewText(newString)
         }
     }
