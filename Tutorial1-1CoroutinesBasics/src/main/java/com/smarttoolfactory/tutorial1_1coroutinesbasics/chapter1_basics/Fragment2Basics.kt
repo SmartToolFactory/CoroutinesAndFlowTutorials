@@ -1,11 +1,11 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Fragment2BasicsBinding
 import kotlinx.android.synthetic.main.fragment2_basics.*
@@ -32,15 +32,6 @@ class Fragment2Basics : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val binding = DataBindingUtil.inflate<Fragment2BasicsBinding>(inflater, R.layout.fragment2_basics, container, false)
-
-        binding.buttonShowFirstFragment.setOnClickListener {
-            activity?.run {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, Fragment1Basics.newInstance(), null)
-                    .commit()
-            }
-
-        }
 
         binding.button4.setOnClickListener{
             CoroutineScope(IO).launch {

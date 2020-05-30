@@ -1,11 +1,11 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Fragment1BasicsBinding
 import kotlinx.coroutines.*
@@ -41,15 +41,6 @@ class Fragment1Basics : Fragment() {
             binding.buttonSync.isEnabled = false
             binding.tvResultSync.text = "Waiting result..."
             displayResultSync()
-
-        }
-
-        binding.buttonShowSecondFragment.setOnClickListener {
-            activity?.run {
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, Fragment2Basics.newInstance(), null)
-                    .commit()
-            }
 
         }
 

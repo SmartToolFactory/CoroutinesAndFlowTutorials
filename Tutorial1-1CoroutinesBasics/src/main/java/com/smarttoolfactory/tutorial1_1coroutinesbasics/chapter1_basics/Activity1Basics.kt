@@ -1,14 +1,15 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics
 
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity1BasicsBinding
 import kotlinx.android.synthetic.main.activity1_basics.*
-import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
-import kotlin.system.measureTimeMillis
 
 
 /**
@@ -126,13 +127,48 @@ class Activity1Basics : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity1_basics)
 
-        if (supportFragmentManager.fragments.size == 0) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, Fragment1Basics.newInstance(), null)
-                .commit()
+        val categories: MutableList<String> = mutableListOf<String>().apply {
+            add("Fragment 1")
+            add("Fragment 2")
+            add("Fragment 3")
+            add("Fragment 4")
         }
+        val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = dataAdapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
 
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                when (position) {
+                    0 -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, Fragment1Basics.newInstance(), null)
+                            .commit()
+                    }
+                    1 -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, Fragment2Basics.newInstance(), null)
+                            .commit()
+                    }
+                    2 -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, Fragment3Basics.newInstance(), null)
+                            .commit()
+                    }
+                    3 -> {
+
+                    }
+                }
+
+            }
+        }
     }
-
-
 }
