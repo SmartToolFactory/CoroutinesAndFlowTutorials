@@ -3,7 +3,7 @@
  */
 
 // This file was automatically generated from exception-handling.md by Knit tool. Do not edit.
-package com.smarttoolfactory.tutorial1_1coroutinesbasics.guide.exampleSupervision01
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.guide
 
 import kotlinx.coroutines.*
 

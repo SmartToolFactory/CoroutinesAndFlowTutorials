@@ -3,7 +3,7 @@
  */
 
 // This file was automatically generated from shared-mutable-state-and-concurrency.md by Knit tool. Do not edit.
-package com.smarttoolfactory.tutorial1_1coroutinesbasics.guide.exampleSync07
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.guide
 
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.actor

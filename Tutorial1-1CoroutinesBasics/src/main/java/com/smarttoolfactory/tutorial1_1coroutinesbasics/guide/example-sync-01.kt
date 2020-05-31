@@ -3,12 +3,12 @@
  */
 
 // This file was automatically generated from shared-mutable-state-and-concurrency.md by Knit tool. Do not edit.
-package com.smarttoolfactory.tutorial1_1coroutinesbasics.guide.exampleSync01
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.guide
 
 import kotlinx.coroutines.*
 import kotlin.system.measureTimeMillis
 
-suspend fun massiveRun(action: suspend () -> Unit) {
+suspend fun massiveRun1(action: suspend () -> Unit) {
     val n = 100  // number of coroutines to launch
     val k = 1000 // times an action is repeated by each coroutine
     val time = measureTimeMillis {
@@ -23,13 +23,13 @@ suspend fun massiveRun(action: suspend () -> Unit) {
     println("Completed ${n * k} actions in $time ms")
 }
 
-var counter = 0
+var counter1 = 0
 
 fun main() = runBlocking {
     withContext(Dispatchers.Default) {
-        massiveRun {
-            counter++
+        massiveRun1 {
+            counter1++
         }
     }
-    println("Counter = $counter")
+    println("Counter = $counter1")
 }
