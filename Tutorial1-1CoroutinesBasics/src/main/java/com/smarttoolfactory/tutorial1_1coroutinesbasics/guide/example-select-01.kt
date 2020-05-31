@@ -3,7 +3,7 @@
  */
 
 // This file was automatically generated from select-expression.md by Knit tool. Do not edit.
-package com.smarttoolfactory.tutorial1_1coroutinesbasics.guide.exampleSelect01
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.guide
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.cancelChildren
