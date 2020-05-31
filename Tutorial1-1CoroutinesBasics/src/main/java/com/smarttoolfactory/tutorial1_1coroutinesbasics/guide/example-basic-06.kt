@@ -12,13 +12,13 @@ import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking { // this: CoroutineScope
     launch {
-        delay(200L)
+        delay(1000L)
         println("Task from runBlocking - ${Thread.currentThread().name}")
     }
 
     coroutineScope { // Creates a coroutine scope
         launch {
-            delay(500L)
+            delay(2000L)
             println("Task from nested launch - ${Thread.currentThread().name}")
         }
 
