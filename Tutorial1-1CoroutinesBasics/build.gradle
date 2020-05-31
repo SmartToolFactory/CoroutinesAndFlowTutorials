@@ -93,6 +93,9 @@ dependencies {
     // optional - RxJava support for Room
     implementation "androidx.room:room-rxjava2:$rootProject.roomVersion"
 
+    // androidx.fragment
+    implementation "androidx.fragment:fragment:$fragmentVersion"
+
     // **** TESTING ****
 
     // Dependencies for local unit tests

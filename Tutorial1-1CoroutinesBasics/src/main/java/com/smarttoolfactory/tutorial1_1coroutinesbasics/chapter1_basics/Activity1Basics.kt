@@ -1,13 +1,15 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics
 
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity1BasicsBinding
-import kotlinx.coroutines.*
+import kotlinx.android.synthetic.main.activity1_basics.*
 import kotlin.coroutines.CoroutineContext
-import kotlin.system.measureTimeMillis
 
 
 /**
@@ -123,111 +125,50 @@ class Activity1Basics : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding =
-            DataBindingUtil.setContentView(this, R.layout.activity1_basics)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity1_basics)
 
-
-        binding.button1.setOnClickListener {
-            binding.tvResult.text = "Waiting result..."
-            displayResult()
+        val categories: MutableList<String> = mutableListOf<String>().apply {
+            add("Fragment 1")
+            add("Fragment 2")
+            add("Fragment 3")
+            add("Fragment 4")
         }
-
-        binding.buttonASync.setOnClickListener {
-            binding.tvResultAsync.text = "Waiting result..."
-            displayResultAsync()
-        }
-
-        binding.buttonSync.setOnClickListener {
-            binding.buttonSync.isEnabled = false
-            binding.tvResultSync.text = "Waiting result..."
-            displayResultSync()
-
-        }
-
-    }
-
-    /**
-     * Gets result with launch sequentially
-     */
-    private fun displayResult() {
-
-
-        GlobalScope.launch {
-
-            var output1 = 0
-            var output2 = 0
-
-            val time = measureTimeMillis {
-                output1 = getResult(3)
-                output2 = getResult(5)
-            }
-
-            // withBindingContext changes CoroutineContext(thread currently coroutine is)
-            withContext(Dispatchers.Main) {
-                binding.tvResult.text = "Result with suspend only: ${output1 + output2} in $time ms"
+        val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = dataAdapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
 
-        }
-    }
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                when (position) {
+                    0 -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, Fragment1Basics.newInstance(), null)
+                            .commit()
+                    }
+                    1 -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, Fragment2Basics.newInstance(), null)
+                            .commit()
+                    }
+                    2 -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, Fragment3Basics.newInstance(), null)
+                            .commit()
+                    }
+                    3 -> {
 
-    /**
-     * Uses [async] to get result asynchronously.
-     */
-    private fun displayResultAsync() {
-
-        GlobalScope.launch {
-
-            var result = 0
-
-            val time = measureTimeMillis {
-
-                val deferred1 = async { getResult(3) }
-                val deferred2 = async { getResult(5) }
-
-                result = deferred1.await() + deferred2.await()
-            }
-
-            // withBindingContext changes CoroutineContext(thread currently coroutine is)
-            withContext(Dispatchers.Main) {
-                binding.tvResultAsync.text =
-                    "Result with async: $result in $time ms"
-            }
-        }
-    }
-
-    /**
-     * Despite using [async] runs synchronously since [async] calls [Deferred.await] immediately
-     */
-    private fun displayResultSync() {
-
-        GlobalScope.launch {
-
-            var output1 = 0
-            var output2 = 0
-
-            val time = measureTimeMillis {
-
-                output1 = async { getResult(3) }.await()
-                output2 = async { getResult(5) }.await()
-            }
-
-            // withBindingContext changes CoroutineContext(thread currently coroutine is)
-            withContext(Dispatchers.Main) {
-                binding.tvResultSync.text =
-                    "Result with async: ${output1 + output2} in $time ms"
-                binding.buttonSync.isEnabled = true
+                    }
+                }
 
             }
         }
     }
-
-
-    private suspend fun getResult(input: Int): Int {
-        delay(1000)
-        return input * 10
-
-    }
-
-
 }
