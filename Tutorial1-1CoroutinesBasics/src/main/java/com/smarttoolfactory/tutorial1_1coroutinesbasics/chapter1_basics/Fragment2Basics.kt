@@ -55,15 +55,14 @@ class Fragment2Basics : Fragment() {
     private suspend fun getResult1FromApi() : String{
         println("test123 - getResult1FromApi : ${Thread.currentThread().name}")
         delay(2000)
-        return "Result 1 \n"
+        return "\nResult 1"
     }
 
     private suspend fun getResult2FromApi() : String{
         println("test123 - getResult2FromApi : ${Thread.currentThread().name}")
         delay(2000)
-        return "Result 2 \n"
+        return "\nResult 2"
     }
-
     private fun setNewText( newString : String){
         val newText = textView.text.toString() + newString
         textView.text = newText

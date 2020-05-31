@@ -163,11 +163,7 @@ class Activity1Basics : AppCompatActivity() {
                             .replace(R.id.container, Fragment3Basics.newInstance(), null)
                             .commit()
                     }
-                    3 -> {
-
-                    }
                 }
-
             }
         }
     }
