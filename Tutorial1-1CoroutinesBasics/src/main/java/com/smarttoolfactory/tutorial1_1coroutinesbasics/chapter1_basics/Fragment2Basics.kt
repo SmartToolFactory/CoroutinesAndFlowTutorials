@@ -8,73 +8,88 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Fragment2BasicsBinding
-import kotlinx.android.synthetic.main.fragment2_basics.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.newSingleThreadContext
+import kotlinx.coroutines.runBlocking
 
 
-/** 🔥 CoroutineScope(IO).launch { }
- *  A coroutine is typically launched using launch coroutine builder. It is defined as extension function on CoroutineScope class.
+/**
+ * 🔥runBlocking
+ * Runs a new coroutine and blocks the current thread interruptibly until its completion. This function should not be used from a coroutine.
+ * 😱😱😱runBlocking is almost never a tool you use in production, because It undoes the asynchronous, non-blocking nature of coroutines.
+ * You can use it if you happen to already have some coroutine-based code that you want to use in a context where coroutines provide no value: in blocking calls.
+ * There are 2 typical use case for runBlocking :
+ * 1 -  JUnit testing, where the test method must just sit and wait for the coroutine to complete.
+ * 2 - Play around with coroutines, inside your main method.
  *
- * 🔥 delay(5000) : Delays coroutine for 5 second without blocking a thread and resumes it after 5 second.
+ * 🔥 CoroutineDispatcher
+ * CoroutineDispatcher determines what thread or threads the corresponding coroutine uses for its execution.
  *
- *  🔥 withContext(Main)  -> switches the context of coroutine to Main thread. In other words, it changes the thread which Coroutine works on to Main UI thread.
+ * 🔥 CoroutineContext includes a coroutine dispatcher
+ * The coroutine context includes a coroutine dispatcher (see CoroutineDispatcher) that determines what thread or threads the corresponding coroutine uses for its execution.
+ * The coroutine dispatcher can confine coroutine execution to a specific thread, dispatch it to a thread pool, or let it run unconfined.
+ *
+ * 🔥 launch { }
+ * fun CoroutineScope.launch(
+ *                           context: CoroutineContext = EmptyCoroutineContext,
+ *                           start: CoroutineStart = CoroutineStart.DEFAULT,
+ *                           block: suspend CoroutineScope.() -> Unit
+ *                           ): Job (source)
+ *
+ * Launches a new coroutine without blocking the current thread and returns a reference to the coroutine as a Job. The coroutine is cancelled when the resulting job is cancelled.
+ * The coroutine context is inherited from a CoroutineScope. Additional context elements can be specified with context argument.
+ *
+ * All coroutine builders like launch and async accept an optional CoroutineContext parameter that can be used to explicitly specify the dispatcher for the new coroutine and other context elements.
+ * When launch { ... } is used without parameters, it inherits the context (and thus dispatcher) from the CoroutineScope it is being launched from.
+ * In this case, it inherits the context of the main runBlocking coroutine which runs in the main thread.
+ *
  * */
 class Fragment2Basics : Fragment() {
 
     companion object {
+        const val TAG = "Fragment2Basic"
         fun newInstance() = Fragment2Basics()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = DataBindingUtil.inflate<Fragment2BasicsBinding>(inflater, R.layout.fragment2_basics, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = DataBindingUtil.inflate<Fragment2BasicsBinding>(
+            inflater,
+            R.layout.fragment2_basics,
+            container,
+            false
+        )
 
-        binding.button4.setOnClickListener{
-            CoroutineScope(IO).launch {
-                fakeApiRequest()
+        binding.button5.setOnClickListener {
+
+            runBlocking<Unit> {
+
+                launch { // context of the parent, main runBlocking coroutine
+                    println("$TAG main runBlocking      : I'm working in thread ${Thread.currentThread().name}")
+                }
+
+                launch(Dispatchers.Unconfined) { // not confined -- will work with main thread
+                    println("$TAG Unconfined            : I'm working in thread ${Thread.currentThread().name}")
+                }
+
+                launch(Dispatchers.Default) { // will get dispatched to DefaultDispatcher
+                    println("$TAG Default               : I'm working in thread ${Thread.currentThread().name}")
+                }
+
+                launch(newSingleThreadContext("MyOwnThread")) { // will get its own new thread
+                    println("$TAG newSingleThreadContext: I'm working in thread ${Thread.currentThread().name}")
+                }
+
             }
+
         }
 
         return binding.root
     }
 
-    private suspend fun fakeApiRequest(){
-        val result1 = getResult1FromApi()
-        println("test123 - result : $result1")
-        setTextOnMainThread(result1)
-
-        val result2 = getResult2FromApi()
-        setTextOnMainThread(result2)
-        println("test123 - result: $result2")
-    }
-
-    private suspend fun getResult1FromApi() : String{
-        println("test123 - getResult1FromApi : ${Thread.currentThread().name}")
-        delay(2000)
-        return "Result 1 \n"
-    }
-
-    private suspend fun getResult2FromApi() : String{
-        println("test123 - getResult2FromApi : ${Thread.currentThread().name}")
-        delay(2000)
-        return "Result 2 \n"
-    }
-
-    private fun setNewText( newString : String){
-        val newText = textView.text.toString() + newString
-        textView.text = newText
-    }
-
-    private suspend fun setTextOnMainThread(newString: String){
-        withContext(Main){
-            println("test123 - setTextOnMainThread : ${Thread.currentThread().name}")
-            delay(2000)
-            setNewText(newString)
-        }
-    }
 
 }

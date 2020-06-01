@@ -130,8 +130,6 @@ class Activity1Basics : AppCompatActivity() {
         val categories: MutableList<String> = mutableListOf<String>().apply {
             add("Fragment 1")
             add("Fragment 2")
-            add("Fragment 3")
-            add("Fragment 4")
         }
         val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -158,16 +156,7 @@ class Activity1Basics : AppCompatActivity() {
                             .replace(R.id.container, Fragment2Basics.newInstance(), null)
                             .commit()
                     }
-                    2 -> {
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.container, Fragment3Basics.newInstance(), null)
-                            .commit()
-                    }
-                    3 -> {
-
-                    }
                 }
-
             }
         }
     }

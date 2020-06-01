@@ -12,7 +12,8 @@ import com.smarttoolfactory.tutorial1_1basics.databinding.ActivityMainBinding
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.adapter.BaseAdapter
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.adapter.ChapterSelectionAdapter
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics.Activity1Basics
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope1
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope2
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_supervisorjob.Activity3SupervisorJob
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_lifecycle.Activity4CoroutineLifecycle
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava
@@ -38,7 +39,8 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
 
         // Add Activities to list to be displayed on RecyclerView
         activityClassModels.add(ActivityClassModel(Activity1Basics::class.java))
-        activityClassModels.add(ActivityClassModel(Activity2CoroutineScope::class.java))
+        activityClassModels.add(ActivityClassModel(Activity2CoroutineScope1::class.java))
+        activityClassModels.add(ActivityClassModel(Activity2CoroutineScope2::class.java))
         activityClassModels.add(ActivityClassModel(Activity3SupervisorJob::class.java))
         activityClassModels.add(ActivityClassModel(Activity4CoroutineLifecycle::class.java))
         activityClassModels.add(ActivityClassModel(Activity5ViewModelScope::class.java))

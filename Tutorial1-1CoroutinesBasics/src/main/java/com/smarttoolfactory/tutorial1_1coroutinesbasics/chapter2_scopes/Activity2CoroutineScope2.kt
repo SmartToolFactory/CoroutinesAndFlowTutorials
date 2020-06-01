@@ -5,7 +5,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
-import com.smarttoolfactory.tutorial1_1basics.databinding.Activity2ScopeBinding
+import com.smarttoolfactory.tutorial1_1basics.databinding.Activity2Scope2Binding
 import kotlinx.coroutines.*
 
 
@@ -25,7 +25,7 @@ import kotlinx.coroutines.*
  * for application NOT to crash.
  *
  */
-class Activity2CoroutineScope : AppCompatActivity() {
+class Activity2CoroutineScope2 : AppCompatActivity() {
 
     // Jobs
 
@@ -49,7 +49,7 @@ class Activity2CoroutineScope : AppCompatActivity() {
      */
     private val coroutineScope = CoroutineScope(parentJob)
 
-    private lateinit var binding: Activity2ScopeBinding
+    private lateinit var binding: Activity2Scope2Binding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +58,7 @@ class Activity2CoroutineScope : AppCompatActivity() {
         println("🤨 onCreate() parentJob: $parentJob")
 
         binding =
-            DataBindingUtil.setContentView(this, R.layout.activity2_scope)
+            DataBindingUtil.setContentView(this, R.layout.activity2_scope_2)
 
         bindViews()
 
