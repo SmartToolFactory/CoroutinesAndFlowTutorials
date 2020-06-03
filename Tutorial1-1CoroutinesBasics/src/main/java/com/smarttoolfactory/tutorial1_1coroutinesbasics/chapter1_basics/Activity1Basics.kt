@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity1BasicsBinding
-import kotlinx.android.synthetic.main.activity1_basics.*
 import kotlin.coroutines.CoroutineContext
 
 
@@ -133,8 +132,8 @@ class Activity1Basics : AppCompatActivity() {
         }
         val dataAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, categories)
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = dataAdapter
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinner.adapter = dataAdapter
+        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }

@@ -1,13 +1,12 @@
-package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_lifecycle
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_lifecycle
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.smarttoolfactory.tutorial1_1basics.databinding.Activity4CoroutineLifecycleBinding
-import kotlinx.android.synthetic.main.activity4_coroutine_lifecycle.*
+import com.smarttoolfactory.tutorial1_1basics.databinding.Activity3CoroutineLifecycleBinding
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class Activity4CoroutineLifecycle : AppCompatActivity(), CoroutineScope {
+class Activity3CoroutineLifecycle : AppCompatActivity(), CoroutineScope {
 
 
     private lateinit var job: Job
@@ -18,20 +17,20 @@ class Activity4CoroutineLifecycle : AppCompatActivity(), CoroutineScope {
         }
 
 
-    private val dataBinding by lazy {
-        Activity4CoroutineLifecycleBinding.inflate(layoutInflater)
+    private val binding by lazy {
+        Activity3CoroutineLifecycleBinding.inflate(layoutInflater)
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(dataBinding.root)
+        setContentView(binding.root)
 
         job = Job()
 
-        button.setOnClickListener {
+        binding.button.setOnClickListener {
 
-            // This scope lives as long as Application is alive
+            // 🔥⚠️ This scope lives as long as Application is alive
             GlobalScope.launch {
                 for (i in 0..300) {
                     println("🤪 Global Progress: $i in thread: ${Thread.currentThread().name}, scope: $this")
@@ -44,7 +43,8 @@ class Activity4CoroutineLifecycle : AppCompatActivity(), CoroutineScope {
                 for (i in 0..300) {
                     println("😍 Activity Scope Progress: $i in thread: ${Thread.currentThread().name}, scope: $this")
                     withContext(Dispatchers.Main) {
-                        tvResult.text = "😍 Activity Scope Progress: $i in thread: ${Thread.currentThread().name}, scope: $this"
+                        binding.tvResult.text =
+                            "😍 Activity Scope Progress: $i in thread: ${Thread.currentThread().name}, scope: $this"
                     }
                     delay(300)
                 }
@@ -59,15 +59,12 @@ class Activity4CoroutineLifecycle : AppCompatActivity(), CoroutineScope {
     }
 
 
-
-
     private suspend fun printNumbers(coroutineScope: CoroutineScope) {
 
         for (i in 0..100) {
             println("Progress: $i in thread: ${Thread.currentThread().name}, scope: $coroutineScope")
             delay(300)
         }
-
 
     }
 

@@ -2,7 +2,7 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.getOrAwaitValue
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.getOrAwaitValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -19,8 +19,6 @@ class CoroutinesViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
-
-//    private val testCoroutineScope = TestCoroutineScope(testCoroutineDispatcher)
 
     private lateinit var viewModel: CoroutinesViewModel
 
@@ -70,9 +68,13 @@ class CoroutinesViewModelTest {
     @Test(expected = RuntimeException::class)
     fun `Test function that throws exception`() =
         testCoroutineDispatcher.runBlockingTest {
+
             println("Test scope: $this, thread: ${Thread.currentThread().name}")
-            // 🔥 Using testCoroutineDispatcher causes this test to FAIL
+            /*
+                🔥🔥🔥 Using testCoroutineDispatcher causes this test to FAIL
+             */
             viewModel.throwExceptionInAScope(this.coroutineContext)
+
         }
 
     /**
@@ -106,10 +108,9 @@ class CoroutinesViewModelTest {
         viewModel.getMockResultWithRetry()
         advanceUntilIdle()
 
+        // THEN
         val expected = viewModel.resultWithRetry.value
         println("Test expected: $expected")
-
-        // THEN
         Truth.assertThat(actualPartial).isEqualTo(expected)
 
     }
@@ -130,10 +131,9 @@ class CoroutinesViewModelTest {
         // 🔥 Advancing time is required, otherwise this test fails
         advanceTimeBy(3000)
 
+        // THEN
         val expected = viewModel.resultMultiple.value
         println("Test expected: $expected")
-
-        // THEN
         Truth.assertThat(expected?.contains(actualPartial)).isTrue()
 
     }

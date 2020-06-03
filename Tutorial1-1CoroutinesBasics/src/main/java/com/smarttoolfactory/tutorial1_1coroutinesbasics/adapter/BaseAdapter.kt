@@ -11,11 +11,13 @@ import com.smarttoolfactory.tutorial1_1basics.BR
 /**
  * Base Adapter class for creating [RecyclerView.Adapter]
  *
- *
  * Process to create Adapter is listed below:
- *  * 1- Inflate layout and create binding object with DataBindingUtil.inflate inside onCreateViewHolder() and create ViewHolder
- *  * 2- Get binding object inside constructor of MyViewHolder constructor
- *  * 3- Bind items to rows inside onCreateViewHolder() method
+ *  * 1- Inflate layout and create binding object with DataBindingUtil.inflate
+ *  inside onCreateViewHolder() and create ViewHolder
+ *
+ * * 2- Get binding object inside constructor of MyViewHolder constructor
+ *
+ * * 3- Bind items to rows inside onCreateViewHolder() method
  *
  */
 abstract class BaseAdapter : RecyclerView.Adapter<BaseAdapter.MyViewHolder>() {
@@ -37,11 +39,10 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseAdapter.MyViewHolder>() {
         }
 
         override fun onClick(v: View) {
-            if (listener != null) {
-                listener!!.onItemClicked(v, layoutPosition)
+            listener?.run {
+                onItemClicked(v, layoutPosition)
             }
         }
-
 
     }
 
@@ -69,7 +70,8 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseAdapter.MyViewHolder>() {
     // TODO #3
 
     /**
-     * Get data in position for RecyclerView row. This method is invoked inside onBindViewHolder() method of RecyclerView
+     * Get data in position for RecyclerView row. This method is invoked inside
+     * onBindViewHolder() method of RecyclerView
      *
      * @param position indicates the item for the current row
      * @return data for the current row

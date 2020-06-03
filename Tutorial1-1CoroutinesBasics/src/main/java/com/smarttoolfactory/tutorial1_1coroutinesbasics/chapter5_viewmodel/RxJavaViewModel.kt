@@ -149,7 +149,7 @@ class RxJavaViewModel : ViewModel() {
 
 
     /**
-     * If we wish to get parallel emission with [Observable.zip] each [Observable]
+     * 🔥 If we wish to get parallel emission with [Observable.zip] each [Observable]
      * should have schedulers with new thread
      */
     fun getMultipleResponsesConcurrently() {

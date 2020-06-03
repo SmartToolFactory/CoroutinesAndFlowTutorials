@@ -214,14 +214,17 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
         var retryCount = 0
 
         repeat(times) {
+
             try {
                 retryCount++
                 return block()
             } catch (exception: Exception) {
                 exception.printStackTrace()
+
                 onError?.run {
                     onError.invoke(retryCount)
                 }
+
             }
 
             delay(currentDelay)

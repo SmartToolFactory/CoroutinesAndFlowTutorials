@@ -7,8 +7,11 @@ import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ActivityClassModel
 
 /**
  * Process to create Adapter is listed below:
- *  * 1- Inflate layout and create binding object with DataBindingUtil.inflate inside onCreateViewHolder() and create ViewHolder
+ *  * 1- Inflate layout and create binding object with DataBindingUtil.inflate
+ *  inside onCreateViewHolder() and create ViewHolder
+ *
  *  * 2- Get binding object inside constructor of MyViewHolder constructor
+ *
  *  * 3- Bind items to rows inside onCreateViewHolder() method
  *
  */

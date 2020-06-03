@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.smarttoolfactory.tutorial1_1coroutinesbasics
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.util
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

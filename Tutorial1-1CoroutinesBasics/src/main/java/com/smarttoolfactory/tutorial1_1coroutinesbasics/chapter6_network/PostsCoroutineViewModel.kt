@@ -45,9 +45,13 @@ class PostsCoroutineViewModel : ViewModel() {
 
 
     private val postsUseCase by lazy {
-        PostsUseCase(PostsRepository(RetrofitFactory.makeRetrofitService()))
+        PostsUseCase(PostsRepository(RetrofitFactory.getPostApiCoroutines()))
     }
 
+    /**
+     * These calls are sequential since [Deferred.await] is called right
+     * after [CoroutineScope.async]
+     */
     fun doSomeSequentialNetworkCalls() {
 
         myCoroutineScope.launch {
@@ -208,7 +212,7 @@ class PostsCoroutineViewModel : ViewModel() {
             // Set current state to LOADING
             emit(ViewState(LOADING))
 
-            // Get result from network, invoked in Retrofit's enque function thread
+            // Get result from network, invoked in Retrofit's enqeue function thread
             val result = postsUseCase.getPosts()
 
             // Check and assign result to UI

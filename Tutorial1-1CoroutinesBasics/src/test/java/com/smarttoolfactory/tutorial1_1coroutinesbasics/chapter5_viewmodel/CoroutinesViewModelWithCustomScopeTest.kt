@@ -2,8 +2,8 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.TestCoroutineRule
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.getOrAwaitValue
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.TestCoroutineRule
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.getOrAwaitValue
 import kotlinx.coroutines.Dispatchers
 import org.junit.Before
 import org.junit.Rule
@@ -15,7 +15,8 @@ class CoroutinesViewModelWithCustomScopeTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
-    var testCoroutineRule = TestCoroutineRule()
+    var testCoroutineRule =
+        TestCoroutineRule()
 
     private lateinit var viewModel: CoroutinesViewModelWithCustomScope
 
@@ -98,10 +99,10 @@ class CoroutinesViewModelWithCustomScopeTest {
         viewModel.getMockResultWithRetry()
         advanceUntilIdle()
 
-        val expected = viewModel.resultWithRetry.value
-        println("Test expected: $expected")
 
         // THEN
+        val expected = viewModel.resultWithRetry.value
+        println("Test expected: $expected")
         Truth.assertThat(actualPartial).isEqualTo(expected)
 
     }
@@ -122,10 +123,9 @@ class CoroutinesViewModelWithCustomScopeTest {
         // 🔥 Advancing time is required, otherwise this test fails
         advanceTimeBy(3000)
 
+        // THEN
         val expected = viewModel.resultMultiple.value
         println("Test expected: $expected")
-
-        // THEN
         Truth.assertThat(expected?.contains(actualPartial)).isTrue()
 
     }

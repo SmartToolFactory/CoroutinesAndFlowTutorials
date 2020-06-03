@@ -14,8 +14,8 @@ import com.smarttoolfactory.tutorial1_1coroutinesbasics.adapter.ChapterSelection
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics.Activity1Basics
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope1
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope2
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_supervisorjob.Activity3SupervisorJob
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_lifecycle.Activity4CoroutineLifecycle
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_supervisorjob.Activity4SupervisorJob
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_lifecycle.Activity3CoroutineLifecycle
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.Activity6Network
@@ -41,8 +41,8 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
         activityClassModels.add(ActivityClassModel(Activity1Basics::class.java))
         activityClassModels.add(ActivityClassModel(Activity2CoroutineScope1::class.java))
         activityClassModels.add(ActivityClassModel(Activity2CoroutineScope2::class.java))
-        activityClassModels.add(ActivityClassModel(Activity3SupervisorJob::class.java))
-        activityClassModels.add(ActivityClassModel(Activity4CoroutineLifecycle::class.java))
+        activityClassModels.add(ActivityClassModel(Activity3CoroutineLifecycle::class.java))
+        activityClassModels.add(ActivityClassModel(Activity4SupervisorJob::class.java))
         activityClassModels.add(ActivityClassModel(Activity5ViewModelScope::class.java))
         activityClassModels.add(ActivityClassModel(Activity5ViewModelRxJava::class.java))
         activityClassModels.add(ActivityClassModel(Activity6Network::class.java))

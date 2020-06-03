@@ -37,7 +37,6 @@ class CoroutinesViewModelWithCustomScope(private val coroutineScope: CoroutineSc
             Prints:
 
          */
-
     }
 
 
@@ -60,7 +59,6 @@ class CoroutinesViewModelWithCustomScope(private val coroutineScope: CoroutineSc
         }
 
         println("getMockResult() END OF FUN")
-
 
     }
 
@@ -156,7 +154,6 @@ class CoroutinesViewModelWithCustomScope(private val coroutineScope: CoroutineSc
         }
     }
 
-
     // retry with exponential backoff
     // inspired by https://stackoverflow.com/questions/46872242/how-to-exponential-backoff-retry-on-kotlin-coroutines
 
@@ -174,14 +171,17 @@ class CoroutinesViewModelWithCustomScope(private val coroutineScope: CoroutineSc
         var retryCount = 0
 
         repeat(times) {
+
             try {
                 retryCount++
                 return block()
             } catch (exception: Exception) {
                 exception.printStackTrace()
+
                 onError?.run {
                     onError.invoke(retryCount)
                 }
+
             }
 
             delay(currentDelay)
@@ -237,9 +237,9 @@ class CoroutinesViewModelWithCustomScope(private val coroutineScope: CoroutineSc
 
     }
 
-    /*
-        Mock Response Functions
-     */
+/*
+    Mock Response Functions
+ */
 
     private suspend fun generateMockNetworkResponseOrThrowException(timeMillis: Long = 2000): String {
 

@@ -1,4 +1,4 @@
-package com.smarttoolfactory.tutorial1_1coroutinesbasics
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.util
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

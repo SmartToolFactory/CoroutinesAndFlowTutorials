@@ -65,14 +65,14 @@ ext {
     rxjavaVersion = '2.2.19'
     rxandroidVersion = '2.1.1'
 
+    // TODO Not Working with MockWebServer ?
     // Retrofit
     retrofitVersion = '2.8.1'
-
     // OkHttpClient
-    okHttpVersion = '4.7.0'
-
+//    okHttpVersion = '4.3.0'
     // MockWebServer
-    mockWebServerVersion = '4.7.0'
+    mockWebServerVersion = '4.3.0'
+
 
     //Gson
     gsonVersion = '2.8.6'

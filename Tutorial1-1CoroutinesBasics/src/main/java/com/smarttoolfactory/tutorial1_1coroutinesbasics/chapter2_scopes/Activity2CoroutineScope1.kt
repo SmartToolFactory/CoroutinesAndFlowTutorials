@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity2Scope1Binding
-import kotlinx.android.synthetic.main.activity2_scope_1.*
 import kotlinx.coroutines.*
 
 class Activity2CoroutineScope1 : AppCompatActivity() {
@@ -48,8 +47,8 @@ class Activity2CoroutineScope1 : AppCompatActivity() {
     }
 
     private fun setNewText(newString: String) {
-        val newText = textView.text.toString() + newString
-        textView.text = newText
+        val newText = binding.textView.text.toString() + newString
+        binding.textView.text = newText
     }
 
     private suspend fun setTextOnMainThread(newString: String) {

@@ -1,11 +1,11 @@
-package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_supervisorjob
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_supervisorjob
 
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
-import com.smarttoolfactory.tutorial1_1basics.databinding.Activity3SupervisorJobBinding
+import com.smarttoolfactory.tutorial1_1basics.databinding.Activity4SupervisorJobBinding
 import kotlinx.coroutines.*
 
 
@@ -14,7 +14,7 @@ import kotlinx.coroutines.*
  * parent, and parent cancelling other children coroutines.
  *
  */
-class Activity3SupervisorJob : AppCompatActivity() {
+class Activity4SupervisorJob : AppCompatActivity() {
 
     // Jobs
 
@@ -31,17 +31,14 @@ class Activity3SupervisorJob : AppCompatActivity() {
      * This is the jub that runs when button is clicked
      */
     private var currentJob: Job? = null
+
+    /*
+        Children jobs
+     */
     private var childJob1: Job? = null
     private var childJob2: Job? = null
 
-    // Scope
-    /**
-     * [Job] of [CoroutineScope] is canceled if [CoroutineScope.cancel] is called
-     * and is NOT launching a coroutine using this scope
-     */
-    private val coroutineScope = CoroutineScope(parentJob)
-
-    private lateinit var binding: Activity3SupervisorJobBinding
+    private lateinit var binding: Activity4SupervisorJobBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +47,7 @@ class Activity3SupervisorJob : AppCompatActivity() {
         println("🤨 onCreate() parentJob: $parentJob")
 
         binding =
-            DataBindingUtil.setContentView(this, R.layout.activity3_supervisor_job)
+            DataBindingUtil.setContentView(this, R.layout.activity4_supervisor_job)
 
         bindViews()
 
@@ -122,7 +119,7 @@ class Activity3SupervisorJob : AppCompatActivity() {
         // Invoked when a job completes from 🔥 Thread exception caught
         currentJob?.invokeOnCompletion {
 
-            println("invokeOnCompletion() 💀 Exception $it, in thread: ${Thread.currentThread().name}")
+            println("👍 invokeOnCompletion() Exception $it, in thread: ${Thread.currentThread().name}")
 
             it?.let {
 
@@ -143,6 +140,14 @@ class Activity3SupervisorJob : AppCompatActivity() {
         binding.btnCancelChildJob2.isEnabled = false
 
         currentJob?.cancel()
+
+        /*
+            🔥⚠️ Using parentJob.cancel() or coroutineScope.cancel()
+             prevents any coroutine to run, and cancels them immediately and calls
+             invokeOnCompletion on coroutineScope
+         */
+//        parentJob.cancel()
+
     }
 
 
@@ -153,8 +158,9 @@ class Activity3SupervisorJob : AppCompatActivity() {
         }
 
         /*
-            🔥🔥 Let's this launch to have SupervisorJob to only cancel this courutine instead
-            of parent and other children coroutines
+            🔥🔥 Having SupervisorJob let's only this coroutine
+             to be canceled, when there happens an exception,
+             instead of canceling parent and other children coroutines
          */
 
         val childSupervisorJob = SupervisorJob()
@@ -175,8 +181,9 @@ class Activity3SupervisorJob : AppCompatActivity() {
         }
 
         println(
-            "🤪 startChildrenJobs() parentJob: $parentJob, currentJob: $currentJob" +
-                    ", childJob1: $childJob1, childJob2: $childJob2"
+            "🤪 startChildrenJobs() parentJob: $parentJob\n " +
+                    "currentJob: $currentJob\n" +
+                    "childJob1: $childJob1, childJob2: $childJob2\n"
         )
     }
 

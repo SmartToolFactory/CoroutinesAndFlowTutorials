@@ -3,10 +3,10 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.DataResult
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Post
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.PostApi
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.PostApiCoroutines
 import retrofit2.Call
 
-class PostsRepository(private val postApi: PostApi) {
+class PostsRepository(private val postApi: PostApiCoroutines) {
 
     fun getPostsWithCall(): Call<List<Post>> {
         return postApi.getPostsWithCall()
