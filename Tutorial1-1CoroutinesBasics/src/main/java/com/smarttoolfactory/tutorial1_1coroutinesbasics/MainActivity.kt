@@ -23,6 +23,7 @@ import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.Activit
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter7_database.Activity7Database
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter8_single_source_of_truth.Activity8SingleSourceOfTruth
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ActivityClassModel
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.retrofitexample.RetrofitActivity
 import java.util.*
 
 class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickListener {
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
         activityClassModels.add(ActivityClassModel(Activity6Network::class.java))
         activityClassModels.add(ActivityClassModel(Activity7Database::class.java))
         activityClassModels.add(ActivityClassModel(Activity8SingleSourceOfTruth::class.java))
+        activityClassModels.add(ActivityClassModel(RetrofitActivity::class.java))
 
         val recyclerView = activityMainBinding.recyclerView
 
