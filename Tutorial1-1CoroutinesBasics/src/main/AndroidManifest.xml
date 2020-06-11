@@ -22,9 +22,9 @@
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter1_basics.Activity1Basics" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope1" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope2" />
-
-        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_supervisorjob.Activity4SupervisorJob" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope3" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_lifecycle.Activity3CoroutineLifecycle" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_supervisorjob.Activity4SupervisorJob" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.Activity6Network" />
