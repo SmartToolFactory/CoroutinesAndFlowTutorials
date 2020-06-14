@@ -7,7 +7,9 @@ import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Pos
 import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
+import okhttp3.mockwebserver.RecordedRequest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -45,9 +47,6 @@ class PostApiRxJavaTest : AbstractPostApiTest() {
     @Test
     fun `Given we have a valid request, should be done to correct url`() {
 
-        @Test
-        fun `Request has correct url`() {
-
             // GIVEN
             enqueueResponse(200)
 
@@ -59,7 +58,7 @@ class PostApiRxJavaTest : AbstractPostApiTest() {
             // THEN
             Truth.assertThat(request.path).isEqualTo("/posts")
 
-        }
+
 
     }
 
@@ -140,5 +139,7 @@ class PostApiRxJavaTest : AbstractPostApiTest() {
         Truth.assertThat(exception.message)
             .isEqualTo("com.jakewharton.retrofit2.adapter.rxjava2.HttpException: HTTP 500 Server Error")
     }
+
+
 
 }

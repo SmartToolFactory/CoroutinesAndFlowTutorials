@@ -24,6 +24,9 @@ class Activity4SupervisorJob : AppCompatActivity() {
      *
      * [SupervisorJob] does not mean child coroutines will have a [SupervisorJob]
      * with a scope builder method like [CoroutineScope.launch]
+     *
+     * ### Try removing [CoroutineScope.launch] function that [childJob2] invokes to see that supervisor only affect the context it's attached to
+     *
      */
     private var parentJob: Job = SupervisorJob()
 
@@ -116,7 +119,7 @@ class Activity4SupervisorJob : AppCompatActivity() {
 
         }
 
-        // Invoked when a job completes from 🔥 Thread exception caught
+        // Invoked when a job completes with or without 🔥 Thread exception caught
         currentJob?.invokeOnCompletion {
 
             println("👍 invokeOnCompletion() Exception $it, in thread: ${Thread.currentThread().name}")
@@ -166,12 +169,32 @@ class Activity4SupervisorJob : AppCompatActivity() {
         val childSupervisorJob = SupervisorJob()
         childJob2 = myCoroutineScope.launch(childSupervisorJob ) {
 
+            println("⛱ childJob2 context: $this")
+
             launch {
                 displayNumbers(binding.tvChildJobResult2)
             }
 
-            delay(2000)
-            throw RuntimeException("Child 2 threw RuntimeException")
+
+            /*
+                🔥🔥 Despite the fact which inner coroutines exception occurs, as long as parent job
+                is launched with SupervisorJob, only up to that coroutines are canceled
+
+                childJob1 still runs after exception
+
+             */
+            launch {
+
+                println("🤨 childJob2 inner context: $this")
+
+                // Exception can happen here
+                delay(2000)
+                throw RuntimeException("Child 2 threw RuntimeException")
+            }
+
+            // Exception can also happen here
+//            delay(2000)
+//            throw RuntimeException("Child 2 threw RuntimeException")
 
         }
 

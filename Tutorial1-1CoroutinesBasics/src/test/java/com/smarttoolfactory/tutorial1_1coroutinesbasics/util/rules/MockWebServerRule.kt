@@ -1,4 +1,4 @@
-package com.smarttoolfactory.tutorial1_1coroutinesbasics.util
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.util.rules
 
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.rules.TestRule

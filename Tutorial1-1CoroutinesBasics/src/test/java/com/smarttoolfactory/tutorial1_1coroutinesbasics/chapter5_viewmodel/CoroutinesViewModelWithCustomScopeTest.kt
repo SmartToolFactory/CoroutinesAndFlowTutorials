@@ -2,7 +2,7 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.TestCoroutineRule
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.rules.TestCoroutineRule
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.getOrAwaitValue
 import kotlinx.coroutines.Dispatchers
 import org.junit.Before

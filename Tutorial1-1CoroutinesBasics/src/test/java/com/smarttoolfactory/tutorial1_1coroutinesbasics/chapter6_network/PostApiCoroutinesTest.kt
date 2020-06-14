@@ -12,7 +12,6 @@ import okhttp3.mockwebserver.MockResponse
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -127,17 +126,26 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
 //        }
 
         // ❌ Also Fails
-        val exception = testCoroutineScope.async {
-            assertThrows<RuntimeException> {
-                launch {
-                    postApi.getPosts()
-                }
-            }
-        }.await()
+//        val exception = testCoroutineScope.async {
+//            assertThrows<RuntimeException> {
+//                launch {
+//                    postApi.getPosts()
+//                }
+//            }
+//        }.await()
+
+        val exception = try {
+            testCoroutineScope.async {
+                postApi.getPosts()
+            }.await()
+            null
+        } catch (e: Exception) {
+            e
+        }
 
 
         // THEN
-        Truth.assertThat(exception.message)
+        Truth.assertThat(exception?.message)
             .isEqualTo("com.jakewharton.retrofit2.adapter.rxjava2.HttpException: HTTP 500 Server Error")
     }
 
