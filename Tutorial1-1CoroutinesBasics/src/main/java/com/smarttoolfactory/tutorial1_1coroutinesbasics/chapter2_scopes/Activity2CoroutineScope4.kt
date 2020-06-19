@@ -96,7 +96,8 @@ class Activity2CoroutineScope4 : AppCompatActivity(R.layout.activity2_scope_4) {
 
     override fun onDestroy() {
         super.onDestroy()
-        job.cancel()
+        if (::job.isInitialized)
+            job.cancel()
     }
 
 }

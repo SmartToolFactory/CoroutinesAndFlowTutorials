@@ -16,21 +16,19 @@ import kotlinx.coroutines.*
 
 fun main() {
 
-    // Parent Job and Coroutine Exception Handler
     val parentJob = Job()
 
-    // CoroutineScope
     val coroutineScope = CoroutineScope(Dispatchers.IO + parentJob)
 
     var child1: Job? = null
     var child2: Job? = null
 
-    // Use
+
     coroutineScope.launch {
-        child1 = coroutineScope.launch {
+        child1 = launch {
             delay(500)
         }
-        child2 = coroutineScope.launch {
+        child2 = launch {
             delay(500)
         }
 
@@ -40,9 +38,9 @@ fun main() {
 
         println("Job 1 state: ${child1?.status()}")
         println("Job 2 state: ${child2?.status()}")
-        println("Parent job is active: ${coroutineScope.isActive}")
-        println("Parent job is active: $isActive")
-        println("Parent job is active: ${parentJob.isActive}")
+        println("parentJob.isActive : ${parentJob.isActive}")
+        println("coroutineScope.isActive : ${coroutineScope.isActive}")
+        println("coroutineScope.isActive : $isActive")
     }
 
 

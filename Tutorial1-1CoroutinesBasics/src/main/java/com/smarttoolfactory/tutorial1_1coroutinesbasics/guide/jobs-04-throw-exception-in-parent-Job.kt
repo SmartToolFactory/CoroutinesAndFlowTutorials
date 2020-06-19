@@ -28,17 +28,16 @@ fun main() {
 
     // Use
     coroutineScope.launch {
-        child1 = coroutineScope.launch {
-            delay(500)
-        }
-        child2 = coroutineScope.launch {
-            delay(500)
-        }
 
+        child1 = launch {
+            delay(500)
+        }
+        child2 = launch {
+            delay(500)
+        }
 
         delay(200)
         throw RuntimeException()
-
 
     }
 

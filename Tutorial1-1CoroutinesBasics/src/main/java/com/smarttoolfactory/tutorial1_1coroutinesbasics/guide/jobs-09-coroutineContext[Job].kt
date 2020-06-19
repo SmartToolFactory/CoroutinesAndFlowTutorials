@@ -9,6 +9,10 @@ import kotlinx.coroutines.*
  *
  * In the debug mode, it outputs something like this:
  * My job is "coroutine#1":BlockingCoroutine{Active}@6d311334
+ *
+ * To Enable the logging in IntelliJ toolbar menu:
+ * Run -> Edit Configuration and add the following in VM options
+ * -Dkotlinx.coroutines.debug
  * */
 
 fun main() {

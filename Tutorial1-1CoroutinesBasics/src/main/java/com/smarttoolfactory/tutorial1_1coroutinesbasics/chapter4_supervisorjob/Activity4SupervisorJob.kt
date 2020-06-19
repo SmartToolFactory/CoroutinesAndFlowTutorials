@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity4SupervisorJobBinding
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.guide.status
 import kotlinx.coroutines.*
 
 
@@ -124,9 +125,9 @@ class Activity4SupervisorJob : AppCompatActivity() {
             it?.let {
 
                 runOnUiThread {
-                    binding.tvJobResult.text = it.message
-                    binding.tvChildJobResult1.text = it.message
-                    binding.tvChildJobResult2.text = it.message
+                    binding.tvJobResult.text = it.message ?: currentJob?.status()
+                    binding.tvChildJobResult1.text = childJob1?.status()
+                    binding.tvChildJobResult2.text = childJob2?.status()
                 }
 
             }
@@ -164,7 +165,7 @@ class Activity4SupervisorJob : AppCompatActivity() {
          */
 
         val childSupervisorJob = SupervisorJob()
-        childJob2 = myCoroutineScope.launch(childSupervisorJob ) {
+        childJob2 = myCoroutineScope.launch(childSupervisorJob) {
 
             launch {
                 displayNumbers(binding.tvChildJobResult2)
@@ -173,6 +174,9 @@ class Activity4SupervisorJob : AppCompatActivity() {
             delay(2000)
             throw RuntimeException("Child 2 threw RuntimeException")
 
+        }
+        childJob2?.invokeOnCompletion {
+            binding.tvChildJobResult2.text = it?.message ?: childJob2?.status()
         }
 
         withContext(Dispatchers.Main) {

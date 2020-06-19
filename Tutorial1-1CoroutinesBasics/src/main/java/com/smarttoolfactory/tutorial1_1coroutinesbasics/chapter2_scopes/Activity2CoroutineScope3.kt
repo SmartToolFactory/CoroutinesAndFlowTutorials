@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.smarttoolfactory.tutorial1_1basics.R
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity2Scope3Binding
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.guide.status
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.dataBinding
 import kotlinx.coroutines.*
 
@@ -133,9 +134,9 @@ class Activity2CoroutineScope3 : AppCompatActivity(R.layout.activity2_scope_3) {
             it?.let {
 
                 runOnUiThread {
-                    binding.tvJobResult.text = it.message
-                    binding.tvChildJobResult1.text = it.message
-                    binding.tvChildJobResult2.text = it.message
+                    binding.tvJobResult.text = it.message ?: currentJob?.status()
+                    binding.tvChildJobResult1.text = childJob1?.status()
+                    binding.tvChildJobResult2.text = childJob2?.status()
                 }
 
             }
@@ -174,6 +175,9 @@ class Activity2CoroutineScope3 : AppCompatActivity(R.layout.activity2_scope_3) {
             // 🔥🔥 try catch on parent coroutine DOES NOT WORK
             throw RuntimeException("Child 2 threw RuntimeException")
 
+        }
+        childJob2?.invokeOnCompletion {
+            binding.tvChildJobResult2.text = it?.message ?: childJob2?.status()
         }
 
         withContext(Dispatchers.Main) {
