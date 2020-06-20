@@ -1,57 +1,64 @@
-package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_supervisorjob
+package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes
 
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
-import com.smarttoolfactory.tutorial1_1basics.databinding.Activity4SupervisorJobBinding
+import com.smarttoolfactory.tutorial1_1basics.databinding.Activity2Scope3Binding
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.guide.status
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.dataBinding
 import kotlinx.coroutines.*
 
 
 /**
- * [SupervisorJob] let's a child job to handle it's exception instead of propagating to
- * parent, and parent cancelling other children coroutines.
+ * ## Scopes
+ * This sample displays some important topics below:
+ * * When a [CoroutineScope.launch] is fired a new Job instance is created unless [Job]
+ *  is passed to builder([CoroutineScope.launch]) method as parameter.
+ *
+ * ## Cancellations
+ * * If a parent job is canceled children jobs are also canceled
+ * * If a child job is canceled other children jobs continue
+ *
+ * ## Exceptions
+ * * If a child job throws an exception parent job is canceled and other children jobs are also canceled
+ * * Parent should have an exception handling [CoroutineExceptionHandler] or manual exception handling
+ * for application NOT to crash.
  *
  */
-class Activity4SupervisorJob : AppCompatActivity() {
+class Activity2CoroutineScope3 : AppCompatActivity(R.layout.activity2_scope_3) {
+
+    private val TAG = "Activity2CoroutineScope3"
 
     // Jobs
 
     /**
      * Job of the coroutineContext, [CoroutineScope.cancel] calls this [Job] cancel method.
      * And when this job is on completed state which does not let currentJob to be active
-     *
-     * [SupervisorJob] does not mean child coroutines will have a [SupervisorJob]
-     * with a scope builder method like [CoroutineScope.launch]
-     *
-     * ### Try removing [CoroutineScope.launch] function that [childJob2] invokes to see that supervisor only affect the context it's attached to
-     *
      */
-    private var parentJob: Job = SupervisorJob()
+    private var parentJob: Job = Job()
 
     /**
      * This is the jub that runs when button is clicked
      */
     private var currentJob: Job? = null
-
-    /*
-        Children jobs
-     */
     private var childJob1: Job? = null
     private var childJob2: Job? = null
 
-    private lateinit var binding: Activity4SupervisorJobBinding
+    // Scope
+    /**
+     * [Job] of [CoroutineScope] is canceled if [CoroutineScope.cancel] is called
+     * and is NOT launching a coroutine using this scope
+     */
+    private val coroutineScope = CoroutineScope(parentJob)
+
+    private val binding: Activity2Scope3Binding by dataBinding()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        println("🤨 onCreate() parentJob: $parentJob")
-
-        binding =
-            DataBindingUtil.setContentView(this, R.layout.activity4_supervisor_job)
+        println("$TAG 🤨 onCreate() parentJob: $parentJob")
 
         bindViews()
 
@@ -90,13 +97,11 @@ class Activity4SupervisorJob : AppCompatActivity() {
 
         binding.btnCancelChildJob2.setOnClickListener {
             childJob2?.let {
-
                 if (childJob2!!.isActive) {
                     childJob2!!.cancel()
                     binding.btnCancelChildJob2.isEnabled = false
                     binding.tvChildJobResult2.text = "Progress canceled"
                 }
-
             }
         }
 
@@ -104,15 +109,16 @@ class Activity4SupervisorJob : AppCompatActivity() {
 
     private fun startJob() {
 
-        // Handle works in thread that exception is caught that are
+
+        // Handle works in thread that exception is caught
         val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            println("🤬 Parent Caught $throwable in thread ${Thread.currentThread().name}, and coroutineContext: $coroutineContext")
+            println("$TAG 🤬 Parent Caught $throwable in thread ${Thread.currentThread().name}, and coroutineContext: $coroutineContext")
         }
 
         currentJob = CoroutineScope(parentJob).launch(Dispatchers.Default + handler) {
 
-            println("🎃 startJob() parentJob: $parentJob, currentJob: $currentJob")
-            println("😛 Inside coroutineScope.launch() scope: $this, coroutineContext job: ${this.coroutineContext[Job]}}")
+            println("$TAG 🎃 startJob() parentJob: $parentJob, currentJob: $currentJob")
+            println("$TAG 😛 Inside coroutineScope.launch() scope: $this, coroutineContext job: ${this.coroutineContext[Job]}}")
 
             // This scope is not scope with coroutineScope used to call launch function
             startChildrenJobs(this@launch)
@@ -120,10 +126,10 @@ class Activity4SupervisorJob : AppCompatActivity() {
 
         }
 
-        // Invoked when a job completes with or without 🔥 Thread exception caught
+        // Invoked when a job completes from 🔥 Thread exception caught
         currentJob?.invokeOnCompletion {
 
-            println("👍 invokeOnCompletion() Exception $it, in thread: ${Thread.currentThread().name}")
+            println("$TAG invokeOnCompletion() 🤬 Exception $it, in thread: ${Thread.currentThread().name}")
 
             it?.let {
 
@@ -144,12 +150,9 @@ class Activity4SupervisorJob : AppCompatActivity() {
         binding.btnCancelChildJob2.isEnabled = false
 
         currentJob?.cancel()
-
-        /*
-            🔥⚠️ Using parentJob.cancel() or coroutineScope.cancel()
-             prevents any coroutine to run, and cancels them immediately and calls
-             invokeOnCompletion on coroutineScope
-         */
+        // 🔥🔥🔥 Calling this method cancels Job of this scope also and does not
+        // start a coroutine using this scope next time
+//        coroutineScope.cancel()
 //        parentJob.cancel()
 
     }
@@ -161,41 +164,16 @@ class Activity4SupervisorJob : AppCompatActivity() {
             displayAlphabet(binding.tvChildJobResult1)
         }
 
-        /*
-            🔥🔥 Having SupervisorJob let's only this coroutine
-             to be canceled, when there happens an exception,
-             instead of canceling parent and other children coroutines
-         */
-
-        val childSupervisorJob = SupervisorJob()
-        childJob2 = myCoroutineScope.launch(childSupervisorJob) {
-
-            println("⛱ childJob2 context: $this")
+        childJob2 = myCoroutineScope.launch {
 
             launch {
                 displayNumbers(binding.tvChildJobResult2)
             }
 
-
-            /*
-                🔥🔥 Despite the fact which inner coroutines exception occurs, as long as parent job
-                is launched with SupervisorJob, only up to that coroutines are canceled
-
-                childJob1 still runs after exception
-
-             */
-            launch {
-
-                println("🤨 childJob2 inner context: $this")
-
-                // Exception can happen here
-                delay(2000)
-                throw RuntimeException("Child 2 threw RuntimeException")
-            }
-
-            // Exception can also happen here
-//            delay(2000)
-//            throw RuntimeException("Child 2 threw RuntimeException")
+            delay(6000)
+            // 🔥 Causes crash if parent does not catch this exception with handler
+            // 🔥🔥 try catch on parent coroutine DOES NOT WORK
+            throw RuntimeException("Child 2 threw RuntimeException")
 
         }
         childJob2?.invokeOnCompletion {
@@ -208,9 +186,8 @@ class Activity4SupervisorJob : AppCompatActivity() {
         }
 
         println(
-            "🤪 startChildrenJobs() parentJob: $parentJob\n " +
-                    "currentJob: $currentJob\n" +
-                    "childJob1: $childJob1, childJob2: $childJob2\n"
+            "$TAG 🤪 startChildrenJobs() parentJob: $parentJob, currentJob: $currentJob" +
+                    ", childJob1: $childJob1, childJob2: $childJob2"
         )
     }
 
@@ -218,12 +195,11 @@ class Activity4SupervisorJob : AppCompatActivity() {
     private suspend fun displayAlphabet(textView: TextView) {
 
         for (i in 'A'..'Z') {
-
             withContext(Dispatchers.Main) {
                 textView.text = "Progress: $i"
             }
-
             delay(400)
+
 
         }
 
@@ -236,11 +212,9 @@ class Activity4SupervisorJob : AppCompatActivity() {
     private suspend fun displayNumbers(textView: TextView) {
 
         for (i in 0..100) {
-
             withContext(Dispatchers.Main) {
                 textView.text = "Progress: $i"
             }
-
             delay(300)
         }
 
