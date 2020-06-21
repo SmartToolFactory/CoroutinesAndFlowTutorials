@@ -145,9 +145,9 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
                     // longer than 2000 ms
                     resultWithTimeout.value = generateMockNetworkResponseOrThrowException()
                 } catch (exception: TimeoutCancellationException) {
-                    resultWithTimeout.value = exception.message
+                    resultWithTimeout.value = "1 - " + exception.message
                 } catch (exception: Exception) {
-                    resultWithTimeout.value = exception.message
+                    resultWithTimeout.value = "2 - " + exception.message
                 }
 
             }
