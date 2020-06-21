@@ -44,24 +44,24 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
     fun getMockResult(timeMillis: Long = 2000) {
 
-        println("getMockResult() loading...")
+        println("1 - getMockResult() loading...")
         result.value = "Loading..."
         enableResultButton.value = false
 
         viewModelScope.launch {
 
-            println("🙄 getMockResult() START ViewModel scope: $this, thread: ${Thread.currentThread().name}")
+            println("🙄 2 - getMockResult() START ViewModel scope: $this, thread: ${Thread.currentThread().name}")
 
-            result.value = generateMockNetworkResponseOrThrowException(timeMillis)
+            result.value = generateMockNetworkResponseOrThrowException(timeMillis)  // 4
             enableResultButton.value = true
 
-            println("getMockResult() ViewModel scope AFTER generateMockNetworkResponse() ${result.value}")
+            println("5 - getMockResult() ViewModel scope AFTER generateMockNetworkResponse() ${result.value}")
 
         }
 
-        println("getMockResult() END OF FUN")
+        println("3 - getMockResult() END OF FUN")
 
-        /*
+        /*   1 2 4 3 5
             Prints:
             I: getMockResult() loading...
             I: 🙄 getMockResult() ViewModel scope: StandaloneCoroutine{Active}@ef7c60d, thread: main
@@ -72,55 +72,45 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
     }
 
-
-    /**
-     * This method is for Unit-Testing exceptions
+    /*
+        Mock Response Functions
      */
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun throwExceptionInAScope(coroutineContext: CoroutineContext) {
 
-        println("getMockResult() loading...")
+    private suspend fun generateMockNetworkResponseOrThrowException(timeMillis: Long = 2000): String {
 
-        // 🔥🔥
-        viewModelScope.launch(coroutineContext) {
+        println("🥶 4 - generateMockNetworkResponse() thread: ${Thread.currentThread().name}")
 
-            println("🙄 getMockResult() START ViewModel scope: $this, thread: ${Thread.currentThread().name}")
+        delay(timeMillis)
 
-            delay(2000)
-            throw RuntimeException("Exception Occurred")
+        if (timeMillis > 2000) throw RuntimeException("Threw Network Exception")
 
-        }
-
-        println("getMockResult() END OF FUN")
-
-
+        return "Hello World"
     }
-
 
     fun getMockResultFromDispatcherThread(timeMillis: Long) {
 
-        println("getMockResult() loading...")
+        println("1 - getMockResult() loading...")
         result.value = "Loading..."
         enableResultButton.value = false
 
         viewModelScope.launch(Dispatchers.Default) {
 
-            println("🙄 getMockResult() ViewModel scope: $this, thread: ${Thread.currentThread().name}")
+            println("🙄 3 - getMockResult() ViewModel scope: $this, thread: ${Thread.currentThread().name}")
 
             withContext(Dispatchers.Main) {
-                result.value = generateMockNetworkResponseOrThrowException(timeMillis)
+                result.value = generateMockNetworkResponseOrThrowException(timeMillis) // 4
                 enableResultButton.value = true
 
             }
 
-            println("getMockResult() ViewModel scope AFTER")
+            println("5 - getMockResult() ViewModel scope AFTER")
 
         }
 
-        println("getMockResult() END OF FUN")
+        println("2 - getMockResult() END OF FUN")
 
         /*
-            Prints:
+            Prints:  1 3 2 4 5   or 1 2 3 4 5
 
          */
 
@@ -283,21 +273,6 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
     }
 
-    /*
-        Mock Response Functions
-     */
-
-    private suspend fun generateMockNetworkResponseOrThrowException(timeMillis: Long = 2000): String {
-
-        println("🥶 generateMockNetworkResponse() thread: ${Thread.currentThread().name}")
-
-        delay(timeMillis)
-
-        if (timeMillis > 2000) throw RuntimeException("Threw Network Exception")
-
-        return "Hello World"
-    }
-
     private suspend fun generateRandomCity(): String {
         val cityList = listOf("Berlin", "New York", "London", "Paris", "Istanbul")
 
@@ -317,9 +292,30 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
     }
 
+    /**
+     * This method is for Unit-Testing exceptions
+     */
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun throwExceptionInAScope(coroutineContext: CoroutineContext) {
+
+        println("getMockResult() loading...")
+
+        // 🔥🔥
+        viewModelScope.launch(coroutineContext) {
+
+            println("🙄 getMockResult() START ViewModel scope: $this, thread: ${Thread.currentThread().name}")
+
+            delay(2000)
+            throw RuntimeException("Exception Occurred")
+
+        }
+
+        println("getMockResult() END OF FUN")
+
+    }
 }
 
-class CoroutinesViewModelFactory() :
+class CoroutinesViewModelFactory :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
