@@ -17,6 +17,7 @@ import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope3
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope4
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_lifecycle.Activity3CoroutineLifecycle
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_lifecycle.Activity3LifecycleScope
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_supervisorjob.Activity4SupervisorJob
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope
@@ -47,6 +48,7 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
         activityClassModels.add(ActivityClassModel(Activity2CoroutineScope3::class.java))
         activityClassModels.add(ActivityClassModel(Activity2CoroutineScope4::class.java))
         activityClassModels.add(ActivityClassModel(Activity3CoroutineLifecycle::class.java))
+        activityClassModels.add(ActivityClassModel(Activity3LifecycleScope::class.java))
         activityClassModels.add(ActivityClassModel(Activity4SupervisorJob::class.java))
         activityClassModels.add(ActivityClassModel(Activity5ViewModelScope::class.java))
         activityClassModels.add(ActivityClassModel(Activity5ViewModelRxJava::class.java))

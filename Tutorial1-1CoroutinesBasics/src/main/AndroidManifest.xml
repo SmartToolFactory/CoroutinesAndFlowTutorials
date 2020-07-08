@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.smarttoolfactory.tutorial1_1basics">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -25,6 +25,7 @@
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope3" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes.Activity2CoroutineScope4" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_lifecycle.Activity3CoroutineLifecycle" />
+        <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter3_lifecycle.Activity3LifecycleScope" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_supervisorjob.Activity4SupervisorJob" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope" />
         <activity android:name="com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava" />
