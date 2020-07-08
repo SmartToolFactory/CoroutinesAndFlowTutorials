@@ -140,4 +140,5 @@ dependencies {
     // Espresso
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
 
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 }
