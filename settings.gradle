@@ -1,3 +1,4 @@
+include ':Tutorial2-1FlowBasics'
 include ':External-Tutorial-Coroutines-CodeLab-Room-Retrofit-WorkManager'
 rootProject.name='Coroutines And Flow Tutorials'
 include ':Tutorial1-1CoroutinesBasics'

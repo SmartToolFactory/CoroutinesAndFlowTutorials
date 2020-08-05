@@ -3,10 +3,9 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter2_scopes
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.smarttoolfactory.tutorial1_1basics.R
-import com.smarttoolfactory.tutorial1_1basics.databinding.Activity2Scope3Binding
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.guide.status
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.dataBinding
+import com.smarttoolfactory.tutorial1_1basics.databinding.Activity2ScopeBinding
 import kotlinx.coroutines.*
 
 
@@ -26,9 +25,7 @@ import kotlinx.coroutines.*
  * for application NOT to crash.
  *
  */
-class Activity2CoroutineScope3 : AppCompatActivity(R.layout.activity2_scope_3) {
-
-    private val TAG = "Activity2CoroutineScope3"
+class Activity2CoroutineScope : AppCompatActivity() {
 
     // Jobs
 
@@ -52,13 +49,16 @@ class Activity2CoroutineScope3 : AppCompatActivity(R.layout.activity2_scope_3) {
      */
     private val coroutineScope = CoroutineScope(parentJob)
 
-    private val binding: Activity2Scope3Binding by dataBinding()
+    private lateinit var binding: Activity2ScopeBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        println("$TAG 🤨 onCreate() parentJob: $parentJob")
+        println("🤨 onCreate() parentJob: $parentJob")
+
+        binding =
+            DataBindingUtil.setContentView(this, R.layout.activity2_scope)
 
         bindViews()
 
@@ -112,13 +112,13 @@ class Activity2CoroutineScope3 : AppCompatActivity(R.layout.activity2_scope_3) {
 
         // Handle works in thread that exception is caught
         val handler = CoroutineExceptionHandler { coroutineContext, throwable ->
-            println("$TAG 🤬 Parent Caught $throwable in thread ${Thread.currentThread().name}, and coroutineContext: $coroutineContext")
+            println("🤬 Parent Caught $throwable in thread ${Thread.currentThread().name}, and coroutineContext: $coroutineContext")
         }
 
         currentJob = CoroutineScope(parentJob).launch(Dispatchers.Default + handler) {
 
-            println("$TAG 🎃 startJob() parentJob: $parentJob, currentJob: $currentJob")
-            println("$TAG 😛 Inside coroutineScope.launch() scope: $this, coroutineContext job: ${this.coroutineContext[Job]}}")
+            println("🎃 startJob() parentJob: $parentJob, currentJob: $currentJob")
+            println("😛 Inside coroutineScope.launch() scope: $this, coroutineContext job: ${this.coroutineContext[Job]}}")
 
             // This scope is not scope with coroutineScope used to call launch function
             startChildrenJobs(this@launch)
@@ -129,14 +129,14 @@ class Activity2CoroutineScope3 : AppCompatActivity(R.layout.activity2_scope_3) {
         // Invoked when a job completes from 🔥 Thread exception caught
         currentJob?.invokeOnCompletion {
 
-            println("$TAG invokeOnCompletion() 🤬 Exception $it, in thread: ${Thread.currentThread().name}")
+            println("invokeOnCompletion() 🤬 Exception $it, in thread: ${Thread.currentThread().name}")
 
             it?.let {
 
                 runOnUiThread {
-                    binding.tvJobResult.text = it.message ?: currentJob?.status()
-                    binding.tvChildJobResult1.text = childJob1?.status()
-                    binding.tvChildJobResult2.text = childJob2?.status()
+                    binding.tvJobResult.text = it.message
+                    binding.tvChildJobResult1.text = it.message
+                    binding.tvChildJobResult2.text = it.message
                 }
 
             }
@@ -176,19 +176,14 @@ class Activity2CoroutineScope3 : AppCompatActivity(R.layout.activity2_scope_3) {
             throw RuntimeException("Child 2 threw RuntimeException")
 
         }
-        childJob2?.invokeOnCompletion {
-            binding.tvChildJobResult2.text = it?.message ?: childJob2?.status()
-        }
 
         withContext(Dispatchers.Main) {
             binding.btnCancelChildJob1.isEnabled = true
             binding.btnCancelChildJob2.isEnabled = true
         }
 
-        println(
-            "$TAG 🤪 startChildrenJobs() parentJob: $parentJob, currentJob: $currentJob" +
-                    ", childJob1: $childJob1, childJob2: $childJob2"
-        )
+        println("🤪 startChildrenJobs() parentJob: $parentJob, currentJob: $currentJob" +
+                ", childJob1: $childJob1, childJob2: $childJob2")
     }
 
 
@@ -223,6 +218,4 @@ class Activity2CoroutineScope3 : AppCompatActivity(R.layout.activity2_scope_3) {
         }
 
     }
-
 }
-
