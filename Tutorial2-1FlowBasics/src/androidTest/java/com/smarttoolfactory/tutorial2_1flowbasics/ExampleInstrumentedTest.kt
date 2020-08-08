@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.smarttoolfactory.tutorial2_1flowbasics.test", appContext.packageName)
+        assertEquals("com.smarttoolfactory.tutorial2_1flowbasics", appContext.packageName)
     }
 }

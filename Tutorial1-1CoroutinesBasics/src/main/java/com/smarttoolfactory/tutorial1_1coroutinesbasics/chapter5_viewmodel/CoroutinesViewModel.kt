@@ -319,7 +319,7 @@ class CoroutinesViewModel(private val viewModelDispatcher: CoroutineDispatcher) 
 
 }
 
-class CoroutinesViewModelFactory() :
+class CoroutinesViewModelFactory :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

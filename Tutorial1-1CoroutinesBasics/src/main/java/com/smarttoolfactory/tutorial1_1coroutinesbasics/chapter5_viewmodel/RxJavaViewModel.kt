@@ -2,7 +2,6 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -41,34 +40,34 @@ class RxJavaViewModel : ViewModel() {
         val disposable = getObservable { generateMockNetworkResponse() }
 
             /*
-               🔥 scheduler operators work upstream, if they are below
-               doOnSubscribe, and doFinally, then these functions invoked in
-               Schedulers.io(), otherwise main thread
+               🔥 subscribeOn() work upstream, if subscribeOn is below
+               doOnSubscribe, then doOnSubscribe will be invoked in
+               Schedulers.io(), otherwise main thread or thread subscribeOn()
+               below doOnSubscribe runs in
              */
-
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-
             .startWith("Loading...")
-            .doOnSubscribe {
-                println("🔥doOnSubscribe() thread: ${Thread.currentThread().name}")
-                enableResultButton.postValue(false)
-            }
             .doFinally {
                 println("😎 doFinally() thread: ${Thread.currentThread().name}")
                 enableResultButton.postValue(true)
             }
-
+            /*
+                🔥subscribeOn is where we subscribe another observable, not the thread map() function is called
+                This does not effect anything since there is another subscribeOn(Schedulers.io()) which works upstream
+                only with Observables, not mapping or observing methods
+             */
+            .subscribeOn(Schedulers.computation())
+            // 🔥observeOn works down stream any subscribe or map method works in thread that observeOn specifies
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    println("😱 onNext(): $it")
-                    result.value = it
+                    println("😱 onNext(): $it, thread: ${Thread.currentThread().name}")
+                    result.postValue(it)
                 },
                 {
                     result.value = it.message
                 }
             )
-
         disposables.add(disposable)
     }
 
@@ -118,7 +117,7 @@ class RxJavaViewModel : ViewModel() {
                 retryCount++
                 if (retryCount < retryThreshold) {
                     resultWithRetry.postValue("Retry count: $retryCount")
-                }else {
+                } else {
                     resultWithRetry.postValue("Failed after $retryCount tries")
                 }
 
