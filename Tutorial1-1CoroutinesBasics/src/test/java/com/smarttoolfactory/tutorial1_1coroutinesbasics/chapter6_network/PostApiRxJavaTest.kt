@@ -10,10 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -139,7 +136,5 @@ class PostApiRxJavaTest : AbstractPostApiTest() {
         Truth.assertThat(exception.message)
             .isEqualTo("com.jakewharton.retrofit2.adapter.rxjava2.HttpException: HTTP 500 Server Error")
     }
-
-
 
 }

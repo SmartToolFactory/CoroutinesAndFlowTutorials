@@ -15,8 +15,13 @@ import org.junit.Test
 
 class CoroutinesViewModelTest {
 
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+    /**
+     * Not using this causes java.lang.RuntimeException: Method getMainLooper in android.os.Looper
+     * not mocked when <code>this.observeForever(observer)</code> is called
+     */
+    @Rule
+    @JvmField
+    val instantExecutorRule = InstantTaskExecutorRule()
 
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
 

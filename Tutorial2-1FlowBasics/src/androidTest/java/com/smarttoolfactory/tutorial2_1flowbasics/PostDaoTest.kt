@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDao
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDatabase
+import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostEntity
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.TestCoroutineScope
 import kotlinx.coroutines.test.runBlockingTest
@@ -18,6 +19,11 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class PostDaoTest {
+
+    companion object {
+        val postEntityList =
+            convertFromJsonToObjectList<PostEntity>(getResourceAsText("response.json"))!!
+    }
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -31,12 +37,6 @@ class PostDaoTest {
      * This is the SUT
      */
     private lateinit var measurementDao: PostDao
-
-
-    private val postEntityList by lazy {
-        convertToPostEntityListFromJson(getResourceAsText("response.json"))
-    }
-
 
 
     @Test

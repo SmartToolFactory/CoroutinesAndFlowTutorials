@@ -11,12 +11,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import kotlin.system.measureTimeMillis
 
-class PostsCoroutineViewModel : ViewModel() {
+class PostsCoroutineViewModel(
+    private val myCoroutineScope: CoroutineScope,
+    private val postsUseCase: PostsUseCase
+) : ViewModel() {
 
-    /**
-     * Scope to test with context with IO thread
-     */
-    private val myCoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     /**
      * LiveData to test network operation with [Call]
@@ -43,10 +42,6 @@ class PostsCoroutineViewModel : ViewModel() {
         setLiveDataBuilder()
     }
 
-
-    private val postsUseCase by lazy {
-        PostsUseCase(PostsRepository(RetrofitFactory.getPostApiCoroutines()))
-    }
 
     /**
      * These calls are sequential since [Deferred.await] is called right
@@ -115,7 +110,7 @@ class PostsCoroutineViewModel : ViewModel() {
 
     fun getPostWithCall() {
 
-        viewModelScope.launch {
+        myCoroutineScope.launch {
 
             println("🙄 getPostWithCall() scope: $this, thread: ${Thread.currentThread().name}")
 
@@ -147,15 +142,19 @@ class PostsCoroutineViewModel : ViewModel() {
      */
     fun getPostWithSuspend() {
 
-        viewModelScope.launch {
+        myCoroutineScope.launch {
 
-            println("🥶 getPostWithSuspend() scope: $this, thread: ${Thread.currentThread().name}")
 
             // Set current state to LOADING
             _postStateWithSuspend.value = ViewState(LOADING)
 
-            // 🔥🔥 Get result from network, invoked in Retrofit's enque function thread
+            println("🥶 getPostWithSuspend() scope: $this, LOADING in thread: ${Thread.currentThread().name}")
+
+
+            // 🔥🔥 Get result from network, invoked in Retrofit's enqueue function thread
             val result = postsUseCase.getPosts()
+
+            println("😍 getPostWithSuspend() result: $result, thread: ${Thread.currentThread().name}")
 
             // Check and assign result to UI
             val resultViewState = if (result.status == SUCCESS) {
@@ -165,6 +164,9 @@ class PostsCoroutineViewModel : ViewModel() {
             }
 
             _postStateWithSuspend.value = resultViewState
+
+            println("🔥 getPostWithSuspend() resultViewState: ${resultViewState.status}, thread: ${Thread.currentThread().name}")
+
         }
     }
 
@@ -231,7 +233,23 @@ class PostsCoroutineViewModel : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        myCoroutineScope?.cancel()
+        myCoroutineScope.cancel()
+    }
+
+}
+
+class PostCoroutineViewModelFactory : ViewModelProvider.Factory {
+
+    private val postsUseCase by lazy {
+        PostsUseCase(PostsRepository(RetrofitFactory.getPostApiCoroutines()))
+    }
+
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+        val coroutineScope = CoroutineScope(Dispatchers.Main + Job())
+
+        return PostsCoroutineViewModel(coroutineScope, postsUseCase) as T
     }
 
 }

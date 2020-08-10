@@ -4,6 +4,7 @@ import com.google.common.truth.Truth
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Post
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.PostApiCoroutines
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.*
@@ -16,6 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
+@ExperimentalCoroutinesApi
 class PostApiCoroutinesTest : AbstractPostApiTest() {
 
     private lateinit var postApi: PostApiCoroutines
@@ -60,7 +62,7 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
         testCoroutineScope.runBlockingTest {
 
             // GIVEN
-            enqueueResponse(200)
+            launch(testCoroutineScope.coroutineContext) { enqueueResponse(200) }
 
             // WHEN
 
@@ -69,7 +71,7 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
 //            advanceUntilIdle()
 
             // This one works WHY?
-            launch {
+            launch(testCoroutineScope.coroutineContext) {
                 postApi.getPosts()
             }
 
@@ -90,15 +92,17 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
         testCoroutineScope.runBlockingTest {
 
             // GIVEN
-            async { enqueueResponse(200) }.await()
+            launch(testCoroutineScope.coroutineContext) {
+                enqueueResponse(200)
+            }
+
 
             // WHEN
             var posts: List<Post> = emptyList()
-            launch {
+            launch(testCoroutineScope.coroutineContext) {
                 posts = postApi.getPosts()
             }
 
-            advanceUntilIdle()
 
             // THEN
             Truth.assertThat(posts).isNotNull()
@@ -141,7 +145,6 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
         } catch (e: Exception) {
             e
         }
-
 
         // THEN
         Truth.assertThat(exception?.message)

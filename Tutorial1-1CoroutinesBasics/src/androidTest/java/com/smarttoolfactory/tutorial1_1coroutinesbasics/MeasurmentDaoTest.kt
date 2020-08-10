@@ -36,15 +36,12 @@ class MeasurementDaoTest {
         listOf(measurement1, measurement2, measurement3)
     }
 
-
-
     private lateinit var database: MeasurementDatabase
 
     /**
      * This is the SUT
      */
     private lateinit var measurementDao: MeasurementDao
-
 
     @Test
     fun shouldInsertSingleMeasurement() = runBlockingTest {
@@ -177,6 +174,4 @@ class MeasurementDaoTest {
     fun closeDb() {
         database.close()
     }
-
-
 }

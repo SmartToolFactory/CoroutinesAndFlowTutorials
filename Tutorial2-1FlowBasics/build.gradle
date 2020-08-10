@@ -139,11 +139,11 @@ dependencies {
 
     // AndroidX Test - JVM testing
     // InstantTaskExecutorRule is used with core
-//    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
-//    testImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
+    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+    testImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
 
     // Coroutines Test
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.6'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7'
 
     // MockK
     testImplementation "io.mockk:mockk:$mockKVersion"
