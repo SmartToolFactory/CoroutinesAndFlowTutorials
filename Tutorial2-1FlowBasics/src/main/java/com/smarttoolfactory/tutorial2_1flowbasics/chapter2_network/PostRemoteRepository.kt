@@ -8,7 +8,12 @@ import kotlinx.coroutines.flow.flow
 class PostRemoteRepository(private val postApi: PostApi) {
 
     fun getPostFlow(): Flow<List<PostDTO>> {
-        return flow { emit(postApi.getPosts()) }
+        return flow {
+            // Runs in DefaultDispatcher-worker-2, or the thread flowOn runs which is below this function in UseCase class
+            println("😱 PostRemoteRepository getPostFlow() thread: ${Thread.currentThread().name}")
+            emit(postApi.getPosts())
+        }
+
     }
 
     suspend fun getPosts() = postApi.getPosts()

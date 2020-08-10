@@ -16,7 +16,16 @@ class PostRemoteUseCase(
 
     fun getPostFlow(): Flow<List<Post>> {
         return postRemoteRepository.getPostFlow()
+
+                // 🔥 This method is just to show flowOn below changes current thread
             .map {
+                // Runs in IO Thread DefaultDispatcher-worker-2
+                println("⏰ PostsUseCase map() FIRST thread: ${Thread.currentThread().name}")
+               it
+            }
+            .flowOn(Dispatchers.IO)
+            .map {
+                // Runs in Default Thread DefaultDispatcher-worker-1
                 println("⏰ PostsUseCase map() thread: ${Thread.currentThread().name}")
                 mapper.map(it)
             }

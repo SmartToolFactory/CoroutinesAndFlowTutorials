@@ -47,11 +47,24 @@ interface MeasurementDao {
     @Insert
     suspend fun insertAsync(measurement: Measurement): Long
 
+    @Insert
+    suspend fun insertMultipleAsync(measurements: List<Measurement>): List<Long>
+
     @Query("SELECT * FROM measurements")
     suspend fun getMeasurementsAsync(): List<Measurement>
 
+    @Query("SELECT * FROM measurements WHERE id =:measurementId")
+    suspend fun getMeasurementsAsyncWithId(measurementId: Long): Measurement
+
+    @Query("SELECT COUNT(*) FROM measurements")
+    suspend fun getMeasurementCount(): Int
+
+    @Query("DELETE FROM measurements")
+    suspend fun deleteAll()
+
     @Query("SELECT * FROM measurements")
     fun getMeasurements(): LiveData<List<Measurement>>
+
 
 
 }

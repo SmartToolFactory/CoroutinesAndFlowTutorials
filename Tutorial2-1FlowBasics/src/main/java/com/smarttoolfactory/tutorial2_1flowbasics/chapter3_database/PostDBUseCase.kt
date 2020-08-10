@@ -1,4 +1,4 @@
-package com.smarttoolfactory.tutorial2_1flowbasics.chapter3_database
+ package com.smarttoolfactory.tutorial2_1flowbasics.chapter3_database
 
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.EntityToPostMapper
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.PostToEntityMapper
@@ -24,16 +24,24 @@ class PostDBUseCase(
 
     fun getPostFlow(): Flow<List<Post>> {
         return postDBRepository.getPostFlow()
+            // This is a upstream operator, does not leak downstream
+            .map {
+                println("⏰ PostsUseCase FIRST map() thread: ${Thread.currentThread().name}")
+               it
+            }
+            .flowOn(Dispatchers.IO)
             .map {
                 println("⏰ PostsUseCase map() thread: ${Thread.currentThread().name}")
                 entityToPostMapper.map(it)
             }
             // This is a upstream operator, does not leak downstream
-            .flowOn(Dispatchers.Default)
+            .flowOn(Dispatchers.IO)
     }
 
     fun getPostFlowAlt(): Flow<List<Post>> {
         return flow { emit(postDBRepository.getPosts()) }
+            // This is a upstream operator, does not leak downstream
+            .flowOn(Dispatchers.IO)
             .map {
                 println("⏰ PostsUseCase map() thread: ${Thread.currentThread().name}")
                 entityToPostMapper.map(it)

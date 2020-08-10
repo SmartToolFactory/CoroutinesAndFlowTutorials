@@ -3,7 +3,7 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network
 import com.google.common.truth.Truth
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Post
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.PostApiCoroutines
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.convertToObjectsFromString
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.convertToObjectFromJson
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.getResourceAsText
 import io.mockk.clearMocks
 import io.mockk.coEvery
@@ -25,7 +25,7 @@ class PostsRepositoryTest {
 
 
     private val postList by lazy {
-        convertToObjectsFromString<List<Post>>(getResourceAsText(RESPONSE_JSON_PATH))
+        convertToObjectFromJson<List<Post>>(getResourceAsText(RESPONSE_JSON_PATH))
     }
 
 

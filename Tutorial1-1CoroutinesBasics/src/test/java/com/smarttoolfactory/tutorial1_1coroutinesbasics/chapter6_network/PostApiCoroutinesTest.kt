@@ -21,7 +21,6 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
     private lateinit var postApi: PostApiCoroutines
 
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
-
     private val testCoroutineScope = TestCoroutineScope(testCoroutineDispatcher)
 
     @BeforeEach

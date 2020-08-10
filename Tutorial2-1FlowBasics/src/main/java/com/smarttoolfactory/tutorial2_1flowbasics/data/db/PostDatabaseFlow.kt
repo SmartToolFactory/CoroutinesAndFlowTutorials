@@ -44,6 +44,9 @@ interface PostDao {
     @Query("DELETE FROM post")
     suspend fun deleteAll()
 
+    @Query("SELECT COUNT(*) FROM post")
+    suspend fun getPostCount(): Int
+
     /**
      * Get posts from database.
      *
@@ -62,8 +65,6 @@ interface PostDao {
     suspend fun getPost(postId: Int): PostEntity
 
 
-    @Query("SELECT COUNT(*) FROM post")
-    suspend fun getPostCount(): Int
     /*
         ***** Flow ******
     */

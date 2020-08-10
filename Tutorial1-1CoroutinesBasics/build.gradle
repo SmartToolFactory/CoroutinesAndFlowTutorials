@@ -39,6 +39,16 @@ android {
         jvmTarget = "1.8"
     }
 
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            exclude group: "org.jetbrains.kotlinx", module: "kotlinx-coroutines-debug"
+        }
+    }
 }
 
 dependencies {
@@ -107,11 +117,16 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.0"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.4.0"
 
-    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
-    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    // (Optional) If you need "Parameterized Tests"
+//    testImplementation "org.junit.jupiter:junit-jupiter-params:5.4.0"
+
+    // AndroidX Test - JVM testing
+    // InstantTaskExecutorRule is used with core
+//    testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
+//    testImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
 
     // Coroutines Test
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.6'
 
     // MockK
     testImplementation "io.mockk:mockk:$mockKVersion"
@@ -119,23 +134,29 @@ dependencies {
     // Truth
     testImplementation "com.google.truth:truth:1.0.1"
 
+    // 🔥 Any version over 3.7.0 causing exception in constructor of MockWebServer
     // Mock Web Server
 //    testImplementation("com.squareup.okhttp3:mockwebserver:$mockWebServerVersion")
-//    testImplementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
-
     testImplementation("com.squareup.okhttp3:mockwebserver:3.7.0")
-    testImplementation("com.squareup.okhttp3:okhttp:3.7.0")
-
-    testImplementation("com.squareup.okio:okio:2.6.0")
 
     /*
         Instrumented Tests
      */
     // AndroidX Test - Instrumented testing
     androidTestImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
+    // InstantTaskExecutorRule is used with core
+    androidTestImplementation "androidx.arch.core:core-testing:$archTestingVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+
+    // Coroutines Test
+    androidTestImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.7'
+
     // MockK
-    androidTestImplementation "io.mockk:mockk-android:1.9.3"
+    androidTestImplementation "io.mockk:mockk-android:$mockKVersion"
+
+    // Truth
+    androidTestImplementation "com.google.truth:truth:1.0.1"
+
     // Espresso
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
 

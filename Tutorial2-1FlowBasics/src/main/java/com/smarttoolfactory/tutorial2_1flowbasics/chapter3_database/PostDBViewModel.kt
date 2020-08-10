@@ -58,8 +58,8 @@ class PostDBViewModel(
     }
 
     /**
-     * Every thing in this function works in thread of [myCoroutineScope] other than network action
-     * [myCoroutineScope] uses [MainCoroutineDispatcher.Main.immediate]
+     * This function works in thread of [myCoroutineScope] is [MainCoroutineDispatcher.Main.immediate]
+     * but [Flow.flowOn] changes the working thread from  [Dispatchers.Default]
      */
     fun getPosts() {
 
@@ -67,7 +67,7 @@ class PostDBViewModel(
 
         // 🔥🔥 Get result from network, invoked in Retrofit's enqueue function thread
         postsUseCase.getPostFlow()
-            .flowOn(Dispatchers.IO)
+            .flowOn(Dispatchers.Main)
             .onStart {
                 _postViewState.value = ViewState(Status.LOADING)
             }
@@ -75,6 +75,7 @@ class PostDBViewModel(
                 _postViewState.value = ViewState(Status.ERROR, error = throwable)
             }
             .onEach { postList ->
+                println("😇 PostDBViewModel getPosts() thread: ${Thread.currentThread().name}")
                 _postViewState.value = ViewState(Status.SUCCESS, data = postList)
             }
             .launchIn(myCoroutineScope)

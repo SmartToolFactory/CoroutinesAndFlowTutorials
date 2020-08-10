@@ -11,8 +11,7 @@ fun getResourceAsText(path: String): String {
     return object {}.javaClass.classLoader!!.getResource(path)!!.readText()
 }
 
-
-inline fun <reified T> convertToObjectsFromString(input: String): T? {
+inline fun <reified T> convertToObjectFromJson(input: String): T? {
     return Gson().fromJsonWithType<T>(input)
 }
 

@@ -36,13 +36,20 @@ class PostNetworkViewModel(
 
         viewModelScope.launch {
 
-            println("🥶 getPostWithSuspend() scope: $this, thread: ${Thread.currentThread().name}")
+            println("🥶 getPosts() scope: $this, thread: ${Thread.currentThread().name}")
 
-            // Set current state to LOADING
+            /*
+                Prints:
+                I: 🥶 getPosts() scope: StandaloneCoroutine{Active}@8c4d6ed, thread: main
+                I: 😱 PostRemoteRepository getPostFlow() thread: DefaultDispatcher-worker-2
+                I: ⏰ PostsUseCase map() FIRST thread: DefaultDispatcher-worker-2
+                I: ⏰ PostsUseCase map() thread: DefaultDispatcher-worker-1
+            */
 
             // 🔥🔥 Get result from network, invoked in Retrofit's enqueue function thread
             postsUseCase.getPostFlow()
                 .onStart {
+                    // Set current state to LOADING
                     _postViewState.value = ViewState(Status.LOADING)
                 }
                 .catch { throwable: Throwable ->
@@ -52,7 +59,6 @@ class PostNetworkViewModel(
                     _postViewState.value = ViewState(Status.SUCCESS, data = postList)
                 }
                 .launchIn(coroutineScope)
-
         }
     }
 
@@ -74,7 +80,7 @@ class PostViewModelFactory :
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
-        val coroutineScope = CoroutineScope(Job())
+        val coroutineScope = CoroutineScope(Dispatchers.Main.immediate + SupervisorJob())
 
         val postsUseCase =
             PostRemoteUseCase(PostRemoteRepository(RetrofitFactory.getPostApiCoroutines()), DTOtoPostMapper())

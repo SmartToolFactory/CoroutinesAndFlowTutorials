@@ -99,7 +99,7 @@ ext {
     robolectricVersion = '4.3.1'
     rulesVersion = '1.0.1'
     truthVersion = '0.44'
-    mockKVersion = '1.9.3'
+    mockKVersion = '1.10.0'
 
     /*
         For Codelab
