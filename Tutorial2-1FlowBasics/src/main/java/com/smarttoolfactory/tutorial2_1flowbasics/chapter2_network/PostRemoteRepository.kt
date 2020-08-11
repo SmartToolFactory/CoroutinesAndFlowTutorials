@@ -13,7 +13,6 @@ class PostRemoteRepository(private val postApi: PostApi) {
             println("😱 PostRemoteRepository getPostFlow() thread: ${Thread.currentThread().name}")
             emit(postApi.getPosts())
         }
-
     }
 
     suspend fun getPosts() = postApi.getPosts()

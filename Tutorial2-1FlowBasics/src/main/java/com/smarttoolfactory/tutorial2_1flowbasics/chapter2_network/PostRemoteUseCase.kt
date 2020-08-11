@@ -14,16 +14,33 @@ class PostRemoteUseCase(
     private val mapper: DTOtoPostMapper
 ) {
 
+    /**
+     * 🔥 This function FAILS EXCEPTION TEST due to
+     * `.flowOn(Dispatchers.IO)` using Dispatchers.IO instead of same thread
+     */
     fun getPostFlow(): Flow<List<Post>> {
         return postRemoteRepository.getPostFlow()
 
-                // 🔥 This method is just to show flowOn below changes current thread
+            // 🔥 This method is just to show flowOn below changes current thread
             .map {
                 // Runs in IO Thread DefaultDispatcher-worker-2
                 println("⏰ PostsUseCase map() FIRST thread: ${Thread.currentThread().name}")
-               it
+                it
             }
             .flowOn(Dispatchers.IO)
+            .map {
+                // Runs in Default Thread DefaultDispatcher-worker-1
+                println("⏰ PostsUseCase map() thread: ${Thread.currentThread().name}")
+                mapper.map(it)
+            }
+            // This is a upstream operator, does not leak downstream
+            .flowOn(Dispatchers.Default)
+
+    }
+
+
+    fun getPostFlowSimple(): Flow<List<Post>> {
+        return postRemoteRepository.getPostFlow()
             .map {
                 // Runs in Default Thread DefaultDispatcher-worker-1
                 println("⏰ PostsUseCase map() thread: ${Thread.currentThread().name}")
