@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
-
 class PostDBUseCase(
     private val postDBRepository: PostDBRepository,
     private val entityToPostMapper: EntityToPostMapper,

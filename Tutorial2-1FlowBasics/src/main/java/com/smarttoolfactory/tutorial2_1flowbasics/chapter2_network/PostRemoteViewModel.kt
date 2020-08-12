@@ -14,9 +14,6 @@ class PostNetworkViewModel(
     private val postsUseCase: PostRemoteUseCase
 ) : ViewModel() {
 
-
-    val testInt = MutableLiveData<Int>()
-
     /**
      * LiveData to test network operation with [Post]
      */
@@ -71,17 +68,14 @@ class PostNetworkViewModel(
         }
     }
 
-
     fun onClick(post: Post) {
 
     }
-
 
     override fun onCleared() {
         super.onCleared()
         coroutineScope.cancel()
     }
-
 }
 
 class PostViewModelFactory :

@@ -53,18 +53,15 @@ fun <T> LiveData<T>.getOrAwaitValue(
  * * Use with `InstantTaskExecutorRule` or a similar mechanism to execute tasks synchronously.
  *
  */
-class TestObserver<T>(
-    private val liveData: LiveData<T>,
-    private val time: Long = 2,
-    private val timeUnit: TimeUnit = TimeUnit.SECONDS,
-    private val valueCount: Int = -1
-) : Observer<T> {
 
-    private val latch: CountDownLatch = if (valueCount > 0) {
-        CountDownLatch(valueCount)
-    } else {
-        CountDownLatch(1)
-    }
+/*
+    TODO Add observe forever and timeout mechanism
+
+    Hint: Make other functions wait while onChanged is still running
+ */
+class LiveDataTestObserver<T> constructor(
+    private val liveData: LiveData<T>
+) : Observer<T> {
 
     init {
         liveData.observeForever(this)
@@ -73,28 +70,17 @@ class TestObserver<T>(
     private val testValues = mutableListOf<T>()
 
     override fun onChanged(t: T) {
-
         if (t != null) testValues.add(t)
-
-//        if (valueCount > 0) {
-//            latch.countDown()
-//        }
-//
-//        // Don't wait indefinitely if the LiveData is not set.
-//        if (!latch.await(time, timeUnit)) {
-//            clear()
-//            throw TimeoutException("LiveData value was never set.")
-//        }
     }
 
-    fun assertNoValues(): TestObserver<T> {
+    fun assertNoValues(): LiveDataTestObserver<T> {
         if (testValues.isNotEmpty()) throw AssertionException(
             "Assertion error with actual size ${testValues.size}"
         )
         return this
     }
 
-    fun assertValueCount(count: Int): TestObserver<T> {
+    fun assertValueCount(count: Int): LiveDataTestObserver<T> {
         if (count < 0) throw AssertionException(
             "Assertion error! value count cannot be smaller than zero"
         )
@@ -104,8 +90,8 @@ class TestObserver<T>(
         return this
     }
 
-    fun assertValues(vararg predicates: T): TestObserver<T> {
-        if (!testValues.containsAll(predicates.asList())) throw  Exception("Assertion error")
+    fun assertValues(vararg predicates: T): LiveDataTestObserver<T> {
+        if (!testValues.containsAll(predicates.asList())) throw  AssertionException("Assertion error!")
         return this
     }
 
@@ -119,12 +105,12 @@ class TestObserver<T>(
 //        return this
 //    }
 
-    fun assertValues(predicate: (List<T>) -> Boolean): TestObserver<T> {
+    fun assertValues(predicate: (List<T>) -> Boolean): LiveDataTestObserver<T> {
         predicate(testValues)
         return this
     }
 
-    fun values(predicate: (List<T>) -> Unit): TestObserver<T> {
+    fun values(predicate: (List<T>) -> Unit): LiveDataTestObserver<T> {
         predicate(testValues)
         return this
     }
@@ -149,9 +135,9 @@ class TestObserver<T>(
     }
 }
 
-fun <T> LiveData<T>.test(): TestObserver<T> {
+fun <T> LiveData<T>.test(): LiveDataTestObserver<T> {
 
-    val testObserver = TestObserver(this)
+    val testObserver = LiveDataTestObserver(this)
 
     // Remove this testObserver that is added in init block of TestObserver, and clears previous data
     testObserver.clear()

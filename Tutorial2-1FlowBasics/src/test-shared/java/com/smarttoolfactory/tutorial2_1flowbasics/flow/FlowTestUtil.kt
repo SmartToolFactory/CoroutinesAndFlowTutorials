@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-class TestObserver<T>(
+class FlowTestObserver<T>(
     private val coroutineScope: CoroutineScope,
     private val flow: Flow<T>
 ) {
@@ -19,14 +19,14 @@ class TestObserver<T>(
         flow.collect { testValues.add(it) }
     }
 
-    fun assertNoValues(): TestObserver<T> {
+    fun assertNoValues(): FlowTestObserver<T> {
         if (testValues.isNotEmpty()) throw AssertionException(
             "Assertion error with actual size ${testValues.size}"
         )
         return this
     }
 
-    fun assertValueCount(count: Int): TestObserver<T> {
+    fun assertValueCount(count: Int): FlowTestObserver<T> {
         if (count < 0) throw AssertionException(
             "Assertion error! value count cannot be smaller than zero"
         )
@@ -36,10 +36,8 @@ class TestObserver<T>(
         return this
     }
 
-    fun assertValues(vararg predicates: T): TestObserver<T> {
-
-        if (!testValues.containsAll(predicates.asList())) throw  Exception("Assertion error")
-
+    fun assertValues(vararg predicates: T): FlowTestObserver<T> {
+        if (!testValues.containsAll(predicates.asList())) throw  AssertionException("Assertion error some ")
         return this
     }
 
@@ -53,12 +51,12 @@ class TestObserver<T>(
 //        return this
 //    }
 
-    fun assertValues(predicate: (List<T>) -> Boolean): TestObserver<T> {
+    fun assertValues(predicate: (List<T>) -> Boolean): FlowTestObserver<T> {
         predicate(testValues)
         return this
     }
 
-    fun values(predicate: (List<T>) -> Unit): TestObserver<T> {
+    fun values(predicate: (List<T>) -> Unit): FlowTestObserver<T> {
         predicate(testValues)
         return this
     }
@@ -73,6 +71,6 @@ class TestObserver<T>(
 
 }
 
-fun <T> Flow<T>.test(scope: CoroutineScope): TestObserver<T> {
-    return TestObserver(scope, this)
+fun <T> Flow<T>.test(scope: CoroutineScope): FlowTestObserver<T> {
+    return FlowTestObserver(scope, this)
 }
