@@ -1,8 +1,8 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.chapter2_network
 
 import androidx.lifecycle.*
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.Status
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.ViewState
+import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Status
+import com.smarttoolfactory.tutorial2_1flowbasics.data.model.ViewState
 import com.smarttoolfactory.tutorial2_1flowbasics.data.api.RetrofitFactory
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.DTOtoPostMapper
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Post
@@ -14,10 +14,8 @@ class PostNetworkViewModel(
     private val postsUseCase: PostRemoteUseCase
 ) : ViewModel() {
 
-    /**
-     * Scope to test with context with IO thread
-     */
-    private val myCoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    val testInt = MutableLiveData<Int>()
 
     /**
      * LiveData to test network operation with [Post]
@@ -50,13 +48,24 @@ class PostNetworkViewModel(
             postsUseCase.getPostFlow()
                 .onStart {
                     // Set current state to LOADING
-                    _postViewState.value = ViewState(Status.LOADING)
+                    _postViewState.value =
+                        ViewState(
+                            Status.LOADING
+                        )
                 }
                 .catch { throwable: Throwable ->
-                    _postViewState.value = ViewState(Status.ERROR, error = throwable)
+                    _postViewState.value =
+                        ViewState(
+                            Status.ERROR,
+                            error = throwable
+                        )
                 }
                 .onEach { postList ->
-                    _postViewState.value = ViewState(Status.SUCCESS, data = postList)
+                    _postViewState.value =
+                        ViewState(
+                            Status.SUCCESS,
+                            data = postList
+                        )
                 }
                 .launchIn(coroutineScope)
         }

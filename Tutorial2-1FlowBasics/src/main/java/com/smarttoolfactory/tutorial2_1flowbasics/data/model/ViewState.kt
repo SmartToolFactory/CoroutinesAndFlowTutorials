@@ -1,8 +1,8 @@
-package com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth
+package com.smarttoolfactory.tutorial2_1flowbasics.data.model
 
 
 class ViewState<T>(
-    private val status: Status,
+    val status: Status,
     val data: T? = null,
     val error: Throwable? = null
 ) {

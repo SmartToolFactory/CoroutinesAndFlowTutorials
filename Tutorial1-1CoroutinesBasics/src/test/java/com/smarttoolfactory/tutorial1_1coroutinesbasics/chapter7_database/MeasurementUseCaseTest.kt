@@ -28,7 +28,6 @@ class MeasurementUseCaseTest {
         listOf(measurement1, measurement2, measurement3)
     }
 
-
     @Test
     fun `given data returned from, should return data`() = runBlockingTest {
 

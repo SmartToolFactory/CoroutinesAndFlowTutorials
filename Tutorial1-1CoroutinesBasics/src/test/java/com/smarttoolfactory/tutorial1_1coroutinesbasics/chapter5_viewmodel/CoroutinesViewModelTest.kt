@@ -38,7 +38,7 @@ class CoroutinesViewModelTest {
      *
      */
     @Test
-    fun `Given timeout shorter than 2000 ms, should return mock response`() =
+    fun `given timeout shorter than 2000 ms, should return mock response`() =
         testCoroutineDispatcher.runBlockingTest {
 
             // GIVEN

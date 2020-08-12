@@ -3,7 +3,7 @@ package com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_tru
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.ViewState
+import com.smarttoolfactory.tutorial2_1flowbasics.data.model.ViewState
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Post
 import com.smarttoolfactory.tutorial2_1flowbasics.util.Event
 

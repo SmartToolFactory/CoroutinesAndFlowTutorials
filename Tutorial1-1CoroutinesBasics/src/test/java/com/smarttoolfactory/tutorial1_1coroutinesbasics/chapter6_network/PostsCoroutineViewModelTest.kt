@@ -42,7 +42,7 @@ class PostsCoroutineViewModelTest {
     }
 
     @Test
-    fun `Given DataResult Error returned from useCase, should result error`() =
+    fun `given DataResult Error returned from useCase, should result error`() =
         testCoroutineRule.runBlockingTest {
 
             // GIVEN
@@ -62,7 +62,7 @@ class PostsCoroutineViewModelTest {
 
 
     @Test
-    fun `Given DataResult Success returned from useCase, should return data`() {
+    fun `given DataResult Success returned from useCase, should return data`() {
 
         // GIVEN
         coEvery {

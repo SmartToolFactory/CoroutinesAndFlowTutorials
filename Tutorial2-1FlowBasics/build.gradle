@@ -83,7 +83,6 @@ dependencies {
     // Lifecycle and ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$archLifecycleVersion"
-
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$archLifecycleVersion"
 
     // Coroutines
@@ -137,8 +136,11 @@ dependencies {
     // (Optional) If you need "Parameterized Tests"
 //    testImplementation "org.junit.jupiter:junit-jupiter-params:5.4.0"
 
+    // AndroidX Test
+    testImplementation "androidx.arch.core:core-testing:$archTestingVersion"
+    testImplementation "org.robolectric:robolectric:$robolectricVersion"
+
     // AndroidX Test - JVM testing
-    // InstantTaskExecutorRule is used with core
     testImplementation "androidx.test:core-ktx:$androidXTestCoreVersion"
     testImplementation "androidx.test.ext:junit:$androidXTestExtKotlinRunnerVersion"
 

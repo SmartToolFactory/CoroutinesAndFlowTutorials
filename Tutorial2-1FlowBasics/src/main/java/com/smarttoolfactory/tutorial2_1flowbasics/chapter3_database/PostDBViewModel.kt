@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.Status
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.ViewState
+import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Status
+import com.smarttoolfactory.tutorial2_1flowbasics.data.model.ViewState
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.EntityToPostMapper
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.PostToEntityMapper
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Post
@@ -69,14 +69,25 @@ class PostDBViewModel(
         postsUseCase.getPostFlow()
             .flowOn(Dispatchers.Main)
             .onStart {
-                _postViewState.value = ViewState(Status.LOADING)
+                _postViewState.value =
+                    ViewState(
+                        Status.LOADING
+                    )
             }
             .catch { throwable: Throwable ->
-                _postViewState.value = ViewState(Status.ERROR, error = throwable)
+                _postViewState.value =
+                    ViewState(
+                        Status.ERROR,
+                        error = throwable
+                    )
             }
             .onEach { postList ->
                 println("😇 PostDBViewModel getPosts() thread: ${Thread.currentThread().name}")
-                _postViewState.value = ViewState(Status.SUCCESS, data = postList)
+                _postViewState.value =
+                    ViewState(
+                        Status.SUCCESS,
+                        data = postList
+                    )
             }
             .launchIn(myCoroutineScope)
 

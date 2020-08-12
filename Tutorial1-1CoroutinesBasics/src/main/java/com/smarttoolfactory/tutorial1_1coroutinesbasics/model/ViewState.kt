@@ -1,5 +1,6 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.model
 
+import androidx.annotation.VisibleForTesting
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Status
 
 

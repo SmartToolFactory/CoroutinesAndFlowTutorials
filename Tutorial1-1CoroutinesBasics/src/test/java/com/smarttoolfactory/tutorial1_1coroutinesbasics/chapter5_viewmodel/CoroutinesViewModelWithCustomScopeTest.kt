@@ -30,7 +30,7 @@ class CoroutinesViewModelWithCustomScopeTest {
      *
      */
     @Test
-    fun `Given timeout shorter than 2000 ms, should return mock response`() =
+    fun `given timeout shorter than 2000 ms, should return mock response`() =
         testCoroutineRule.runBlockingTest {
 
             // GIVEN
@@ -123,9 +123,7 @@ class CoroutinesViewModelWithCustomScopeTest {
         val expected = viewModel.resultMultiple.value
         println("Test expected: $expected")
         Truth.assertThat(expected?.contains(actualPartial)).isTrue()
-
     }
-
 
     @Before
     fun setUp() {

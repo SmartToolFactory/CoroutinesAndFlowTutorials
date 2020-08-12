@@ -17,7 +17,6 @@ import org.junit.Test
 
 class MeasurementViewModelTest {
 
-
     /**
      * Not using this causes java.lang.RuntimeException: Method getMainLooper in android.os.Looper
      * not mocked when <code>this.observeForever(observer)</code> is called

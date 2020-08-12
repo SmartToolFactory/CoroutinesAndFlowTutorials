@@ -58,7 +58,7 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
     }
 
     @Test
-    fun `Given we have a valid request, should be done to correct url`() =
+    fun `given we have a valid request, should be done to correct url`() =
         testCoroutineScope.runBlockingTest {
 
             // GIVEN
@@ -88,7 +88,7 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
      *
      */
     @Test
-    fun `Given api return 200, should have list of posts`() =
+    fun `given api return 200, should have list of posts`() =
         testCoroutineScope.runBlockingTest {
 
             // GIVEN
@@ -115,7 +115,7 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
      * ❌ This test fails
      */
     @Test
-    fun `Given Server down, should return 500 error`() = testCoroutineScope.runBlockingTest {
+    fun `given Server down, should return 500 error`() = testCoroutineScope.runBlockingTest {
 
         // GIVEN
         mockWebServer.enqueue(MockResponse().setResponseCode(500))
