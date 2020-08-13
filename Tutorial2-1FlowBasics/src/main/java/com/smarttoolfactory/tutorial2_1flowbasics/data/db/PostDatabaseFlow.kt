@@ -59,10 +59,10 @@ interface PostDao {
     /**
      * Get post with specified id.
      *
-     * * If post with id not in database returns NULL
+     * * If post with id not in database returns NULL whether [PostEntity] is nullable or not
      */
     @Query("SELECT * FROM post WHERE id =:postId")
-    suspend fun getPost(postId: Int): PostEntity
+    suspend fun getPost(postId: Int): PostEntity?
 
 
     /*

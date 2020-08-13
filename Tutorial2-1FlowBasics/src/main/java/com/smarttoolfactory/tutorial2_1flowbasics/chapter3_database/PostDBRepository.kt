@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 
 class PostDBRepository(private val postDao: PostDao) {
 
-    fun getPostFlow(): Flow<List<PostEntity>> {
+    fun getPostListFlow(): Flow<List<PostEntity>> {
         println("🤔 PostDBRepository getPostFlow() thread: ${Thread.currentThread().name}")
       return  postDao.getPostListFlow().map {
           println("🤔 PostDBRepository getPostFlow() MAP thread: ${Thread.currentThread().name}")
@@ -17,7 +17,11 @@ class PostDBRepository(private val postDao: PostDao) {
       }
     }
 
-    suspend fun getPosts() = postDao.getPostList()
+     fun getPostByIdFlow(id:Int) =postDao.getPostFlow(id)
+
+    suspend fun getPostList() = postDao.getPostList()
+
+    suspend fun getPostById(id: Int) = postDao.getPost(id)
 
     suspend fun getPostCount() = postDao.getPostCount()
 

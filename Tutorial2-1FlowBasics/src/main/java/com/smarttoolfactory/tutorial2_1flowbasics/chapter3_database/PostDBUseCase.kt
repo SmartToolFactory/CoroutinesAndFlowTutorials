@@ -21,8 +21,8 @@ class PostDBUseCase(
 
     suspend fun getPostCount() = postDBRepository.getPostCount()
 
-    fun getPostFlow(): Flow<List<Post>> {
-        return postDBRepository.getPostFlow()
+    fun getPostListFlow(): Flow<List<Post>> {
+        return postDBRepository.getPostListFlow()
             // This is a upstream operator, does not leak downstream
             .map {
                 println("⏰ PostsUseCase FIRST map() thread: ${Thread.currentThread().name}")
@@ -38,7 +38,7 @@ class PostDBUseCase(
     }
 
     fun getPostFlowAlt(): Flow<List<Post>> {
-        return flow { emit(postDBRepository.getPosts()) }
+        return flow { emit(postDBRepository.getPostList()) }
             // This is a upstream operator, does not leak downstream
             .flowOn(Dispatchers.IO)
             .map {

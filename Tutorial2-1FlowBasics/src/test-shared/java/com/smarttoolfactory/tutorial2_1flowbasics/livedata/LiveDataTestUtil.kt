@@ -2,7 +2,6 @@ package com.smarttoolfactory.tutorial2_1flowbasics.livedata
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.smarttoolfactory.tutorial2_1flowbasics.AssertionException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -74,24 +73,24 @@ class LiveDataTestObserver<T> constructor(
     }
 
     fun assertNoValues(): LiveDataTestObserver<T> {
-        if (testValues.isNotEmpty()) throw AssertionException(
+        if (testValues.isNotEmpty()) throw AssertionError(
             "Assertion error with actual size ${testValues.size}"
         )
         return this
     }
 
     fun assertValueCount(count: Int): LiveDataTestObserver<T> {
-        if (count < 0) throw AssertionException(
+        if (count < 0) throw AssertionError(
             "Assertion error! value count cannot be smaller than zero"
         )
-        if (count != testValues.size) throw AssertionException(
+        if (count != testValues.size) throw AssertionError(
             "Assertion error! with expected $count while actual ${testValues.size}"
         )
         return this
     }
 
     fun assertValues(vararg predicates: T): LiveDataTestObserver<T> {
-        if (!testValues.containsAll(predicates.asList())) throw  AssertionException("Assertion error!")
+        if (!testValues.containsAll(predicates.asList())) throw  AssertionError("Assertion error!")
         return this
     }
 

@@ -66,7 +66,7 @@ class PostDBViewModel(
         // Set current state to LOADING
 
         // 🔥🔥 Get result from network, invoked in Retrofit's enqueue function thread
-        postsUseCase.getPostFlow()
+        postsUseCase.getPostListFlow()
             .flowOn(Dispatchers.Main)
             .onStart {
                 _postViewState.value =

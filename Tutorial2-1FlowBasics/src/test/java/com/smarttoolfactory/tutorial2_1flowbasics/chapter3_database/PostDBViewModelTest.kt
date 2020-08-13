@@ -39,7 +39,7 @@ class PostDBViewModelTest {
         testCoroutineRule.runBlockingTest {
 
             // GIVEN
-            every { useCase.getPostFlow() } returns flow<List<Post>> {
+            every { useCase.getPostListFlow() } returns flow<List<Post>> {
                 emit(throw Exception("Network Exception"))
             }
 
@@ -61,7 +61,7 @@ class PostDBViewModelTest {
             val finalState = testObserver.values()[1]
             Truth.assertThat("Network Exception").isEqualTo(finalState?.error?.message)
             Truth.assertThat(finalState?.error).isInstanceOf(Exception::class.java)
-            verify(atMost = 1) { useCase.getPostFlow() }
+            verify(atMost = 1) { useCase.getPostListFlow() }
         }
 
     @Test
@@ -69,7 +69,7 @@ class PostDBViewModelTest {
         testCoroutineRule.runBlockingTest {
 
             // GIVEN
-            every { useCase.getPostFlow() } returns flow<List<Post>> {
+            every { useCase.getPostListFlow() } returns flow<List<Post>> {
                 emit(postList)
             }
             val testObserver = postDBViewModel.postViewState.test()
@@ -83,7 +83,7 @@ class PostDBViewModelTest {
 
             val actual = viewStates.last().data
             Truth.assertThat(actual?.size).isEqualTo(100)
-            verify(atMost = 1) { useCase.getPostFlow() }
+            verify(atMost = 1) { useCase.getPostListFlow() }
             testObserver.dispose()
         }
 

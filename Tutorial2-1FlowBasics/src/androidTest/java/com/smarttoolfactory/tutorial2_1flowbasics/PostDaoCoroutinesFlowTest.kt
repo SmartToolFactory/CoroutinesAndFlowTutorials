@@ -8,8 +8,7 @@ import com.google.common.truth.Truth
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDao
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDatabase
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostEntity
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.TestCoroutineScope
+import com.smarttoolfactory.tutorial2_1flowbasics.flow.test
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
@@ -18,7 +17,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class PostDaoTest {
+class PostDaoCoroutinesFlowTest {
 
     companion object {
         val postEntityList =
@@ -28,8 +27,8 @@ class PostDaoTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val testCoroutineDispatcher = TestCoroutineDispatcher()
-    private val testCoroutineScope = TestCoroutineScope(testCoroutineDispatcher)
+    @get:Rule
+    var testCoroutineRule = TestCoroutineRule()
 
     private lateinit var database: PostDatabase
 
@@ -38,7 +37,9 @@ class PostDaoTest {
      */
     private lateinit var measurementDao: PostDao
 
-
+    /*
+        Insert
+     */
     @Test
     fun shouldInsertSinglePost() = runBlockingTest {
 
@@ -72,6 +73,9 @@ class PostDaoTest {
         Truth.assertThat(postCount).isEqualTo(postEntityList.size)
     }
 
+    /*
+        Get Post List Suspend
+     */
     @Test
     fun givenDBEmptyShouldReturnEmptyList() = runBlockingTest {
 
@@ -79,11 +83,11 @@ class PostDaoTest {
         val postCount = measurementDao.getPostCount()
 
         // WHEN
-        val postEntityListl = measurementDao.getPostList()
+        val postEntityList = measurementDao.getPostList()
 
         // THEN
         Truth.assertThat(postCount).isEqualTo(0)
-        Truth.assertThat(postEntityListl).hasSize(0)
+        Truth.assertThat(postEntityList).hasSize(0)
     }
 
     @Test
@@ -101,6 +105,10 @@ class PostDaoTest {
         Truth.assertThat(actual).isEqualTo(expected)
     }
 
+
+    /*
+        Get Post Suspend Nullable
+     */
     @Test
     fun givenDBEmptyShouldReturnNullWithId() = runBlockingTest {
 
@@ -115,6 +123,18 @@ class PostDaoTest {
         Truth.assertThat(postEntity).isNull()
     }
 
+    @Test
+    fun givenDBEmptyShouldReturnFlowWithNull() = testCoroutineRule.runBlockingTest {
+
+        // GIVEN
+
+        // WHEN
+        val testObserver = measurementDao.getPostFlow(1).test(this)
+
+        // THEN
+
+
+    }
 
     @Test
     fun givenDBPopulatedShouldReturnCorrectMeasurementWithId() = runBlockingTest {
@@ -130,7 +150,18 @@ class PostDaoTest {
         Truth.assertThat(actual).isEqualTo(expected)
     }
 
+    /*
+        Get Post List Flow
+     */
 
+
+    /*
+        Get Post Flow
+     */
+
+    /*
+        Delete Suspend
+     */
     @Test
     fun givenEveryMeasurementsDeletedShouldReturnEmptyList() = runBlockingTest {
 

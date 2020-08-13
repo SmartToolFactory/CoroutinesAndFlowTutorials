@@ -50,11 +50,17 @@ interface MeasurementDao {
     @Insert
     suspend fun insertMultipleAsync(measurements: List<Measurement>): List<Long>
 
+    /**
+     * Returns empty list if there are no measurement in DB
+     */
     @Query("SELECT * FROM measurements")
     suspend fun getMeasurementsAsync(): List<Measurement>
 
+    /**
+     * Returns null if there are no measurement in DB
+     */
     @Query("SELECT * FROM measurements WHERE id =:measurementId")
-    suspend fun getMeasurementsAsyncWithId(measurementId: Long): Measurement
+    suspend fun getMeasurementsAsyncWithId(measurementId: Long): Measurement?
 
     @Query("SELECT COUNT(*) FROM measurements")
     suspend fun getMeasurementCount(): Int

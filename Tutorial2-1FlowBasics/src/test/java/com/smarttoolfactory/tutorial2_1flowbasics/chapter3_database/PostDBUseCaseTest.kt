@@ -1,6 +1,6 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.chapter3_database
 
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter2_network.BaseCoroutineJUnit5Test
+import com.smarttoolfactory.tutorial2_1flowbasics.base.BaseCoroutineJUnit5Test
 import com.smarttoolfactory.tutorial2_1flowbasics.convertFromJsonToObjectList
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.EntityToPostMapper
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.PostToEntityMapper
@@ -33,9 +33,10 @@ class PostDBUseCaseTest : BaseCoroutineJUnit5Test() {
     }
 
     @Test
-    fun `given empty list returned`() = testCoroutineScope.runBlockingTest {
+    fun `given empty list returned from repo, should return an empty list`() =
+        testCoroutineScope.runBlockingTest {
 
-    }
+        }
 
     @BeforeEach
     override fun setUp() {

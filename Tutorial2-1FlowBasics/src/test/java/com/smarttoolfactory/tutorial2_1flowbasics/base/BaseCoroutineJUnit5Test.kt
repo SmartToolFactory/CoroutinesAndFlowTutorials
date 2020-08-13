@@ -1,4 +1,4 @@
-package com.smarttoolfactory.tutorial2_1flowbasics.chapter2_network
+package com.smarttoolfactory.tutorial2_1flowbasics.base
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.TestCoroutineDispatcher

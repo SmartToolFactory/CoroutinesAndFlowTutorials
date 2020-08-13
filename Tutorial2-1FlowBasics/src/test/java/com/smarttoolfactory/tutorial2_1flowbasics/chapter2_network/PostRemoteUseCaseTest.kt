@@ -1,12 +1,17 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.chapter2_network
 
 import com.google.common.truth.Truth
+import com.smarttoolfactory.tutorial2_1flowbasics.base.BaseCoroutineJUnit5Test
 import com.smarttoolfactory.tutorial2_1flowbasics.convertFromJsonToObjectList
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.DTOtoPostMapper
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Post
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostDTO
+import com.smarttoolfactory.tutorial2_1flowbasics.flow.test
 import com.smarttoolfactory.tutorial2_1flowbasics.getResourceAsText
-import io.mockk.*
+import io.mockk.clearMocks
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
@@ -99,11 +104,16 @@ class PostRemoteUseCaseTest : BaseCoroutineJUnit5Test() {
             Truth.assertThat(expected?.message).isEqualTo("Network Exception")
         }
 
+
+    /**
+     * ✅ THIS TEST PASSES with Alternative 2 or when Alternative 1 with only one flowOn
+     * or 2 flowOn with same dispatcher in [PostRemoteRepository.getPostFlow]
+     */
     @Test
     fun `given data returned from api, should have data`() = testCoroutineScope.runBlockingTest {
 
         // GIVEN
-        coEvery { postRemoteRepository.getPostFlow() } returns flow { emit(postDTOs) }
+        every { postRemoteRepository.getPostFlow() } returns flow { emit(postDTOs) }
         every { dtoToPostMapper.map(postDTOs) } returns postList
 
         val actual = postList

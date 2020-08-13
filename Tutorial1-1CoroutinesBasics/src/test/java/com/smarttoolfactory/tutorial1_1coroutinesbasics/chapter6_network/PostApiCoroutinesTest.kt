@@ -3,10 +3,7 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network
 import com.google.common.truth.Truth
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Post
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.PostApiCoroutines
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*
 import okhttp3.OkHttpClient
 import okhttp3.mockwebserver.MockResponse
@@ -92,21 +89,44 @@ class PostApiCoroutinesTest : AbstractPostApiTest() {
         testCoroutineScope.runBlockingTest {
 
             // GIVEN
-            launch(testCoroutineScope.coroutineContext) {
+            val job1 = launch(testCoroutineScope.coroutineContext) {
                 enqueueResponse(200)
+                println("⏰ First job ${Thread.currentThread().name}")
             }
 
+
+            job1.cancelAndJoin()
 
             // WHEN
             var posts: List<Post> = emptyList()
-            launch(testCoroutineScope.coroutineContext) {
+            val job2 = launch(testCoroutineScope.coroutineContext) {
+                println("⏰ Second job START in thread: ${Thread.currentThread().name}")
                 posts = postApi.getPosts()
+                println("⏰ Second job END in thread: ${Thread.currentThread().name}")
             }
+
+            job2.cancelAndJoin()
 
 
             // THEN
+            println("🎃 THEN in thread: ${Thread.currentThread().name}")
             Truth.assertThat(posts).isNotNull()
             Truth.assertThat(posts.size).isEqualTo(100)
+
+            /*
+                PASSED TEST Prints:
+                AbstractPostApiTest setUp() MockWebServer[-1]
+                Aug 12, 2020 8:10:43 PM okhttp3.mockwebserver.MockWebServer$2 execute
+                INFO: MockWebServer[63985] starting to accept connections
+                ⏰ First job main @coroutine#2
+                ⏰ Second job START in thread: main @coroutine#3
+                🎃 THEN in thread: main @coroutine#1
+                Aug 12, 2020 8:10:43 PM okhttp3.mockwebserver.MockWebServer$3 processOneRequest
+                INFO: MockWebServer[63985] received request: GET /posts HTTP/1.1 and responded: HTTP/1.1 200 OK
+                ⏰ Second job END in thread: OkHttp http://localhost:63985/... @coroutine#3
+                Aug 12, 2020 8:10:44 PM okhttp3.mockwebserver.MockWebServer$2 acceptConnections
+                INFO: MockWebServer[63985] done accepting connections: Socket closed
+             */
 
         }
 

@@ -4,13 +4,12 @@ import com.google.common.truth.Truth
 import com.smarttoolfactory.tutorial2_1flowbasics.convertFromJsonToObjectList
 import com.smarttoolfactory.tutorial2_1flowbasics.data.api.PostApi
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostDTO
+import com.smarttoolfactory.tutorial2_1flowbasics.flow.test
 import com.smarttoolfactory.tutorial2_1flowbasics.getResourceAsText
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.mockk
-import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.test.*
@@ -57,16 +56,26 @@ class PostRemoteRepositoryTest {
 //            }
 
             // TODO Alternative 2
-            postRemoteRepository.getPostFlow()
-                .catch { throwable: Throwable ->
-                    expected = throwable as Exception
-                }
-                .launchIn(this)
+//            postRemoteRepository.getPostFlow()
+//                .catch { throwable: Throwable ->
+//                    expected = throwable as Exception
+//                }
+//                .launchIn(this)
 
             // THEN
-            Truth.assertThat(expected).isNotNull()
-            Truth.assertThat(expected).isInstanceOf(Exception::class.java)
-            Truth.assertThat(expected?.message).isEqualTo("Network Exception")
+//            Truth.assertThat(expected).isNotNull()
+//            Truth.assertThat(expected).isInstanceOf(Exception::class.java)
+//            Truth.assertThat(expected?.message).isEqualTo("Network Exception")
+
+            // TODO Alternative 3
+
+            postRemoteRepository.getPostFlow()
+                .test(testCoroutineScope)
+//                .assertError(Exception("Network Exception"))
+                .assertError {
+                    it.message == "Network Exception"
+                }
+                .dispose()
         }
 
 
@@ -131,4 +140,3 @@ class PostRemoteRepositoryTest {
         clearMocks(postApi)
     }
 }
-

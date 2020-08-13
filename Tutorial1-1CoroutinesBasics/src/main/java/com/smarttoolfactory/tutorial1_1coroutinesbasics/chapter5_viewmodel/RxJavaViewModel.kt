@@ -52,9 +52,9 @@ class RxJavaViewModel : ViewModel() {
                 enableResultButton.postValue(true)
             }
             /*
-                🔥subscribeOn is where we subscribe another observable, not the thread map() function is called
+                🔥subscribeOn is where we subscribe another observable, NOT the thread map() function is called
                 This does not effect anything since there is another subscribeOn(Schedulers.io()) which works upstream
-                only with Observables, not mapping or observing methods
+                only with Observables, NOT mapping or observing operators that manipulate output
              */
             .subscribeOn(Schedulers.computation())
             // 🔥observeOn works down stream any subscribe or map method works in thread that observeOn specifies

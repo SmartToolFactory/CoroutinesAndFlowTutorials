@@ -22,12 +22,13 @@ abstract class AbstractPostApiTest {
     @BeforeEach
     open fun setUp() {
         mockWebServer = MockWebServer()
-        println("AbstractPostApiTest setUp() $mockWebServer")
+        println("AbstractPostApiTest SETUP() $mockWebServer")
     }
 
 
     @AfterEach
     open fun tearDown() {
+        println("AbstractPostApiTest TEARDOWN() $mockWebServer")
         mockWebServer.shutdown()
     }
 

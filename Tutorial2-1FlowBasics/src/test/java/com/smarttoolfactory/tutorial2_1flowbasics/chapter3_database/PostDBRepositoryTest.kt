@@ -1,7 +1,7 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.chapter3_database
 
 import com.google.common.truth.Truth
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter2_network.BaseCoroutineJUnit5Test
+import com.smarttoolfactory.tutorial2_1flowbasics.base.BaseCoroutineJUnit5Test
 import com.smarttoolfactory.tutorial2_1flowbasics.convertFromJsonToObjectList
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDao
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostEntity
@@ -18,6 +18,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import java.lang.Exception
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PostDBRepositoryTest : BaseCoroutineJUnit5Test() {
@@ -47,10 +48,10 @@ class PostDBRepositoryTest : BaseCoroutineJUnit5Test() {
         testCoroutineScope.runBlockingTest {
 
             // GIVEN
-            every { postDBRepository.getPostFlow() } returns flow { emit(listOf()) }
+            every { postDBRepository.getPostListFlow() } returns flow { emit(listOf()) }
 
             // WHEN
-            val testObserver = postDBRepository.getPostFlow().test(this)
+            val testObserver = postDBRepository.getPostListFlow().test(this)
 
             // THEN
             val actual = testObserver.values()[0]
@@ -63,10 +64,12 @@ class PostDBRepositoryTest : BaseCoroutineJUnit5Test() {
         testCoroutineScope.runBlockingTest {
 
             // GIVEN
-            every { postDBRepository.getPostFlow() } returns flow { emit(postEntityList) }
+            every { postDBRepository.getPostListFlow() } returns flow { emit(postEntityList) }
 
             // WHEN
-            val testObserver = postDBRepository.getPostFlow().test(this)
+            val testObserver = postDBRepository.getPostListFlow().test(this)
+
+            testObserver.assertError(Exception())
 
             // THEN
             val actual = testObserver.values()[0]

@@ -11,7 +11,6 @@ import io.reactivex.Single
 @Dao
 interface PostDaoRxJava {
 
-
     /*
         ***** RxJava ******
      */
@@ -45,7 +44,7 @@ interface PostDaoRxJava {
      * `androidx.room.EmptyResultSetException: Query returned empty result set: SELECT * FROM post WHERE id=?`
      */
     @Query("SELECT * FROM post WHERE id=:postId")
-    fun getPostByIdSingle(postId: Int): Single<PostEntity?>
+    fun getPostByIdSingle(postId: Int): Single<PostEntity>
 
     /**
      * When there is NO entity in the database and the query returns no rows, Maybe will complete.
@@ -65,7 +64,7 @@ interface PostDaoRxJava {
         Get one post inside a list using id
      */
     @Query("SELECT * FROM post WHERE id=:postId")
-    fun getPostListByIdSingle(postId: Int): Single<List<PostEntity>?>
+    fun getPostListByIdSingle(postId: Int): Single<List<PostEntity>>
 
     @Query("SELECT * FROM post WHERE id=:postId")
     fun getPostListByIdMaybe(postId: Int): Maybe<List<PostEntity>>
