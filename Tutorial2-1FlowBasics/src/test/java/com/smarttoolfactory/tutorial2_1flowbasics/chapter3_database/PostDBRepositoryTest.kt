@@ -34,7 +34,8 @@ class PostDBRepositoryTest : BaseCoroutineJUnit5Test() {
     fun testFlowObserver() = testCoroutineScope.runBlockingTest {
 
         val subject = Channel<Int>()
-        val observer = subject.consumeAsFlow().test(this)
+        val observer = subject.consumeAsFlow()
+            .test(this)
 
         observer.assertNoValues()
         subject.send(0)
@@ -56,7 +57,7 @@ class PostDBRepositoryTest : BaseCoroutineJUnit5Test() {
             // THEN
             val actual = testObserver.values()[0]
             Truth.assertThat(actual.size).isEqualTo(0)
-//            testObserver.dispose()
+            testObserver.dispose()
         }
 
     @Test
@@ -68,8 +69,6 @@ class PostDBRepositoryTest : BaseCoroutineJUnit5Test() {
 
             // WHEN
             val testObserver = postDBRepository.getPostListFlow().test(this)
-
-            testObserver.assertError(Exception())
 
             // THEN
             val actual = testObserver.values()[0]

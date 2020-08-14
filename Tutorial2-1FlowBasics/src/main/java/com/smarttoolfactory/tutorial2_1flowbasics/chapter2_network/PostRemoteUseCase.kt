@@ -3,10 +3,7 @@ package com.smarttoolfactory.tutorial2_1flowbasics.chapter2_network
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.DTOtoPostMapper
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Post
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 
 
 class PostRemoteUseCase(
@@ -26,6 +23,11 @@ class PostRemoteUseCase(
                 // Runs in IO Thread DefaultDispatcher-worker-2
                 println("⏰ PostsUseCase map() FIRST thread: ${Thread.currentThread().name}")
                 it
+            }
+            .flowOn(Dispatchers.Main)
+            .flatMapConcat {
+                println("😍 PostsUseCase flatMapConcat()  thread: ${Thread.currentThread().name}")
+                flow{emit((it))}
             }
             .flowOn(Dispatchers.IO)
             .map {

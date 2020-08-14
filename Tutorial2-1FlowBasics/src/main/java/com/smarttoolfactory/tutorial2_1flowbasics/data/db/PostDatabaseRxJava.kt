@@ -1,8 +1,10 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.data.db
 
 import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.Query
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostEntity
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -10,6 +12,10 @@ import io.reactivex.Single
 
 @Dao
 interface PostDaoRxJava {
+
+
+    @Insert
+    fun insertPost(postEntity: PostEntity): Completable
 
     /*
         ***** RxJava ******
@@ -45,6 +51,9 @@ interface PostDaoRxJava {
      */
     @Query("SELECT * FROM post WHERE id=:postId")
     fun getPostByIdSingle(postId: Int): Single<PostEntity>
+
+    @Query("SELECT * FROM post WHERE id=:postId")
+    fun getPostByIdSingleNullable(postId: Int): Single<PostEntity?>
 
     /**
      * When there is NO entity in the database and the query returns no rows, Maybe will complete.

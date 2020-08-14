@@ -4,6 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.smarttoolfactory.tutorial2_1flowbasics.R
 import com.smarttoolfactory.tutorial2_1flowbasics.di.ServiceLocator
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -26,54 +28,76 @@ class Activity4SingleSourceOfTruth : AppCompatActivity(), CoroutineScope {
         val postDao = serviceLocator.providePostDao()
         val postApi = serviceLocator.providePostApi()
 
-//        val disposable = postDao.getPostByIdSingle(1)
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .doOnComplete {
-//                println("⏰ MainActivity onCreate() doOnComplete()")
-//            }
-//            .doOnError {throwable ->
-//                println("🔥 MainActivity onCreate() doOnError() throwable: $throwable")
-//            }
-//            .subscribe { postEntity ->
-//                println("🍎 MainActivity onCreate() getPostsMaybe(): postEntity")
-//            }
-//
-//            .subscribe(
-//                {postEntity->
-//                    println("🍎 MainActivity onCreate() onNext(): $postEntity")
-//                },
-//                {throwable->
-//                    println("🍏 MainActivity onCreate() onError() throwable: $throwable")
-//                }
-//                {
-//                    println("🎃 MainActivity onCreate() onComplete()")
-//
-//                }
-//            )
+        examineDaoWithRxJava()
 
+    }
 
-//        launch {
-//            val mapper = serviceLocator.provideMapper()
-//            val posts = postApi.getPosts()
-//            postDao.insert(mapper.map(posts))
-//
-//
-//            val postList = postDao.getPostList()
-//            val postZero = postDao.getPost(1)
-//            println("🍏 MainActivity onCreate() PostList: ${postList.size}, zero post: $postZero")
-//
-//            postDao.getPostListFlow().collect {
-//                println("🍎 MainActivity onCreate() postListFlow: ${it.size}")
-//
-//            }
-//
-//            postDao.getPostFlow(1)
-//                .collect {
-//                    println("🍋 MainActivity onCreate() postFlow: $it")
-//                }
-//        }
+    private fun examineDaoWithRxJava() {
 
+        val serviceLocator = ServiceLocator(application)
 
+        val postDaoRxJava = serviceLocator.providePostDaoRxJava()
+
+        // SINGLE
+        //        val disposable = postDaoRxJava.getPostByIdSingle(1)
+        //            .subscribeOn(Schedulers.io())
+        //            .observeOn(AndroidSchedulers.mainThread())
+        //            .doOnError {throwable ->
+        //                println("🔥 MainActivity onCreate() doOnError() throwable: $throwable")
+        //            }
+        //            .subscribe(
+        //                { postEntity ->
+        //                    println("🍎 MainActivity onCreate() getPostByIdSingle() onNext(): $postEntity")
+        //                },
+        //                {
+        //                    println("⏰ MainActivity onCreate() getPostByIdSingle() onError: $it")
+        //                }
+        //            )
+
+        // MAYBE
+        val disposable = postDaoRxJava.getPostListByIdMaybe(1)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { throwable ->
+                println("🔥 MainActivity onCreate() doOnError() throwable: $throwable")
+            }
+            .doOnComplete {
+                println("🔥 MainActivity onCreate() doOnComplete()")
+
+            }
+            .subscribe(
+                { postEntity ->
+                    println("🍎 MainActivity onCreate() getPostListByIdMaybe() onNext(): $postEntity")
+                },
+                {
+                    println("🍏 MainActivity onCreate() getPostListByIdMaybe() onError: $it")
+                },
+                {
+                    println("⏰ MainActivity onCreate() getPostListByIdMaybe() onComplete")
+                }
+            )
+
+        // OBSERVABLE
+        //        val disposable = postDaoRxJava.getPostListById(1)
+        //            .subscribeOn(Schedulers.io())
+        //            .observeOn(AndroidSchedulers.mainThread())
+        //            .doOnError { throwable ->
+        //                println("🔥 MainActivity onCreate() doOnError() throwable: $throwable")
+        //            }
+        //            .doOnComplete {
+        //                println("🔥 MainActivity onCreate() doOnComplete()")
+        //
+        //            }
+        //            .subscribe(
+        //                { postEntity ->
+        //                    println("🍎 MainActivity onCreate() getPostListById() onNext(): $postEntity")
+        //                },
+        //                {
+        //                    println("🍏 MainActivity onCreate() getPostListById() onError: $it")
+        //                },
+        //                {
+        //                    println("⏰ MainActivity onCreate() getPostListById() onComplete")
+        //                }
+        //            )
     }
 }

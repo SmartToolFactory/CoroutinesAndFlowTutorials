@@ -2,8 +2,10 @@ package com.smarttoolfactory.tutorial2_1flowbasics.flow
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 
 class FlowTestObserver<T>(
@@ -13,22 +15,22 @@ class FlowTestObserver<T>(
     private val testValues = mutableListOf<T>()
     private var error: Throwable? = null
 
-    private val job: Job = coroutineScope.launch {
-        flow
-            .catch { throwable ->
-                error = throwable
-            }
-            .collect {
-                testValues.add(it)
-            }
-    }
+//    private val job: Job = coroutineScope.launch {
+//        flow
+//            .catch { throwable ->
+//                error = throwable
+//            }
+//            .collect {
+//                testValues.add(it)
+//            }
+//    }
 
-//    private val job: Job = flow
-//        .catch { throwable ->
-//            error = throwable
-//        }
-//        .onEach { testValues.add(it) }
-//        .launchIn(scope = coroutineScope)
+    private val job: Job = flow
+        .catch { throwable ->
+            error = throwable
+        }
+        .onEach { testValues.add(it) }
+        .launchIn(scope = coroutineScope)
 
 
     fun assertNoValues(): FlowTestObserver<T> {
@@ -54,12 +56,13 @@ class FlowTestObserver<T>(
         return this
     }
 
-//    fun assertValues(predicate: List<T>.() -> Boolean): TestObserver<T> {
-//        testValues.predicate()
+//    fun assertValues(predicate: List<T>.() -> Boolean): FlowTestObserver<T> {
+//        if (!testValues.predicate())
+//            throw  AssertionError("Assertion error! At least one value does not match")
 //        return this
 //    }
 //
-//    fun values(predicate: List<T>.() -> Unit): TestObserver<T> {
+//    fun values(predicate: List<T>.() -> Unit): FlowTestObserver<T> {
 //        testValues.predicate()
 //        return this
 //    }
@@ -98,6 +101,24 @@ class FlowTestObserver<T>(
 
         if (!predicate(errorNotNull))
             throw AssertionError("Assertion Error! Exception for $errorNotNull")
+
+        return this
+    }
+
+    fun assertNoError(): FlowTestObserver<T> {
+
+        if (error != null)
+            throw AssertionError("Assertion Error! Exception occurred $error")
+
+        return this
+    }
+
+    fun assertNull(): FlowTestObserver<T> {
+
+        testValues.forEach {
+            if (it != null) throw AssertionError("Assertion Error! There are more than one item that is not nuşş")
+
+        }
 
         return this
     }

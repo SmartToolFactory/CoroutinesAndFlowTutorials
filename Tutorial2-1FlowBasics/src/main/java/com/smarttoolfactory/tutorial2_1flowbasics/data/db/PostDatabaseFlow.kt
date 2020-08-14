@@ -15,6 +15,7 @@ const val DATABASE_NAME = "post.db"
 )
 abstract class PostDatabase : RoomDatabase() {
     abstract fun postDao(): PostDao
+    abstract fun postDaoRxJava(): PostDaoRxJava
 }
 
 fun provideDatabase(application: Application): PostDatabase {
@@ -85,7 +86,7 @@ interface PostDao {
      * * If post with id not in database returns NULL
      */
     @Query("SELECT * FROM post WHERE id =:postId")
-    fun getPostFlow(postId: Int): Flow<PostEntity>
+    fun getPostFlow(postId: Int): Flow<PostEntity?>
 
 }
 

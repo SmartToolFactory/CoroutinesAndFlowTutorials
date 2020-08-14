@@ -136,16 +136,4 @@ class PostApiTest : AbstractPostApiTest() {
         Truth.assertThat(postList?.size).isEqualTo(100)
 
     }
-
-    /**
-     * Alternative method with [TestObserver] to test 200 code response same
-     * as the one above
-     */
-    @Test
-    fun `Given api return 200, should have list of posts with testObserver`() =
-        testCoroutineScope.runBlockingTest {
-
-
-        }
-
 }

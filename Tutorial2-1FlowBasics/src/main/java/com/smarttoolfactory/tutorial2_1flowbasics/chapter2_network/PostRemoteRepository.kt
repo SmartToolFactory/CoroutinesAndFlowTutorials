@@ -2,8 +2,10 @@ package com.smarttoolfactory.tutorial2_1flowbasics.chapter2_network
 
 import com.smarttoolfactory.tutorial2_1flowbasics.data.api.PostApi
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostDTO
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class PostRemoteRepository(private val postApi: PostApi) {
 
@@ -13,6 +15,7 @@ class PostRemoteRepository(private val postApi: PostApi) {
             println("😱 PostRemoteRepository getPostFlow() thread: ${Thread.currentThread().name}")
             emit(postApi.getPosts())
         }
+            .flowOn(Dispatchers.IO)
     }
 
     suspend fun getPosts() = postApi.getPosts()
