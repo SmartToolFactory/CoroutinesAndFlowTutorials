@@ -24,7 +24,7 @@ class PostRemoteUseCase(
                 println("⏰ PostsUseCase map() FIRST thread: ${Thread.currentThread().name}")
                 it
             }
-            .flowOn(Dispatchers.Main)
+            .flowOn(Dispatchers.IO)
             .flatMapConcat {
                 println("😍 PostsUseCase flatMapConcat()  thread: ${Thread.currentThread().name}")
                 flow{emit((it))}

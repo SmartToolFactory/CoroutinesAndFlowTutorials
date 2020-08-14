@@ -10,9 +10,9 @@ import com.smarttoolfactory.tutorial2_1flowbasics.getResourceAsText
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -28,20 +28,6 @@ class PostDBRepositoryTest : BaseCoroutineJUnit5Test() {
 
     private val postEntityList by lazy {
         convertFromJsonToObjectList<PostEntity>(getResourceAsText("response.json"))!!
-    }
-
-    @Test
-    fun testFlowObserver() = testCoroutineScope.runBlockingTest {
-
-        val subject = Channel<Int>()
-        val observer = subject.consumeAsFlow()
-            .test(this)
-
-        observer.assertNoValues()
-        subject.send(0)
-        observer.assertValues(0)
-
-        observer.dispose()
     }
 
     @Test

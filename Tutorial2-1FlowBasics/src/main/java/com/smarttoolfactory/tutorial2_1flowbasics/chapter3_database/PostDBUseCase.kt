@@ -1,4 +1,4 @@
- package com.smarttoolfactory.tutorial2_1flowbasics.chapter3_database
+package com.smarttoolfactory.tutorial2_1flowbasics.chapter3_database
 
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.EntityToPostMapper
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.PostToEntityMapper
@@ -26,7 +26,7 @@ class PostDBUseCase(
             // This is a upstream operator, does not leak downstream
             .map {
                 println("⏰ PostsUseCase FIRST map() thread: ${Thread.currentThread().name}")
-               it
+                it
             }
             .flowOn(Dispatchers.IO)
             .map {
