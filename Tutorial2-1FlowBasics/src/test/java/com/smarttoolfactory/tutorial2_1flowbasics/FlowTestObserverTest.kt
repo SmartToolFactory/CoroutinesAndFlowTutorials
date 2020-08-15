@@ -2,10 +2,13 @@ package com.smarttoolfactory.tutorial2_1flowbasics
 
 import com.smarttoolfactory.tutorial2_1flowbasics.flow.test
 import com.smarttoolfactory.tutorial2_1flowbasics.flow.testAfterDelay
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.sendBlocking
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
-import org.junit.Assert.assertEquals
+import kotlinx.coroutines.yield
 import org.junit.Rule
 import org.junit.Test
 
@@ -14,34 +17,6 @@ class FlowTestObserverTest {
     @get:Rule
     var testCoroutineRule = TestCoroutineRule()
 
-    fun <T> Flow<T>.testMe(scope: CoroutineScope): MyTestObserver<T> {
-        return MyTestObserver(scope, this)
-    }
-
-    class MyTestObserver<T>(
-        scope: CoroutineScope,
-        flow: Flow<T>
-    ) {
-        private val values = mutableListOf<T>()
-        private val job: Job = scope.launch {
-            flow.collect { values.add(it) }
-        }
-
-        fun assertNoValues(): MyTestObserver<T> {
-            assertEquals(emptyList<T>(), this.values)
-            return this
-        }
-
-        fun assertValues(vararg values: T): MyTestObserver<T> {
-            assertEquals(values.toList(), this.values)
-            return this
-        }
-
-        fun finish() {
-            job.cancel()
-        }
-    }
-
     @Test
     fun `test TestFlowObserver`() = testCoroutineRule.runBlockingTest {
         val observer = flow { emit(12) }.test(this)
@@ -49,9 +24,9 @@ class FlowTestObserverTest {
             .assertValues(12)
             .dispose()
 
-//        flow { emit(12) }.testAfterDelay(this){
-//            assertValues(12)
-//        }
+        flow { emit(12) }.testAfterDelay(this) {
+            assertValues(12)
+        }
     }
 
 
@@ -74,7 +49,7 @@ class FlowTestObserverTest {
         observer.assertNoValues()
         subject.send(12)
         observer.assertValues(12)
-//        observer.dispose()
+        observer.dispose()
 
     }
 
@@ -92,14 +67,59 @@ class FlowTestObserverTest {
             emit(3)
         }
 
-        flow.test(this)
+        flow.test(this, true)
             .assertValueCount(3)
             .dispose()
 
 //        flow.testAfterDelay(this) {
 //            assertValueCount(3)
 //        }
+    }
 
+    @Test
+    fun testInfiniteChannelFlow() = testCoroutineRule.runBlockingTest {
+        val flow: Flow<Int> = channelFlow {
+            delay(10_000)
+            yield()
+
+            offer(1)
+            send(2)
+            sendBlocking(3)
+
+            awaitClose()
+        }
+
+
+//        flow.testAfterDelay(this) {
+//            assertValues(1)
+//            assertNotComplete()
+//        }
+
+        /*
+            😱 TestObserver EXTENSION testDeclarative() INIT in thread: main @coroutine#2
+            🏠 TestObserver in withTimeOut(), in thread: main @coroutine#2
+            😍 FlowTestObserver init() onStart, in thread: main @coroutine#3
+            🏭 FlowTestObserver createJob() job canceled: false in thread: main @coroutine#2
+            🍏 FlowTestObserver init() collect, in thread: main @coroutine#3
+            🍏 FlowTestObserver init() collect, in thread: main @coroutine#3
+            🍏 FlowTestObserver init() collect, in thread: main @coroutine#3
+            💀 FlowTestObserver init() onCompletion, in thread: main @coroutine#3
+
+
+            😱 TestObserver EXTENSION test() INIT in thread: main @coroutine#1
+            🏠 TestObserver in withTimeOut(), in thread: main @coroutine#1
+            😍 FlowTestObserver init() onStart, in thread: main @coroutine#2
+            🏭 FlowTestObserver createJob() job canceled: false in thread: main @coroutine#1
+            🍏 FlowTestObserver init() collect, in thread: main @coroutine#2
+            🍏 FlowTestObserver init() collect, in thread: main @coroutine#2
+            🍏 FlowTestObserver init() collect, in thread: main @coroutine#2
+            💀 FlowTestObserver init() onCompletion, in thread: main @coroutine#2
+         */
+
+        flow.test(this, true)
+            .assertValues(1, 2, 3)
+            .assertNotComplete()
+            .dispose()
     }
 
     /**

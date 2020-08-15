@@ -11,7 +11,7 @@ import kotlin.coroutines.coroutineContext
 class FlowTestObserver<T>(
     private val coroutineScope: CoroutineScope,
     private val flow: Flow<T>,
-    private val waitTimeOut: Boolean = false
+    private val waitForDelay: Boolean = false
 ) {
     private val testValues = mutableListOf<T>()
     private var error: Throwable? = null
@@ -31,7 +31,7 @@ class FlowTestObserver<T>(
         job = createJob(coroutineScope)
 
         // Wait this job after end of possible delays
-        job.join()
+//        job.join()
 
         println("👍 TestObserver initializeAndJoin() Job canceled: ${job.isCancelled}")
 
@@ -43,26 +43,26 @@ class FlowTestObserver<T>(
         if (!isInitialized) {
             isInitialized = true
 
-            if (waitTimeOut) {
-                withTimeout(Long.MAX_VALUE) {
-                    println("🏠 TestObserver in withTimeOut(), in thread: ${Thread.currentThread().name}")
-                    job = createJob(this)
+            if (waitForDelay) {
+                try {
+                    withTimeout(Long.MAX_VALUE) {
+                        println("🏠 TestObserver in withTimeOut(), in thread: ${Thread.currentThread().name}")
+                        job = createJob(this)
+                    }
+                } catch (e: Exception) {
+                    isCompleted = false
                 }
             } else {
                 initializeAndJoin()
             }
-
             println("🎃 FlowTestObserver initialize() ENDED!, in thread: ${Thread.currentThread().name}")
-            require(job != null)
-            require(isInitialized)
-
         }
-
 
     }
 
     private fun createJob(scope: CoroutineScope): Job {
-        return flow
+
+        val job = flow
             .onStart {
                 println("😍 FlowTestObserver init() onStart, in thread: ${Thread.currentThread().name}")
             }
@@ -79,6 +79,10 @@ class FlowTestObserver<T>(
                 testValues.add(it)
             }
             .launchIn(scope)
+
+        println("🏭 FlowTestObserver createJob() job canceled: ${job.isCancelled} in thread: ${Thread.currentThread().name}")
+
+        return job
     }
 
 
@@ -186,7 +190,7 @@ class FlowTestObserver<T>(
         return this
     }
 
-    suspend fun assertCompleted(): FlowTestObserver<T> {
+    suspend fun assertComplete(): FlowTestObserver<T> {
 
         initialize()
 
@@ -194,7 +198,7 @@ class FlowTestObserver<T>(
         return this
     }
 
-    suspend fun assertNotCompleted(): FlowTestObserver<T> {
+    suspend fun assertNotComplete(): FlowTestObserver<T> {
 
         initialize()
 
@@ -228,7 +232,13 @@ class FlowTestObserver<T>(
     }
 }
 
-fun <T> Flow<T>.test(scope: CoroutineScope): FlowTestObserver<T> {
+/**
+ * Creates a RxJava2 style test observer that uses `onStart`, `onEach`, `onCompletetion`
+ */
+suspend fun <T> Flow<T>.test(
+    scope: CoroutineScope,
+    waitForDelay: Boolean = false
+): FlowTestObserver<T> {
 
     println("😱 TestObserver EXTENSION test() INIT in thread: ${Thread.currentThread().name}")
 
@@ -236,11 +246,12 @@ fun <T> Flow<T>.test(scope: CoroutineScope): FlowTestObserver<T> {
 //        FlowTestObserver(this, this@test)
 //    }
 
-    return FlowTestObserver(scope, this@test)
+    return FlowTestObserver(scope, this@test, waitForDelay)
 }
 
 /**
- * Test function that awaits with time out until each delay method is run and then
+ * Test function that awaits with time out until each delay method is run and then since
+ * it takes a predicate that runs after a timeout.
  */
 suspend fun <T> Flow<T>.testAfterDelay(
     scope: CoroutineScope,
@@ -250,6 +261,6 @@ suspend fun <T> Flow<T>.testAfterDelay(
     return scope.launch(coroutineContext) {
 
         println("😱 TestObserver EXTENSION testDeclarative() INIT in thread: ${Thread.currentThread().name}")
-        FlowTestObserver(this, this@testAfterDelay).predicate()
+        FlowTestObserver(this, this@testAfterDelay, true).predicate()
     }
 }
