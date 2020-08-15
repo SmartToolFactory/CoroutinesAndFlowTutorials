@@ -16,7 +16,6 @@ class FlowTestObserver<T>(
     private val testValues = mutableListOf<T>()
     private var error: Throwable? = null
 
-    @Volatile
     private var isInitialized = false
 
     private var isCompleted = false
@@ -233,7 +232,12 @@ class FlowTestObserver<T>(
 }
 
 /**
- * Creates a RxJava2 style test observer that uses `onStart`, `onEach`, `onCompletetion`
+ * Creates a RxJava2 style test observer that uses `onStart`, `onEach`, `onCompletion`
+ *
+ * * Set waitForDelay true for testing delay.
+ *
+ * ###  Note: waiting for delay with a channel that sends values throw TimeoutCancellationException, don't use timeout with channel
+ * TODO Fix channel issue
  */
 suspend fun <T> Flow<T>.test(
     scope: CoroutineScope,
