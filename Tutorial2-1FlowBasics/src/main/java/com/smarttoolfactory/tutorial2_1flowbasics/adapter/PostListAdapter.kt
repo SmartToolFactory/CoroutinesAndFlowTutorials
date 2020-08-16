@@ -8,14 +8,14 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Post
 import com.smarttoolfactory.tutorial2_1flowbasics.BR
+import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Post
 
 
 class PostListAdapter(
 
     @LayoutRes private val layoutId: Int,
-    private val onItemClicked: (Post) -> Unit
+    private val onItemClicked: ((Post) -> Unit)? = null
 
 ) :
     ListAdapter<Post, PostListAdapter.CustomViewHolder<Post>>(
@@ -53,7 +53,9 @@ class PostListAdapter(
     ) {
 
         binding.root.setOnClickListener {
-            onItemClicked(getItem(viewHolder.bindingAdapterPosition))
+            onItemClicked?.let {
+                it((getItem(viewHolder.bindingAdapterPosition)))
+            }
         }
 
     }

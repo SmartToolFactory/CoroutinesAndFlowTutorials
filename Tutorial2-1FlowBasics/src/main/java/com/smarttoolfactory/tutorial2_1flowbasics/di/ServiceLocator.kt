@@ -1,38 +1,65 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.di
 
 import android.app.Application
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.repository.PostRepositoryFlow
+import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.DispatcherProvider
+import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.repository.PostRepository
 import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.repository.PostRepositoryImpl
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.source.LocalPostDataSource
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.source.LocalPostDataSourceImpl
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.source.RemotePostDataSource
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.source.RemotePostDataSourceImpl
+import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.source.*
+import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.domain.GetPostsUseCase
+
 import com.smarttoolfactory.tutorial2_1flowbasics.data.api.PostApi
 import com.smarttoolfactory.tutorial2_1flowbasics.data.api.RetrofitFactory
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDao
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDaoRxJava
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.provideDatabase
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.DTOtoEntityMapper
+import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.EntityToPostMapper
+import kotlinx.coroutines.Dispatchers
 
 class ServiceLocator(private val application: Application) {
 
+    /**
+     * Rest Api
+     */
+    private fun providePostApi(): PostApi = RetrofitFactory.getPostApiCoroutines()
+
+    /**
+     * Post Dao with suspend and Flow functions
+     */
     fun providePostDao(): PostDao = provideDatabase(application).postDao()
 
+    /**
+     * Post Dao with RxJava functions
+     */
     fun providePostDaoRxJava(): PostDaoRxJava = provideDatabase(application).postDaoRxJava()
 
-    fun providePostApi(): PostApi = RetrofitFactory.getPostApiCoroutines()
 
-    fun provideDTOtoEntityMapper(): DTOtoEntityMapper = DTOtoEntityMapper()
+    private fun provideDTOtoEntityMapper(): DTOtoEntityMapper = DTOtoEntityMapper()
 
-    fun provideLocalPostDataSource(): LocalPostDataSource =
-        LocalPostDataSourceImpl(providePostDao())
+    private fun provideEntityToPostMapper(): EntityToPostMapper = EntityToPostMapper()
 
-    fun provideRemotePostDataSource(): RemotePostDataSource =
-        RemotePostDataSourceImpl(providePostApi(), provideDTOtoEntityMapper())
+    private fun provideLocalPostDataSource(): LocalPostDataSource =
+        LocalDataSourceImpl(providePostDao())
 
-    fun providePostRepository(): PostRepositoryFlow = PostRepositoryImpl(
+    private fun provideRemotePostDataSource(): RemotePostDataSource =
+        RemoteDataSourceImpl(providePostApi())
+
+    private fun provideCache(): Cache = Cache(providePostDao())
+
+    private fun providePostRepository(): PostRepository = PostRepositoryImpl(
         provideLocalPostDataSource(),
-        provideRemotePostDataSource()
-
+        provideRemotePostDataSource(),
+        provideDTOtoEntityMapper(),
+        provideCache()
     )
+
+    private fun provideDispatcherWrapper(): DispatcherProvider =
+        DispatcherProvider(Dispatchers.IO, Dispatchers.Default)
+
+    fun provideGetPostsUseCase(): GetPostsUseCase =
+        GetPostsUseCase(
+            providePostRepository(),
+            provideEntityToPostMapper(),
+            provideDispatcherWrapper()
+        )
 }

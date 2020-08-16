@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.smarttoolfactory.tutorial2_1flowbasics.R
@@ -26,43 +26,42 @@ class PostListFragment : Fragment() {
 
         dataBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_post_list, container, false)
-
+        bindViews()
         return dataBinding.root
     }
 
-    private val viewModel by viewModels<PostViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getPosts()
+    private val viewModel by activityViewModels<PostViewModel> {
+        PostViewModelFactory(application = requireActivity().application)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bindViews()
+        viewModel.getPosts()
     }
 
     private fun bindViews() {
 
         val binding = dataBinding!!
 
-        // 🔥 Set lifecycle for data binding
-        binding.lifecycleOwner = viewLifecycleOwner
+        with(binding) {
+            // 🔥 Set lifecycle for data binding
+            lifecycleOwner = viewLifecycleOwner
 
-        binding.viewModel = viewModel
+            viewModel = viewModel
 
-        binding.recyclerView.apply {
+            recyclerView.apply {
 
-            // Set Layout manager
-            this.layoutManager =
-                LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+                // Set Layout manager
+                this.layoutManager =
+                    LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
-            // Set RecyclerViewAdapter
-            this.adapter =
-                PostListAdapter(
-                    R.layout.row_post,
-                    viewModel::onClick
-                )
+                // Set RecyclerViewAdapter
+                this.adapter =
+                    PostListAdapter(
+                        R.layout.row_post
+                    )
+            }
+
         }
 
         subscribeGoToDetailScreen()
@@ -81,6 +80,5 @@ class PostListFragment : Fragment() {
 //                )
             }
         })
-
     }
 }

@@ -27,8 +27,7 @@ class Activity4SingleSourceOfTruth : AppCompatActivity(), CoroutineScope {
         job = Job()
 
         val serviceLocator = ServiceLocator(application)
-        val postDao = serviceLocator.providePostDao()
-        val postApi = serviceLocator.providePostApi()
+
 
 //        examineDaoWithRxJava()
 
