@@ -2,8 +2,7 @@ package com.smarttoolfactory.tutorial2_1flowbasics.data.api
 
 
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostDTO
-import io.reactivex.rxjava3.core.Observable
-
+import io.reactivex.rxjava3.core.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,7 +17,7 @@ interface PostApi {
 
 interface PostApiRxJava : PostApi {
     @GET("/posts")
-    fun getPostsAsObservable(): Observable<List<PostDTO>>
+    fun getPostsSingle(): Single<List<PostDTO>>
 }
 
 

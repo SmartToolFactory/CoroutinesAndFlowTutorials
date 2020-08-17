@@ -1,6 +1,7 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.data.db
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostEntity
@@ -15,11 +16,17 @@ interface PostDaoRxJava {
 
 
     @Insert
-    fun insertPost(postEntity: PostEntity): Completable
+    fun savePost(postEntity: PostEntity): Completable
 
-    /*
-        ***** RxJava ******
-     */
+    @Insert
+    fun savePosts(postEntityList: List<PostEntity>): Completable
+
+
+    @Delete
+    fun deletePost(entity: PostEntity): Single<Int>
+
+    @Query("DELETE FROM post")
+    fun deleteAll(): Completable
 
     @Query("SELECT * FROM post")
     fun getPostsSingleNonNull(): Single<List<PostEntity>>

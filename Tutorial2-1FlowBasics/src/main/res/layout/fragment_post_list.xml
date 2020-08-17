@@ -9,12 +9,12 @@
 
         <variable
             name="viewModel"
-            type="com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.post_list.PostViewModel" />
+            type="com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.post_list.AbstractPostViewModel" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
         android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,10 +23,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
+                visibilityBasedOn="@{viewModel.postViewState.success}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingTop="16dp"
-                visibilityBasedOn="@{viewModel.postViewState.success}"
                 app:items="@{viewModel.postViewState.data}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

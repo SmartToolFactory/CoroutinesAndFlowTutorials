@@ -10,7 +10,7 @@ import com.smarttoolfactory.tutorial2_1flowbasics.data.model.ViewState
 import com.smarttoolfactory.tutorial2_1flowbasics.util.EmptyDataException
 import kotlinx.coroutines.flow.*
 
-class GetPostsUseCase(
+class GetPostsUseCaseFlow(
     private val repository: PostRepository,
     private val entityToPostMapper: EntityToPostMapper,
     private val dispatcherProvider: DispatcherProvider
@@ -40,13 +40,15 @@ class GetPostsUseCase(
         return flow { emit(repository.fetchEntitiesFromRemote()) }
             .map {
                 println("🍏 getPostFlowOfflineLast() First map in thread: ${Thread.currentThread().name}")
-                if (it.isEmpty()) {
-                    repository.getPostEntitiesFromLocal()
+
+                if (it.isNullOrEmpty()) {
+                    throw EmptyDataException("No data is available!")
                 } else {
                     repository.deletePostEntities()
                     repository.savePostEntity(it)
                     repository.getPostEntitiesFromLocal()
                 }
+
             }
             .flowOn(dispatcherProvider.ioDispatcher)
             .catch { cause ->

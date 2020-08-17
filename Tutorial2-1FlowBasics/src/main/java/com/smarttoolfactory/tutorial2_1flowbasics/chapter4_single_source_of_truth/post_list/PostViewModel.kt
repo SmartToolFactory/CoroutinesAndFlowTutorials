@@ -1,11 +1,9 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.post_list
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.domain.GetPostsUseCase
+import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.domain.GetPostsUseCaseFlow
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Post
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Status
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.ViewState
@@ -20,18 +18,11 @@ import kotlinx.coroutines.flow.onStart
 
 class PostViewModel(
     private val coroutineScope: CoroutineScope,
-    private val getPostsUseCase: GetPostsUseCase
-) : ViewModel() {
+    private val getPostsUseCase: GetPostsUseCaseFlow
+) : AbstractPostViewModel() {
 
-    private val _goToDetailScreen = MutableLiveData<Event<Post>>()
-    val goToDetailScreen: LiveData<Event<Post>>
-        get() = _goToDetailScreen
 
-    private val _postViewState = MutableLiveData<ViewState<List<Post>>>()
-    val postViewState: LiveData<ViewState<List<Post>>>
-        get() = _postViewState
-
-    fun getPosts() {
+   override fun getPosts() {
         getPostsUseCase.getPostFlowOfflineFirst()
             .onStart {
                 println("🛳 PostViewModel LOADING in thread ${Thread.currentThread().name}")
@@ -44,7 +35,7 @@ class PostViewModel(
             .launchIn(coroutineScope)
     }
 
-    fun refreshPosts() {
+    override  fun refreshPosts() {
         getPostsUseCase.getPostFlowOfflineLast()
             .onStart {
                 println("🛳 PostViewModel LOADING in thread ${Thread.currentThread().name}")
@@ -57,7 +48,7 @@ class PostViewModel(
             .launchIn(coroutineScope)
     }
 
-    fun onClick(post: Post) {
+    override fun onClick(post: Post) {
         _goToDetailScreen.value = Event(post)
     }
 }
