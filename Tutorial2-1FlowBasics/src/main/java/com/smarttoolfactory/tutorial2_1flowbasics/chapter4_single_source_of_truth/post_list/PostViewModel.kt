@@ -32,6 +32,19 @@ class PostViewModel(
         get() = _postViewState
 
     fun getPosts() {
+        getPostsUseCase.getPostFlowOfflineFirst()
+            .onStart {
+                println("🛳 PostViewModel LOADING in thread ${Thread.currentThread().name}")
+                _postViewState.value = ViewState(status = Status.LOADING)
+            }
+            .onEach {
+                println("🛳 PostViewModel SUCCESS in thread ${Thread.currentThread().name}")
+                _postViewState.value = it
+            }
+            .launchIn(coroutineScope)
+    }
+
+    fun refreshPosts() {
         getPostsUseCase.getPostFlowOfflineLast()
             .onStart {
                 println("🛳 PostViewModel LOADING in thread ${Thread.currentThread().name}")

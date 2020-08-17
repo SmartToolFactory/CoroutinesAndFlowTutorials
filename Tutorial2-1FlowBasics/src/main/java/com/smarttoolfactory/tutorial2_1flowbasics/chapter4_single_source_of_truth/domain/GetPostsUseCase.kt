@@ -109,12 +109,16 @@ class GetPostsUseCase(
                 }
 
             }
-//            .flowOn(dispatcherWrapper.ioDispatcher)
+            .flowOn(dispatcherProvider.ioDispatcher)
             .map {
                 println("🎃 getPostFlowOfflineFirst() Second map in thread: ${Thread.currentThread().name}")
 
                 // Map Entity to UI item
-                entityToPostMapper.map(it)
+                if (!it.isNullOrEmpty()) {
+                    entityToPostMapper.map(it)
+                } else {
+                    throw EmptyDataException("No data is available!")
+                }
             }
             .map { postList ->
 
@@ -129,6 +133,6 @@ class GetPostsUseCase(
                 println("❌ getPostFlowOfflineFirst() SECOND catch with error: $cause, in thread: ${Thread.currentThread().name}")
                 emitAll(flow<ViewState<List<Post>>> { emit(ViewState(Status.ERROR, error = cause)) })
             }
-//            .flowOn(Dispatchers.Default)
+            .flowOn(dispatcherProvider.defaultDispatcher)
     }
 }

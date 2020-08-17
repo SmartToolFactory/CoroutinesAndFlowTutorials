@@ -80,6 +80,9 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     // RecyclerView
     implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
+    //SwipeRefreshLayout
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+
 
     // Lifecycle and ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"

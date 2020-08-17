@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.smarttoolfactory.tutorial2_1flowbasics.R
 import com.smarttoolfactory.tutorial2_1flowbasics.adapter.PostListAdapter
-import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Status
 import com.smarttoolfactory.tutorial2_1flowbasics.databinding.FragmentPostListBinding
 
 class PostListFragment : Fragment() {
@@ -66,6 +65,13 @@ class PostListFragment : Fragment() {
 
             // Set RecyclerViewAdapter
             this.adapter = postListAdapter
+        }
+
+        val swipeRefreshLayout = binding.swipeRefreshLayout
+
+        swipeRefreshLayout.setOnRefreshListener {
+            swipeRefreshLayout.isRefreshing = false
+            viewModel.refreshPosts()
         }
 
         subscribeGoToDetailScreen()
