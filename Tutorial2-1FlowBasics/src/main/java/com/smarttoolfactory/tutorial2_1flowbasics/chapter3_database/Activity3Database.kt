@@ -18,7 +18,7 @@ class Activity3Database : AppCompatActivity() {
     lateinit var dataBinding: Activity3DatabaseBinding
 
     private val viewModel: PostDBViewModel by viewModels {
-        PostViewModelFactory(application)
+        PostDBViewModelFactory(application)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

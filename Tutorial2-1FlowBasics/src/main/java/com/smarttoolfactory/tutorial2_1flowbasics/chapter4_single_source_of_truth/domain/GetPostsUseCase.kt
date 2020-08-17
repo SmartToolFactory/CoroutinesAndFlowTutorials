@@ -66,7 +66,7 @@ class GetPostsUseCase(
             }
             .catch { cause: Throwable ->
                 println("❌ getPostFlowOfflineLast() SECOND catch with error: $cause, in thread: ${Thread.currentThread().name}")
-                emitAll(flow { emit(ViewState(Status.ERROR, error = cause)) })
+                emitAll(flow<ViewState<List<Post>>> { emit(ViewState(Status.ERROR, error = cause)) })
             }
             .flowOn(dispatcherProvider.defaultDispatcher)
 
@@ -127,7 +127,7 @@ class GetPostsUseCase(
             }
             .catch { cause: Throwable ->
                 println("❌ getPostFlowOfflineFirst() SECOND catch with error: $cause, in thread: ${Thread.currentThread().name}")
-                emitAll(flow { emit(ViewState(Status.ERROR, error = cause)) })
+                emitAll(flow<ViewState<List<Post>>> { emit(ViewState(Status.ERROR, error = cause)) })
             }
 //            .flowOn(Dispatchers.Default)
     }

@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.smarttoolfactory.tutorial2_1flowbasics.R
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostEntity
 import com.smarttoolfactory.tutorial2_1flowbasics.di.ServiceLocator
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -23,11 +23,7 @@ class Activity4SingleSourceOfTruth : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity4_single_source_of_truth)
-
         job = Job()
-
-        val serviceLocator = ServiceLocator(application)
-
 
 //        examineDaoWithRxJava()
 

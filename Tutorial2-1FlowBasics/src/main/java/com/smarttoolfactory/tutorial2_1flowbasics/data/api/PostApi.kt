@@ -1,12 +1,11 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.data.api
 
 
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostDTO
-import io.reactivex.Observable
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import io.reactivex.rxjava3.core.Observable
+
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
@@ -40,7 +39,7 @@ object RetrofitFactory {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
             .build()
             .create(PostApiRxJava::class.java)
     }

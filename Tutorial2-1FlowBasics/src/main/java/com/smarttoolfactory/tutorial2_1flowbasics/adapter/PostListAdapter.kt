@@ -57,9 +57,7 @@ class PostListAdapter(
                 it((getItem(viewHolder.bindingAdapterPosition)))
             }
         }
-
     }
-
 
     override fun onBindViewHolder(holder: CustomViewHolder<Post>, position: Int) {
         val item = getItem(position)
@@ -74,15 +72,11 @@ class PostListAdapter(
         fun bindTo(
             item: T
         ) {
-
             // Bind item to layout to dispatch data to layout
             binding.setVariable(BR.item, item)
             binding.executePendingBindings()
-
         }
-
     }
-
 }
 
 /**

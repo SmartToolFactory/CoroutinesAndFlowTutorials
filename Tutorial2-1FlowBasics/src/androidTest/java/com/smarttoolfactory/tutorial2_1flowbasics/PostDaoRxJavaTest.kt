@@ -1,8 +1,8 @@
 package com.smarttoolfactory.tutorial2_1flowbasics
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.EmptyResultSetException
 import androidx.room.Room
+import androidx.room.rxjava3.EmptyResultSetException
 import androidx.test.core.app.ApplicationProvider
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDaoRxJava
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDatabase
@@ -65,7 +65,6 @@ class PostDaoRxJavaTest {
             .test()
             .assertNoErrors()
             .assertComplete()
-            .assertTerminated()
             .dispose()
     }
 
@@ -85,7 +84,6 @@ class PostDaoRxJavaTest {
                 it.isEmpty()
             }
             .assertComplete()
-            .assertTerminated()
             .dispose()
     }
 
@@ -100,7 +98,6 @@ class PostDaoRxJavaTest {
                 it.isEmpty()
             }
             .assertComplete()
-            .assertTerminated()
             .dispose()
     }
 
@@ -115,7 +112,6 @@ class PostDaoRxJavaTest {
                 it.isEmpty()
             }
             .assertNotComplete()
-            .assertTerminated()
             .dispose()
     }
 

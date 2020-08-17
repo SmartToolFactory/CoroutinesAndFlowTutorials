@@ -106,7 +106,7 @@ class PostDBViewModel(
 
 }
 
-class PostViewModelFactory(private val application: Application) :
+class PostDBViewModelFactory(private val application: Application) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

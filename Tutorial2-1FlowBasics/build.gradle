@@ -55,6 +55,7 @@ android {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
+    dynamicFeatures = [':features:post_detail']
 
     configurations.all {
         resolutionStrategy {
@@ -93,10 +94,12 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-runtime-ktx:$rootProject.navigationVersion"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$rootProject.navigationVersion"
 
     // RxJava
 //    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
-    implementation "io.reactivex.rxjava3:rxjava:3$rootProject.rxjava3Version"
+    implementation "io.reactivex.rxjava3:rxjava:$rootProject.rxjava3Version"
+
     // RxAndroid
 //    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
     implementation "io.reactivex.rxjava3:rxandroid:$rootProject.rxjava3Version"
