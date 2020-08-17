@@ -6,6 +6,9 @@ class ViewState<T>(
     val data: T? = null,
     val error: Throwable? = null
 ) {
+
+    fun isSuccess() = status == Status.SUCCESS
+
     fun isLoading() = status == Status.LOADING
 
     fun getErrorMessage() = error?.message
