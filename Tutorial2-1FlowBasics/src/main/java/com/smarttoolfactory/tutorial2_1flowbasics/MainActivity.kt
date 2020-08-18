@@ -12,6 +12,7 @@ import com.smarttoolfactory.tutorial2_1flowbasics.adapter.ChapterSelectionAdapte
 import com.smarttoolfactory.tutorial2_1flowbasics.chapter2_network.Activity2Network
 import com.smarttoolfactory.tutorial2_1flowbasics.chapter3_database.Activity3Database
 import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.Activity4SingleSourceOfTruth
+import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.Activity4SingleSourceOfTruthRxJava3
 import com.smarttoolfactory.tutorial2_1flowbasics.databinding.ActivityMainBinding
 import com.smarttoolfactory.tutorial2_1flowbasics.model.ActivityClassModel
 import java.util.*
@@ -32,7 +33,18 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
         // Add Activities to list to be displayed on RecyclerView
         activityClassModels.add(ActivityClassModel(Activity2Network::class.java))
         activityClassModels.add(ActivityClassModel(Activity3Database::class.java))
-        activityClassModels.add(ActivityClassModel(Activity4SingleSourceOfTruth::class.java))
+        activityClassModels.add(
+            ActivityClassModel(
+                Activity4SingleSourceOfTruth::class.java,
+                "Single Source of Truth with Flow"
+            )
+        )
+        activityClassModels.add(
+            ActivityClassModel(
+                Activity4SingleSourceOfTruthRxJava3::class.java,
+                "Single Source of Truth with RxJava3"
+            )
+        )
 
         val recyclerView = activityMainBinding.recyclerView
 

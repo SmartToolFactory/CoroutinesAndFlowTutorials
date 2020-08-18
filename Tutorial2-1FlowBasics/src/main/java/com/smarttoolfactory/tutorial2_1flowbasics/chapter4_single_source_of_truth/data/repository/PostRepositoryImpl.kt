@@ -1,9 +1,6 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.repository
 
 import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.source.*
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth_rxjava3.data.source.Cache
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth_rxjava3.data.source.LocalPostDataSourceRxJava3
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth_rxjava3.data.source.RemotePostDataSourceRxJava3
 import com.smarttoolfactory.tutorial2_1flowbasics.data.mapper.DTOtoEntityMapper
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostEntity
 import io.reactivex.rxjava3.core.Completable

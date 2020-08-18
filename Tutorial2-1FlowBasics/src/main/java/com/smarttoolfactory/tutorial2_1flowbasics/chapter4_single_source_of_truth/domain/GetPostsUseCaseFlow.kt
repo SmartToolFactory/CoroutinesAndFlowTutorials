@@ -37,12 +37,14 @@ class GetPostsUseCaseFlow(
      * * if both network and db didn't have any data throws empty set exception error
      */
     fun getPostFlowOfflineLast(): Flow<ViewState<List<Post>>> {
+
+        // *** START This section was in repo before moving to here ***
         return flow { emit(repository.fetchEntitiesFromRemote()) }
             .map {
                 println("🍏 getPostFlowOfflineLast() First map in thread: ${Thread.currentThread().name}")
 
                 if (it.isNullOrEmpty()) {
-                    throw EmptyDataException("No data is available!")
+                    throw EmptyDataException("Data is available in neither in remote nor local source!")
                 } else {
                     repository.deletePostEntities()
                     repository.savePostEntity(it)
@@ -50,16 +52,17 @@ class GetPostsUseCaseFlow(
                 }
 
             }
+            // *** END This section was in repo before moving to here ***
             .flowOn(dispatcherProvider.ioDispatcher)
             .catch { cause ->
                 println("❌ getPostFlowOfflineLast() FIRST catch with error: $cause, in thread: ${Thread.currentThread().name}")
-                emitAll(flow { emit(repository.getPostEntitiesFromLocal()) })
+                emitAll(flowOf(repository.getPostEntitiesFromLocal()))
             }
             .map {
                 if (!it.isNullOrEmpty()) {
                     entityToPostMapper.map(it)
                 } else {
-                    throw EmptyDataException("No data is available!")
+                    throw EmptyDataException("No data is available in both remote and local source!")
                 }
             }
             .map { postList ->
@@ -68,12 +71,10 @@ class GetPostsUseCaseFlow(
             }
             .catch { cause: Throwable ->
                 println("❌ getPostFlowOfflineLast() SECOND catch with error: $cause, in thread: ${Thread.currentThread().name}")
-                emitAll(flow<ViewState<List<Post>>> { emit(ViewState(Status.ERROR, error = cause)) })
+                emitAll(flowOf(ViewState(Status.ERROR, error = cause)))
             }
             .flowOn(dispatcherProvider.defaultDispatcher)
-
     }
-
 
     /**
      * Flow to get data from cache if it's not expired, if it's expired check remote data source.
@@ -92,14 +93,12 @@ class GetPostsUseCaseFlow(
         }
     }
 
-
     fun getPostFlowOfflineFirst(): Flow<ViewState<List<Post>>> {
 
         return flow { emit(repository.getPostEntitiesFromLocal()) }
             .map {
 
                 println("🍏 getPostFlowOfflineFirst() First map in thread: ${Thread.currentThread().name}")
-
                 if (it.isEmpty()) {
                     repository.run {
                         repository.deletePostEntities()
@@ -109,7 +108,6 @@ class GetPostsUseCaseFlow(
                 } else {
                     it
                 }
-
             }
             .flowOn(dispatcherProvider.ioDispatcher)
             .map {
@@ -119,21 +117,18 @@ class GetPostsUseCaseFlow(
                 if (!it.isNullOrEmpty()) {
                     entityToPostMapper.map(it)
                 } else {
-                    throw EmptyDataException("No data is available!")
+                    throw EmptyDataException("Data is available in neither in remote nor local source!")
                 }
             }
             .map { postList ->
 
                 println("🍎 getPostFlowOfflineFirst() Third map in thread: ${Thread.currentThread().name}")
 
-                ViewState<List<Post>>(
-                    status = Status.SUCCESS,
-                    data = postList
-                )
+                ViewState(status = Status.SUCCESS, data = postList)
             }
             .catch { cause: Throwable ->
                 println("❌ getPostFlowOfflineFirst() SECOND catch with error: $cause, in thread: ${Thread.currentThread().name}")
-                emitAll(flow<ViewState<List<Post>>> { emit(ViewState(Status.ERROR, error = cause)) })
+                emitAll(flowOf(ViewState(Status.ERROR, error = cause)))
             }
             .flowOn(dispatcherProvider.defaultDispatcher)
     }
