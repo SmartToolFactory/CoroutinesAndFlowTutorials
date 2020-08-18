@@ -1,8 +1,5 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth.data.source
 
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth_rxjava3.data.source.LocalPostDataSourceRxJava3
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth_rxjava3.data.source.PostDataSource
-import com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_truth_rxjava3.data.source.RemotePostDataSourceRxJava3
 import com.smarttoolfactory.tutorial2_1flowbasics.data.api.PostApi
 import com.smarttoolfactory.tutorial2_1flowbasics.data.api.PostApiRxJava
 import com.smarttoolfactory.tutorial2_1flowbasics.data.db.PostDao

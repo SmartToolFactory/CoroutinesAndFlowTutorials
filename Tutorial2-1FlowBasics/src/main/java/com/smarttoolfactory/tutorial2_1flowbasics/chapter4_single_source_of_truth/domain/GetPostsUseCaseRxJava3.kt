@@ -8,7 +8,6 @@ import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Status
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.ViewState
 import com.smarttoolfactory.tutorial2_1flowbasics.util.EmptyDataException
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.core.SingleSource
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 class GetPostsUseCaseRxJava3(
@@ -33,7 +32,7 @@ class GetPostsUseCaseRxJava3(
 
 
     /**
-     * This function always looks for new data from remote source first
+     * This function always looks for new data from REMOTE source first
      *
      * * if data is fetched from remote source: deletes old data, saves new data and returns new data
      * * if error occurred while fetching data from remote: it tries to fetch data from database
@@ -57,7 +56,6 @@ class GetPostsUseCaseRxJava3(
             }
             .onErrorResumeNext { cause ->
                 println("❌ getPostFlowOfflineLast() FIRST onErrorResumeNext() with error: $cause, in thread: ${Thread.currentThread().name}")
-
                 repository.getPostEntitiesFromLocal()
             }
             // Alternative 1
@@ -68,26 +66,28 @@ class GetPostsUseCaseRxJava3(
 //                } else {
 //                    entityToPostMapper.map(it)
 //                }
-            // Alternative 2
+            // Alternative 2 START
+            // This filter does not emit anything if list is empty. Empty list is still an emission
             .filter {
                 println("🤓 getPostFlowOfflineLast() filter: ${it.isNotEmpty()}")
                 it.isNotEmpty()
             }
-            .switchIfEmpty(
-                Single.error(EmptyDataException("Empty set"))
-            )
             .map {
                 entityToPostMapper.map(it)
             }
+            .switchIfEmpty(
+                Single.error(EmptyDataException("Data is available in neither in remote nor local source!"))
+            )
+            // Alternative 2 END
+
             .map { postList ->
                 println("🎃 getPostFlowOfflineLast() Third map in thread: ${Thread.currentThread().name}")
                 ViewState(status = Status.SUCCESS, data = postList)
             }
             .onErrorResumeNext { cause ->
                 println("❌ getPostFlowOfflineLast() SECOND catch with error: $cause, in thread: ${Thread.currentThread().name}")
-                SingleSource {
-                    ViewState<List<PostEntity>>(status = Status.ERROR, error = cause)
-                }
+//                Single.error(cause)
+                Single.just(ViewState(status = Status.ERROR, error = cause))
             }
     }
 

@@ -10,6 +10,8 @@ import com.smarttoolfactory.tutorial2_1flowbasics.data.model.ViewState
 import com.smarttoolfactory.tutorial2_1flowbasics.di.ServiceLocator
 import com.smarttoolfactory.tutorial2_1flowbasics.util.Event
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.SingleSource
 
 class PostViewModelRxJava3(
     private val getPostsUseCase: GetPostsUseCaseRxJava3
@@ -20,16 +22,18 @@ class PostViewModelRxJava3(
         getPostsUseCase.getPostsFlowOfflineLast()
 //            .startWith {
 //                println("🛳 PostViewModel LOADING in thread ${Thread.currentThread().name}")
-//                Single.just{
-//                    _postViewState.value = ViewState(status = Status.LOADING)
+//                SingleSource {
+//                     ViewState(status = Status.LOADING)
 //                }
 //            }
+            .startWith(Single.just(ViewState(status = Status.LOADING)))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    println("🛳 PostViewModel SUCCESS in thread ${Thread.currentThread().name}")
+                    println("🛳 PostViewModel onNext() SUCCESS in thread ${Thread.currentThread().name} ViewState: ${it.status}")
                     _postViewState.value = it
                 }, {
+                    println("🛳 PostViewModel onError() ERROR in thread ${Thread.currentThread().name}")
                     _postViewState.value = ViewState(status = Status.ERROR, error = it)
                 })
 
@@ -53,7 +57,7 @@ class PostViewModelRxJava3(
     }
 }
 
-class PostViewModelRxJava3Factory(private val application: Application) :
+class PostViewModelFactoryRxJava3(private val application: Application) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
