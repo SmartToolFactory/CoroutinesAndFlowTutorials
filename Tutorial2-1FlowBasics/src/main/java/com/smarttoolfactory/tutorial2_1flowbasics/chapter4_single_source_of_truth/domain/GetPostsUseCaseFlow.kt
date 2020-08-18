@@ -38,7 +38,8 @@ class GetPostsUseCaseFlow(
      */
     fun getPostFlowOfflineLast(): Flow<ViewState<List<Post>>> {
 
-        // *** START This section was in repo before moving to here ***
+
+        // 🔥 Section 1 fetch data from local or remote data
         return flow { emit(repository.fetchEntitiesFromRemote()) }
             .map {
                 println("🍏 getPostFlowOfflineLast() First map in thread: ${Thread.currentThread().name}")
@@ -52,21 +53,25 @@ class GetPostsUseCaseFlow(
                 }
 
             }
-            // *** END This section was in repo before moving to here ***
             .flowOn(dispatcherProvider.ioDispatcher)
             .catch { cause ->
                 println("❌ getPostFlowOfflineLast() FIRST catch with error: $cause, in thread: ${Thread.currentThread().name}")
                 emitAll(flowOf(repository.getPostEntitiesFromLocal()))
             }
+            // 🔥 Section 2 map Entity to UI item or throw exception if data list is empty
             .map {
+
+                println("🎃 getPostFlowOfflineLast() Second map in thread: ${Thread.currentThread().name} list null or empty: ${it.isNullOrEmpty()}")
+
                 if (!it.isNullOrEmpty()) {
                     entityToPostMapper.map(it)
                 } else {
                     throw EmptyDataException("No data is available in both remote and local source!")
                 }
             }
+            // 🔥 Section 3 Convert result to state of UI
             .map { postList ->
-                println("🎃 getPostFlowOfflineLast() Third map in thread: ${Thread.currentThread().name}")
+                println("🍎 getPostFlowOfflineLast() Third map in thread: ${Thread.currentThread().name}")
                 ViewState(status = Status.SUCCESS, data = postList)
             }
             .catch { cause: Throwable ->
@@ -95,10 +100,11 @@ class GetPostsUseCaseFlow(
 
     fun getPostFlowOfflineFirst(): Flow<ViewState<List<Post>>> {
 
+        // 🔥 Section 1 fetch data from local or remote data
         return flow { emit(repository.getPostEntitiesFromLocal()) }
             .map {
-
                 println("🍏 getPostFlowOfflineFirst() First map in thread: ${Thread.currentThread().name}")
+
                 if (it.isEmpty()) {
                     repository.run {
                         repository.deletePostEntities()
@@ -110,8 +116,14 @@ class GetPostsUseCaseFlow(
                 }
             }
             .flowOn(dispatcherProvider.ioDispatcher)
+            .catch { cause ->
+                println("❌ getPostFlowOfflineLast() FIRST catch with error: $cause, in thread: ${Thread.currentThread().name}")
+                emitAll(flowOf(listOf()))
+            }
+            // 🔥 Section 2 map Entity to UI item or throw exception if data list is empty
             .map {
-                println("🎃 getPostFlowOfflineFirst() Second map in thread: ${Thread.currentThread().name}")
+
+                println("🎃 getPostFlowOfflineFirst() Second map in thread: ${Thread.currentThread().name} list null or empty: ${it.isNullOrEmpty()}")
 
                 // Map Entity to UI item
                 if (!it.isNullOrEmpty()) {
@@ -120,6 +132,7 @@ class GetPostsUseCaseFlow(
                     throw EmptyDataException("Data is available in neither in remote nor local source!")
                 }
             }
+            // 🔥 Section 3 Convert result to state of UI
             .map { postList ->
 
                 println("🍎 getPostFlowOfflineFirst() Third map in thread: ${Thread.currentThread().name}")

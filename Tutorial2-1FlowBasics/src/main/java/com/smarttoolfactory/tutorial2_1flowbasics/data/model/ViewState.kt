@@ -13,7 +13,7 @@ class ViewState<T>(
 
     fun getErrorMessage() = error?.message
 
-    fun shouldShowErrorMessage() = error != null
+    fun shouldShowErrorMessage() = error != null && status == Status.ERROR
 }
 
 enum class Status {

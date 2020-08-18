@@ -11,7 +11,6 @@ import com.smarttoolfactory.tutorial2_1flowbasics.di.ServiceLocator
 import com.smarttoolfactory.tutorial2_1flowbasics.util.Event
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.core.SingleSource
 
 class PostViewModelRxJava3(
     private val getPostsUseCase: GetPostsUseCaseRxJava3
@@ -19,37 +18,38 @@ class PostViewModelRxJava3(
 
 
     override fun getPosts() {
-        getPostsUseCase.getPostsFlowOfflineLast()
+        getPostsUseCase.getPostsOfflineFirst()
 //            .startWith {
 //                println("🛳 PostViewModel LOADING in thread ${Thread.currentThread().name}")
 //                SingleSource {
 //                     ViewState(status = Status.LOADING)
 //                }
 //            }
-            .startWith(Single.just(ViewState(status = Status.LOADING)))
+//            .startWith(Single.just(ViewState(status = Status.LOADING)))
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    println("🛳 PostViewModel onNext() SUCCESS in thread ${Thread.currentThread().name} ViewState: ${it.status}")
+                    println("🛳 PostViewModel getPosts() onNext() in thread ${Thread.currentThread().name} ViewState: ${it.status}")
                     _postViewState.value = it
                 }, {
-                    println("🛳 PostViewModel onError() ERROR in thread ${Thread.currentThread().name}")
+                    println("🛳 PostViewModel getPosts() onError() in thread ${Thread.currentThread().name}")
                     _postViewState.value = ViewState(status = Status.ERROR, error = it)
                 })
 
     }
 
     override fun refreshPosts() {
-//        getPostsUseCase.getPostsFlowOfflineLast()
-//            .onStart {
-//                println("🛳 PostViewModel LOADING in thread ${Thread.currentThread().name}")
-//                _postViewState.value = ViewState(status = Status.LOADING)
-//            }
-//            .onEach {
-//                println("🛳 PostViewModel SUCCESS in thread ${Thread.currentThread().name}")
-//                _postViewState.value = it
-//            }
-//            .launchIn(coroutineScope)
+        getPostsUseCase.getPostsOfflineLast()
+//            .startWith(Single.just(ViewState(status = Status.LOADING)))
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    println("🛳 PostViewModel refreshPosts() onNext()  in thread ${Thread.currentThread().name} ViewState: ${it.status}")
+                    _postViewState.value = it
+                }, {
+                    println("🛳 PostViewModel refreshPosts() onError()  in thread ${Thread.currentThread().name}")
+                    _postViewState.value = ViewState(status = Status.ERROR, error = it)
+                })
     }
 
     override fun onClick(post: Post) {
