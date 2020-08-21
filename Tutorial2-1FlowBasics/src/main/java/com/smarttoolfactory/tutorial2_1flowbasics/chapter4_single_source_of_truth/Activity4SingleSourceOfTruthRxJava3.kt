@@ -25,9 +25,9 @@ class Activity4SingleSourceOfTruthRxJava3 : AppCompatActivity() {
         val navHostFragment: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
-//        navHostFragment.findNavController().setGraph(R.navigation.nav_graph_post_list_rxjava3)
+        navHostFragment.findNavController().setGraph(R.navigation.nav_graph_post_list_rxjava3)
 
-        examineDaoWithRxJava()
+//        examineDaoWithRxJava()
 
     }
 
