@@ -1,12 +1,10 @@
 package com.smarttoolfactory.tutorial2_1flowbasics.chapter2_network
 
 import com.google.common.truth.Truth
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.smarttoolfactory.tutorial2_1flowbasics.base.AbstractPostApiTest
 import com.smarttoolfactory.tutorial2_1flowbasics.data.api.PostApi
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostDTO
-import io.reactivex.observers.TestObserver
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -16,6 +14,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.HttpURLConnection
 
@@ -40,7 +39,7 @@ class PostApiTest : AbstractPostApiTest() {
             .baseUrl(mockWebServer.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+            .addCallAdapterFactory(RxJava3CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .build()
             .create(PostApi::class.java)
     }

@@ -3,6 +3,7 @@ package com.smarttoolfactory.tutorial2_1flowbasics.chapter4_single_source_of_tru
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.smarttoolfactory.tutorial2_1flowbasics.R
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.PostEntity
 import com.smarttoolfactory.tutorial2_1flowbasics.data.model.Status

@@ -35,7 +35,7 @@ class PostDBRepositoryTest : BaseCoroutineJUnit5Test() {
         testCoroutineScope.runBlockingTest {
 
             // GIVEN
-            every { postDBRepository.getPostListFlow() } returns flow { emit(listOf()) }
+            every { postDBRepository.getPostListFlow() } returns flow { emit(listOf<PostEntity>()) }
 
             // WHEN
             val testObserver = postDBRepository.getPostListFlow().test(this)

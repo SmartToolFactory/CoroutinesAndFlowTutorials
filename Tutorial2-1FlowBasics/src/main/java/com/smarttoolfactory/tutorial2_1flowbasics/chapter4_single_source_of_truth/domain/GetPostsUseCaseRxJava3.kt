@@ -50,7 +50,7 @@ class GetPostsUseCaseRxJava3(
                 println("🍏 getPostFlowOfflineLast() flatMap() in thread: ${Thread.currentThread().name}")
 
                 if (it.isNullOrEmpty()) {
-                    throw EmptyDataException("No data is available!")
+                    throw EmptyDataException("No Data is available in remote source!")
                 } else {
                     repository.deletePostEntities()
                         .andThen(repository.savePostEntities(it))

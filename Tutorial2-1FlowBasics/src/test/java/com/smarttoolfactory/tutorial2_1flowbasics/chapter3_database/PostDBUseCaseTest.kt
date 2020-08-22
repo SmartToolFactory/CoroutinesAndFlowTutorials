@@ -42,7 +42,7 @@ class PostDBUseCaseTest : BaseCoroutineJUnit5Test() {
         testCoroutineScope.runBlockingTest {
 
             // GIVEN
-            every { postDBRepository.getPostListFlow() } returns flow { emit(listOf()) }
+            every { postDBRepository.getPostListFlow() } returns flow { emit(listOf<PostEntity>()) }
             every { entityToPostMapper.map(listOf()) } returns listOf()
 
             // WHEN

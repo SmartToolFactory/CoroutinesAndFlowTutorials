@@ -45,7 +45,7 @@ class GetPostsUseCaseFlow(
                 println("🍏 getPostFlowOfflineLast() First map in thread: ${Thread.currentThread().name}")
 
                 if (it.isNullOrEmpty()) {
-                    throw EmptyDataException("Data is available in neither in remote nor local source!")
+                    throw EmptyDataException("No Data is available in remote source!")
                 } else {
                     repository.deletePostEntities()
                     repository.savePostEntity(it)
