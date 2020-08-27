@@ -46,7 +46,7 @@ class FlowTestObserverTest {
 //        }
 
         val observer = subject.consumeAsFlow().test(this)
-        observer.assertNoValues()
+        observer.assertNoValue()
         subject.send(12)
         observer.assertValues(12)
         observer.dispose()
@@ -140,11 +140,11 @@ class FlowTestObserverTest {
             .flowOn(Dispatchers.Default)
             .test(this, true)
 
-        observer.assertNoValues()
+        observer.assertNoValue()
         subject.send(1)
-        observer.assertNoValues()
+        observer.assertNoValue()
         advanceTimeBy(500)
-        observer.assertNoValues()
+        observer.assertNoValue()
         advanceTimeBy(500)
 //        observer
 //            .assertValues(1)

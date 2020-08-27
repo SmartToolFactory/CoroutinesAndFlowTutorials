@@ -21,7 +21,6 @@ class PostViewModel(
     private val getPostsUseCase: GetPostsUseCaseFlow
 ) : AbstractPostViewModel() {
 
-
    override fun getPosts() {
         getPostsUseCase.getPostFlowOfflineFirst()
             .onStart {

@@ -51,7 +51,6 @@ class GetPostsUseCaseFlow(
                     repository.savePostEntity(it)
                     repository.getPostEntitiesFromLocal()
                 }
-
             }
             .flowOn(dispatcherProvider.ioDispatcher)
             .catch { cause ->
@@ -132,6 +131,8 @@ class GetPostsUseCaseFlow(
                     throw EmptyDataException("Data is available in neither in remote nor local source!")
                 }
             }
+
+
             // 🔥 Section 3 Convert result to state of UI
             .map { postList ->
 
