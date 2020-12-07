@@ -18,7 +18,8 @@ import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter4_supervisorjob.A
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelRxJava
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel.Activity5ViewModelScope
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.Activity6Network
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter7_database.Activity7Database
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter7_database.Activity7_1Database
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter7_database.Activity7_2DatabaseThreading
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter8_single_source_of_truth.Activity8SingleSourceOfTruth
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ActivityClassModel
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.retrofitexample.RetrofitActivity
@@ -45,7 +46,8 @@ class MainActivity : AppCompatActivity(), BaseAdapter.OnRecyclerViewItemClickLis
         activityClassModels.add(ActivityClassModel(Activity5ViewModelScope::class.java))
         activityClassModels.add(ActivityClassModel(Activity5ViewModelRxJava::class.java))
         activityClassModels.add(ActivityClassModel(Activity6Network::class.java))
-        activityClassModels.add(ActivityClassModel(Activity7Database::class.java))
+        activityClassModels.add(ActivityClassModel(Activity7_1Database::class.java))
+        activityClassModels.add(ActivityClassModel(Activity7_2DatabaseThreading::class.java))
         activityClassModels.add(ActivityClassModel(Activity8SingleSourceOfTruth::class.java))
         activityClassModels.add(ActivityClassModel(RetrofitActivity::class.java))
 

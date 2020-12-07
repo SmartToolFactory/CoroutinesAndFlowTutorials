@@ -182,8 +182,10 @@ class Activity2CoroutineScope : AppCompatActivity() {
             binding.btnCancelChildJob2.isEnabled = true
         }
 
-        println("🤪 startChildrenJobs() parentJob: $parentJob, currentJob: $currentJob" +
-                ", childJob1: $childJob1, childJob2: $childJob2")
+        println(
+            "🤪 startChildrenJobs() parentJob: $parentJob, currentJob: $currentJob" +
+                    ", childJob1: $childJob1, childJob2: $childJob2"
+        )
     }
 
 

@@ -44,7 +44,10 @@ data class Measurement(
 @Dao
 interface MeasurementDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(measurement: Measurement): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAsync(measurement: Measurement): Long
 
     @Insert
@@ -70,7 +73,6 @@ interface MeasurementDao {
 
     @Query("SELECT * FROM measurements")
     fun getMeasurements(): LiveData<List<Measurement>>
-
 
 
 }

@@ -5,8 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity7DatabaseBinding
 
-class Activity7Database : AppCompatActivity() {
-
+class Activity7_1Database : AppCompatActivity() {
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -14,7 +13,6 @@ class Activity7Database : AppCompatActivity() {
             MeasurementViewModelFactory(application)
         ).get(MeasurementViewModel::class.java)
     }
-
 
     private val dataBinding by lazy {
         Activity7DatabaseBinding.inflate(layoutInflater)
@@ -25,10 +23,8 @@ class Activity7Database : AppCompatActivity() {
         setContentView(dataBinding.root)
 
         dataBinding.apply {
-            lifecycleOwner = this@Activity7Database
-            dataBinding.viewModel = this@Activity7Database.viewModel
+            lifecycleOwner = this@Activity7_1Database
+            dataBinding.viewModel = this@Activity7_1Database.viewModel
         }
-
-
     }
 }
