@@ -1,18 +1,23 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.smarttoolfactory.tutorial1_1basics.databinding.Activity6RetrofitBinding
 
-class Activity6Network: AppCompatActivity() {
+class Activity6Network : AppCompatActivity() {
 
-    private val viewModel: PostsCoroutineViewModel by viewModels()
+    private val viewModel by lazy {
+
+        ViewModelProvider(
+            this,
+            PostCoroutineViewModelFactory()
+        ).get(PostsCoroutineViewModel::class.java)
+    }
 
     private val dataBinding by lazy {
         Activity6RetrofitBinding.inflate(layoutInflater)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,8 +34,5 @@ class Activity6Network: AppCompatActivity() {
         viewModel.doSomeSequentialNetworkCalls()
         viewModel.doSomeParallelNetworkCalls()
         viewModel.doSomeParallelNetworkCallsWithLaunch()
-
-
     }
-
 }

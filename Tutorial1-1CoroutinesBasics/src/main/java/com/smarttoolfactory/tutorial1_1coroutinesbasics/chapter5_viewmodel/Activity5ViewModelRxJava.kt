@@ -13,7 +13,6 @@ class Activity5ViewModelRxJava : AppCompatActivity() {
         Activity5ViewmodelRxjavaBinding.inflate(layoutInflater)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(dataBinding.root)
@@ -22,7 +21,5 @@ class Activity5ViewModelRxJava : AppCompatActivity() {
             lifecycleOwner = this@Activity5ViewModelRxJava
             viewModel = this@Activity5ViewModelRxJava.viewModel
         }
-
     }
-
 }

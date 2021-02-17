@@ -72,7 +72,6 @@ class Fragment1Basics : Fragment() {
                 binding.tvResult.text = "Result with suspend only: ${output1 + output2} in $time ms"
 
             }
-
         }
     }
 

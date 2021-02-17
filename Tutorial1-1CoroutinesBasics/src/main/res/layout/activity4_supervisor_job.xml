@@ -12,48 +12,40 @@
             android:id="@+id/btnStartJob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
             android:text="Start Job"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.20" />
+            app:layout_constraintVertical_bias="0.24" />
 
         <TextView
             android:id="@+id/tvJobResult"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Job Not Started"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/btnStartJob"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.27" />
+            app:layout_constraintStart_toEndOf="@+id/btnStartJob"
+            app:layout_constraintTop_toTopOf="@+id/btnStartJob" />
 
 
         <Button
             android:id="@+id/btnCancelChildJob1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
+            android:layout_marginTop="32dp"
             android:text="Cancel Child1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.50" />
+            android:enabled="false"
+            app:layout_constraintStart_toStartOf="@+id/btnStartJob"
+            app:layout_constraintTop_toBottomOf="@+id/btnStartJob" />
 
         <TextView
             android:id="@+id/tvChildJobResult1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.57"
+            app:layout_constraintStart_toStartOf="@+id/tvJobResult"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelChildJob1"
             tools:text="Empty" />
 
 
@@ -61,25 +53,23 @@
             android:id="@+id/btnCancelChildJob2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:enabled="false"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="32dp"
             android:text="Cancel Child2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.80" />
+            android:enabled="false"
+            app:layout_constraintStart_toStartOf="@+id/btnStartJob"
+            app:layout_constraintTop_toBottomOf="@+id/btnCancelChildJob1" />
 
         <TextView
             android:id="@+id/tvChildJobResult2"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.87"
+            app:layout_constraintStart_toStartOf="@+id/tvJobResult"
+            app:layout_constraintTop_toTopOf="@+id/btnCancelChildJob2"
             tools:text="Empty" />
+
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

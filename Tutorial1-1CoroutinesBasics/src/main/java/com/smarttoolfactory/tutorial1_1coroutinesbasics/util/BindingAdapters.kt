@@ -1,7 +1,6 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.util
 
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.model.ViewState
@@ -24,7 +23,7 @@ fun TextView.postState(viewState: ViewState<String>?) {
     viewState?.let {
         text = if (viewState.shouldShowErrorMessage()) {
             viewState.getErrorMessage()
-        }else {
+        } else {
             viewState.data
         }
     }

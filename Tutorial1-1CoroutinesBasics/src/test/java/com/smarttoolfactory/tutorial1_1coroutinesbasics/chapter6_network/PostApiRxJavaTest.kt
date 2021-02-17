@@ -7,11 +7,10 @@ import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Pos
 import io.reactivex.observers.TestObserver
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
+import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import okhttp3.mockwebserver.RecordedRequest
+import org.junit.jupiter.api.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -43,10 +42,7 @@ class PostApiRxJavaTest : AbstractPostApiTest() {
     }
 
     @Test
-    fun `Given we have a valid request, should be done to correct url`() {
-
-        @Test
-        fun `Request has correct url`() {
+    fun `given we have a valid request, should be done to correct url`() {
 
             // GIVEN
             enqueueResponse(200)
@@ -59,12 +55,12 @@ class PostApiRxJavaTest : AbstractPostApiTest() {
             // THEN
             Truth.assertThat(request.path).isEqualTo("/posts")
 
-        }
+
 
     }
 
     @Test
-    fun `Given api return 200, should have list of posts with blockingFirst`() {
+    fun `given api return 200, should have list of posts with blockingFirst`() {
 
         // GIVEN
         enqueueResponse(200)
@@ -84,7 +80,7 @@ class PostApiRxJavaTest : AbstractPostApiTest() {
      * as the one above
      */
     @Test
-    fun `Given api return 200, should have list of posts with testObserver`() {
+    fun `given api return 200, should have list of posts with testObserver`() {
 
 
         // GIVEN
@@ -126,7 +122,7 @@ class PostApiRxJavaTest : AbstractPostApiTest() {
     }
 
     @Test
-    fun `Given Server down, should return 500 error`() {
+    fun `given Server down, should return 500 error`() {
 
         // GIVEN
         mockWebServer.enqueue(MockResponse().setResponseCode(500))

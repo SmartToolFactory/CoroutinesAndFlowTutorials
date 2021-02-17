@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-class MeasurementViewModel(private val measurementsUseCase: MeasurementsUseCase) : ViewModel() {
+class MeasurementViewModel(private val measurementUseCase: MeasurementUseCase) : ViewModel() {
 
     /**
      * Scope to test with context with IO thread
@@ -50,7 +50,7 @@ class MeasurementViewModel(private val measurementsUseCase: MeasurementsUseCase)
     init {
 
         // 🔥🔥 Updates whenever database is updated
-        resultWithLiveData = measurementsUseCase.getMeasurements()
+        resultWithLiveData = measurementUseCase.getMeasurements()
             .map { measurements ->
                 try {
                     if (measurements.isNullOrEmpty()) {
@@ -74,7 +74,7 @@ class MeasurementViewModel(private val measurementsUseCase: MeasurementsUseCase)
             println("😎 liveDataBuilder() scope: $this, thread: ${Thread.currentThread().name}")
 
             try {
-                val measurements = measurementsUseCase.getMeasurementsAsync()
+                val measurements = measurementUseCase.getMeasurementsAsync()
                 emit("Total count: ${measurements.size}, Measurement first: ${measurements.last()}")
 
             } catch (e: Exception) {
@@ -94,7 +94,7 @@ class MeasurementViewModel(private val measurementsUseCase: MeasurementsUseCase)
                 val measurement = Measurement(measured = doubleValue)
 
                 // Add Measurement to Database
-                val measurementId = measurementsUseCase.insertMeasurementAsync(measurement)
+                val measurementId = measurementUseCase.insertMeasurementAsync(measurement)
                 // Set text of successful
                 _insertResult.value =
                     "Inserted with id #$measurementId, value: ${measurement.measured}"
@@ -114,7 +114,7 @@ class MeasurementViewModel(private val measurementsUseCase: MeasurementsUseCase)
             try {
                 println("🙄 getMeasurementsWithSuspend() scope: $this, thread: ${Thread.currentThread().name}")
 
-                val measurements = measurementsUseCase.getMeasurementsAsync()
+                val measurements = measurementUseCase.getMeasurementsAsync()
                 _resultWithSuspend.value =
                     "Total count: ${measurements.size}, Measurement last value: ${measurements.last()}"
 
@@ -132,13 +132,14 @@ class MeasurementViewModel(private val measurementsUseCase: MeasurementsUseCase)
 }
 
 
-class MeasurementViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
+class MeasurementViewModelFactory(private val application: Application) :
+    ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
         val measurementDao = DatabaseFactory.getMeasurementDatabase(application).measurementDao()
 
-        val measurementUseCase = MeasurementsUseCase(MeasurementRepository(measurementDao))
+        val measurementUseCase = MeasurementUseCase(MeasurementRepository(measurementDao))
 
         return MeasurementViewModel(measurementUseCase) as T
     }

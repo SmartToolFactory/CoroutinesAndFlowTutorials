@@ -2,8 +2,8 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter5_viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.truth.Truth
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.TestCoroutineRule
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.getOrAwaitValue
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.rules.TestCoroutineRule
 import kotlinx.coroutines.Dispatchers
 import org.junit.Before
 import org.junit.Rule
@@ -15,8 +15,7 @@ class CoroutinesViewModelWithCustomScopeTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
-    var testCoroutineRule =
-        TestCoroutineRule()
+    var testCoroutineRule = TestCoroutineRule()
 
     private lateinit var viewModel: CoroutinesViewModelWithCustomScope
 
@@ -31,7 +30,7 @@ class CoroutinesViewModelWithCustomScopeTest {
      *
      */
     @Test
-    fun `Given timeout shorter than 2000 ms, should return mock response`() =
+    fun `given timeout shorter than 2000 ms, should return mock response`() =
         testCoroutineRule.runBlockingTest {
 
             // GIVEN
@@ -51,22 +50,19 @@ class CoroutinesViewModelWithCustomScopeTest {
 
             val expected = viewModel.result.getOrAwaitValue()
             Truth.assertThat(actual).isEqualTo(expected)
-
         }
-
 
     /**
      * ❌✅ Test passes but THROWS exception either
      */
     @Test(expected = RuntimeException::class)
-    fun `Test function that throws exception`() =
-        testCoroutineRule.runBlockingTest {
-            println("Test scope: $this, thread: ${Thread.currentThread().name}")
-            viewModel.throwExceptionInAScope()
+    fun `Test function that throws exception`() = testCoroutineRule.runBlockingTest {
+        println("Test scope: $this, thread: ${Thread.currentThread().name}")
+        viewModel.throwExceptionInAScope()
 
-            // Advancing time not effecting this test
+        // Advancing time not effecting this test
 //            advanceUntilIdle()
-        }
+    }
 
     /**
      * ❌ Timeouts are NOT WORKING as of kotlinx-coroutines-test 1.3.6
@@ -127,15 +123,11 @@ class CoroutinesViewModelWithCustomScopeTest {
         val expected = viewModel.resultMultiple.value
         println("Test expected: $expected")
         Truth.assertThat(expected?.contains(actualPartial)).isTrue()
-
     }
-
 
     @Before
     fun setUp() {
-
         viewModel = CoroutinesViewModelWithCustomScope(testCoroutineRule.testCoroutineScope)
-
     }
 
 }

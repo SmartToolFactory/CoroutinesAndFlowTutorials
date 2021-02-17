@@ -3,7 +3,7 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network
 import com.google.common.truth.Truth
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.Post
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.chapter6_network.api.PostApiCoroutines
-import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.convertToObjectsFromString
+import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.convertToObjectFromJson
 import com.smarttoolfactory.tutorial1_1coroutinesbasics.util.getResourceAsText
 import io.mockk.clearMocks
 import io.mockk.coEvery
@@ -25,9 +25,8 @@ class PostsRepositoryTest {
 
 
     private val postList by lazy {
-        convertToObjectsFromString<List<Post>>(getResourceAsText(RESPONSE_JSON_PATH))
+        convertToObjectFromJson<List<Post>>(getResourceAsText(RESPONSE_JSON_PATH))
     }
-
 
     @Before
     fun setUp() {
@@ -40,7 +39,7 @@ class PostsRepositoryTest {
     }
 
     @Test
-    fun `Given Http 200, should return result with success`() = runBlockingTest {
+    fun `given Http 200, should return result with success`() = runBlockingTest {
 
 //        // GIVEN
 //        val posts = postlist!!
@@ -56,7 +55,7 @@ class PostsRepositoryTest {
     }
 
     @Test
-    fun `Given network error occurred, should return result with error`() = runBlockingTest {
+    fun `given network error occurred, should return result with error`() = runBlockingTest {
 
         // GIVEN
         coEvery { postApiCoroutines.getPosts() } throws Exception("Network Exception")
@@ -73,7 +72,7 @@ class PostsRepositoryTest {
 
 
     @Test
-    fun `Given Http 200, should return result with success from response`() = runBlockingTest {
+    fun `given Http 200, should return result with success from response`() = runBlockingTest {
 
         // GIVEN
         val posts = postList!!
@@ -89,7 +88,7 @@ class PostsRepositoryTest {
     }
 
 /*    @Test
-    fun `Given network error occurred, should return result with error from response`() =
+    fun `given network error occurred, should return result with error from response`() =
         runBlockingTest {
 
             // TODO MediaType.get() THROWS error, FIX it
@@ -111,11 +110,7 @@ class PostsRepositoryTest {
 
         }*/
 
-
     companion object{
         private const val RESPONSE_JSON_PATH = "posts.json"
-
     }
-
-
 }

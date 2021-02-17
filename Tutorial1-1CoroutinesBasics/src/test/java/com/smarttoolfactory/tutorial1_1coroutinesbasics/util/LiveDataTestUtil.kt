@@ -56,6 +56,41 @@ fun <T> LiveData<T>.getOrAwaitValue(
 }
 
 /**
+ * Method to observe more than one value before removing observer with countdown latch or timeout.
+ */
+fun <T> LiveData<T>.getOrAwaitMultipleValues(
+    time: Long = 2,
+    dataCount: Int = 1,
+    timeUnit: TimeUnit = TimeUnit.SECONDS,
+    afterObserve: () -> Unit = {}
+): List<T?> {
+
+    val data = mutableListOf<T?>()
+    val latch = CountDownLatch(dataCount)
+
+    val observer = object : Observer<T> {
+        override fun onChanged(o: T?) {
+            data.add(o)
+            println("🤣 getOrAwaitMultipleValues() onCHanged(): $o, latch: ${latch.count}")
+            latch.countDown()
+            this@getOrAwaitMultipleValues.removeObserver(this)
+        }
+    }
+    this.observeForever(observer)
+
+    afterObserve.invoke()
+
+    // Don't wait indefinitely if the LiveData is not set.
+    if (!latch.await(time, timeUnit)) {
+        this.removeObserver(observer)
+        throw TimeoutException("LiveData value was never set.")
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    return data.toList()
+}
+
+/**
  * Observes a [LiveData] until the `block` is done executing.
  */
 fun <T> LiveData<T>.observeForTesting(block: () -> Unit) {
