@@ -5,21 +5,17 @@
 // This file was automatically generated from flow.md by Knit tool. Do not edit.
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.playground
 
+
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 
-fun requestFlow(i: Int): Flow<String> = flow {
-    emit("$i: First")
-    delay(500) // wait 500 ms
-    emit("$i: Second")
-}
-
 fun main() = runBlocking<Unit> {
+    val nums = (1..3).asFlow().onEach { delay(300) } // numbers 1..3 every 300 ms
+    val strs = flowOf("one", "two", "three").onEach { delay(400) } // strings every 400 ms
     val startTime = System.currentTimeMillis() // remember the start time
-    (1..3).asFlow().onEach { delay(100) } // a number every 100 ms 
-        .flatMapLatest { requestFlow(it) }
-        .collect { value -> // collect and print 
+    nums.combine(strs) { a, b -> "$a -> $b" } // compose a single string with "combine"
+        .collect { value -> // collect and print
             println("$value at ${System.currentTimeMillis() - startTime} ms from start")
         }
 }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeoutOrNull
 
-fun foo6(): Flow<Int> = flow {
+fun foo61(): Flow<Int> = flow {
     for (i in 1..3) {
         delay(100)
         println("Emitting $i")
@@ -22,7 +22,7 @@ fun foo6(): Flow<Int> = flow {
 
 fun main() = runBlocking<Unit> {
     withTimeoutOrNull(250) { // Timeout after 250ms 
-        foo6().collect { value -> println(value) }
+        foo61().collect { value -> println(value) }
     }
     println("Done")
 }

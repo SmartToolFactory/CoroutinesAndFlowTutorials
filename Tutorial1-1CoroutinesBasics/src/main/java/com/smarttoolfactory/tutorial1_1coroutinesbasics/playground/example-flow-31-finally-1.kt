@@ -8,16 +8,14 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.playground
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.runBlocking
 
-fun foo34(): Flow<Int> = (1..3).asFlow()
+fun foo31a(): Flow<Int> = (1..3).asFlow()
 
 fun main() = runBlocking<Unit> {
-    foo34()
-        .onCompletion { cause -> println("Flow completed with $cause") }
-        .collect { value ->
-            check(value <= 1) { "Collected $value" }
-            println(value)
-        }
+    try {
+        foo31a().collect { value -> println(value) }
+    } finally {
+        println("Done")
+    }
 }

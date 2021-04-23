@@ -7,25 +7,29 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.playground
 
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
 
-fun foo19(): Flow<Int> = flow {
+fun foo17_2(): Flow<Int> = flow {
     for (i in 1..3) {
-        delay(100) // pretend we are asynchronously waiting 100 ms
+        println("- value : $i - inside flow. delaying 1 second")
+        delay(1000) // pretend we are asynchronously waiting 100 ms
+        println("- value : $i - inside flow. Emitting")
         emit(i) // emit next value
     }
 }
 
 fun main() = runBlocking<Unit> {
     val time = measureTimeMillis {
-        foo19()
-            .collectLatest { value -> // cancel & restart on the latest value
-                println("Collecting $value")
-                delay(300) // pretend we are processing it for 300 ms
-                println("Done $value")
+        foo17_2()
+            .buffer() // buffer emissions, don't wait
+            .collect { value ->
+                println("- value : $value - inside collect. delaying 5 second")
+                delay(5000) // pretend we are processing it for 300 ms
+                println("- value : $value - inside collect. completed")
             }
     }
     println("Collected in $time ms")

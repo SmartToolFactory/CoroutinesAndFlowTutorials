@@ -5,17 +5,23 @@
 // This file was automatically generated from flow.md by Knit tool. Do not edit.
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.playground
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 
-fun foo31(): Flow<Int> = (1..3).asFlow()
+fun foo20(): Flow<Int> = flow {
+    for (i in 1..3) {
+        delay(1000)
+        emit(i)
+    }
+}
 
 fun main() = runBlocking<Unit> {
-    try {
-        foo31().collect { value -> println(value) }
-    } finally {
-        println("Done")
-    }
-}            
+
+    val numbersFlow = (1..3).asFlow().onEach { delay(1000) } // flow of numbers 1,2,3
+
+    numbersFlow
+        .collect {
+            println(it)
+        }
+}

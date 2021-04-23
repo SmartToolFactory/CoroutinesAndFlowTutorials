@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.channels.produce
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 
 fun CoroutineScope.produceSquares(): ReceiveChannel<Int> = produce {
@@ -16,7 +17,29 @@ fun CoroutineScope.produceSquares(): ReceiveChannel<Int> = produce {
 }
 
 fun main() = runBlocking {
+
+    // 1st way of sending integers to the channel.
+    /*val squares = Channel<Int>()
+    launch {
+        for (x in 1..5)
+            squares.send(x * x)
+        squares.close() // we're done sending
+    }*/
+    // 2nd way of sending integers to the channel.
     val squares = produceSquares()
-    squares.consumeEach { println(it) }
+
+
+    // 1st way of receiving integers from the channel.
+    squares.consumeEach {
+        delay(3000)
+        println(it)
+    }
+    // 2nd way of receiving integers from the channel.
+    /*repeat(5) {
+        delay(3000)
+        println(squares.receive())
+    }*/
+
     println("Done!")
 }
+
