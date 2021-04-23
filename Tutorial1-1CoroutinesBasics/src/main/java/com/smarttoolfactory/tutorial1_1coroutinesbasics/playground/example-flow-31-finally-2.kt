@@ -8,22 +8,24 @@ package com.smarttoolfactory.tutorial1_1coroutinesbasics.playground
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
 
-fun numbers(): Flow<Int> = flow {
-    try {
-        emit(1)
-        emit(2)
-        println("This line will not execute")
-        emit(3)
-    } finally {
-        println("Finally in numbers")
+fun foo31b(): Flow<Int> = flow {
+    for (i in 1..3) {
+        println("Emitting $i")
+        emit(i) // emit next value
     }
 }
 
 fun main() = runBlocking<Unit> {
-    numbers()
-        .take(2) // take only the first two
-        .collect { value -> println(value) }
-}            
+    try {
+        foo31b().collect { value ->
+            println(value)
+            check(value <= 1) { "Collected $value" }
+        }
+    } catch (e: Throwable) {
+        println("Caught $e")
+    } finally {
+        println("done")
+    }
+}

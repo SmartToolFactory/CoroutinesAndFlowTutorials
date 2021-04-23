@@ -12,8 +12,14 @@ import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking<Unit> {
-    val nums = (1..3).asFlow() // numbers 1..3
-    val strs = flowOf("one", "two", "three") // strings 
-    nums.zip(strs) { a, b -> "$a -> $b" } // compose a single string
-        .collect { println(it) } // collect and print
+
+    val numbersFlow = (1..3).asFlow() // flow of numbers 1,2,3
+    val stringsFlow = flowOf("one", "two", "three") // flow of strings
+
+    numbersFlow.zip(stringsFlow) { a, b ->
+        "$a -> $b"
+    } // compose a single string
+        .collect {
+            println(it)
+        } // collect and print
 }

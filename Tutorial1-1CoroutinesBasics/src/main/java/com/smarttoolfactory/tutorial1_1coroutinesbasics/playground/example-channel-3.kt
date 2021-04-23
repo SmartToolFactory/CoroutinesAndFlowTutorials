@@ -10,12 +10,20 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking {
+
     val channel = Channel<Int>()
     launch {
-        for (x in 1..5) channel.send(x * x)
+        for (x in 1..5)
+            channel.send(x * x)
         channel.close() // we're done sending
     }
+
     // here we print received values using `for` loop (until the channel is closed)
+    // 1st way of receiving data from channel
     for (y in channel) println(y)
+    // 2nd way of receiving data from channel
+    /*repeat(5) {
+        println(channel.receive()) }*/
+
     println("Done!")
 }

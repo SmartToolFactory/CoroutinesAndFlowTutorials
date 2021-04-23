@@ -11,8 +11,20 @@ import kotlinx.coroutines.flow.reduce
 import kotlinx.coroutines.runBlocking
 
 fun main() = runBlocking<Unit> {
-    val sum = (1..5).asFlow()
+    val sum1 = (1..5).asFlow()
+        .reduce { a, b ->
+            println("$a + $b = ${a + b}")
+            a + b
+        } // sum them (terminal operator)
+    println(sum1)
+
+    println("----")
+
+    val sum2 = (1..5).asFlow()
         .map { it * it } // squares of numbers from 1 to 5                           
-        .reduce { a, b -> a + b } // sum them (terminal operator)
-    println(sum)
+        .reduce { a, b ->
+            println("$a + $b = ${a + b}")
+            a + b
+        } // sum them (terminal operator)
+    println(sum2)
 }

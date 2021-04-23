@@ -5,25 +5,27 @@
 // This file was automatically generated from flow.md by Knit tool. Do not edit.
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.playground
 
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
 
-fun foo5(): Flow<Int> = flow {
-    println("Flow started")
-    for (i in 1..3) {
-        delay(100)
-        emit(i)
+fun numbers(): Flow<Int> = flow {
+    try {
+        emit(1)
+        emit(2)
+        println("This line will not execute")
+        emit(3)
+    } catch (ex: Exception) {
+        println(ex.message)
+    } finally {
+        println("Finally in numbers")
     }
 }
 
 fun main() = runBlocking<Unit> {
-    println("Calling foo...")
-    val flow = foo5()
-    println("Calling collect...")
-    flow.collect { value -> println(value) }
-    println("Calling collect again...")
-    flow.collect { value -> println(value) }
-}
+    numbers()
+        .take(2) // take only the first two
+        .collect { value -> println(value) }
+}            

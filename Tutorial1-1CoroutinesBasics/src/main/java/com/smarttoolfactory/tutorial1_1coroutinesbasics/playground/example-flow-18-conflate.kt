@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
 
+/*
+
 fun foo18(): Flow<Int> = flow {
     for (i in 1..3) {
         delay(100) // pretend we are asynchronously waiting 100 ms
@@ -27,6 +29,30 @@ fun main() = runBlocking<Unit> {
             .collect { value ->
                 delay(300) // pretend we are processing it for 300 ms
                 println(value)
+            }
+    }
+    println("Collected in $time ms")
+}
+*/
+
+
+fun foo18(): Flow<Int> = flow {
+    for (i in 1..3) {
+        println("- value : $i - inside flow. delaying 1 second")
+        delay(1000) // pretend we are asynchronously waiting 100 ms
+        println("- value : $i - inside flow. Emitting")
+        emit(i) // emit next value
+    }
+}
+
+fun main() = runBlocking<Unit> {
+    val time = measureTimeMillis {
+        foo18()
+            .conflate() // conflate emissions, don't process each one.
+            .collect { value ->
+                println("- value : $value - inside collect. delaying 5 second")
+                delay(5000) // pretend we are processing it for 300 ms
+                println("- value : $value - inside collect. completed")
             }
     }
     println("Collected in $time ms")

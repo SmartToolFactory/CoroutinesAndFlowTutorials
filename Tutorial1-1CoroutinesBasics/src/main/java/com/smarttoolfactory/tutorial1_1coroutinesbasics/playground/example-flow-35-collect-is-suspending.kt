@@ -6,13 +6,15 @@
 package com.smarttoolfactory.tutorial1_1coroutinesbasics.playground
 
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 
-suspend fun foo3(): List<Int> {
-    delay(1000) // pretend we are doing something asynchronous here
-    return listOf(1, 2, 3)
-}
 
 fun main() = runBlocking<Unit> {
-    foo3().forEach { value -> println(value) }
-}
+    (1..3).asFlow().onEach { delay(10000) }
+        .onEach { event -> println("Event: $event") }
+        .collect() // <--- Collecting the flow waits
+    println("Done")
+}            

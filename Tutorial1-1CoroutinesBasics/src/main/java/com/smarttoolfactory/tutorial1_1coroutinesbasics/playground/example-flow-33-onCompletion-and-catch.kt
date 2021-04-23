@@ -9,13 +9,17 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.runBlocking
 
 fun foo33(): Flow<Int> = flow {
-    emit(1)
-    throw RuntimeException()
+    for (i in 1..3) {
+        emit(i)
+    }
 }
 
 fun main() = runBlocking<Unit> {
     foo33()
-        .onCompletion { cause -> if (cause != null) println("Flow completed exceptionally") }
-        .catch { cause -> println("Caught exception") }
+        .onEach {
+            check(it <= 1) { "Collected $it" }
+        }
+        .onCompletion { cause -> if (cause != null) println("Flow completed exceptionally - $cause") }
+        .catch { cause -> println("Caught exception - $cause") }
         .collect { value -> println(value) }
 }            
